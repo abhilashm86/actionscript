@@ -1,0 +1,19 @@
+DTX1 - 0
+DTY1 - 0
+DTZ1 - 0
+DSX1 - 1
+DSY1 - 1
+DSZ1 - 1
+DRX1 - 10
+DRY1 - 0
+DRZ1 - 0
+
+CTX1 - 0
+CTY1 - 0
+CTZ1 - 0
+CSX1 - 1
+CSY1 - 1
+CSZ1 - 1
+CRX1 - 10
+CRY1 - 0
+CRZ1 - 0

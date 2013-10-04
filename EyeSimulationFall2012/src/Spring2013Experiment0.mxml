@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+to check the compatibility of bitmap comparisions
+version2 - automate things - only keep bitmapdata and process\
+
+Exp 0- with image 41 of both snellen and angryface - 10 iterations
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			private var byteArr2:ByteArray;
+			/*
+			Load all images which are in assets folder- T1 - T20
+			compare the distored image with the T1-T20 set
+			*/
+			
+			/*
+			Keep a image called sample, apply transformations and save it. Then compare it. 
+			*/
+			
+			public var iterator1:ArrayCollection = new ArrayCollection();
+			public var iterator2:ArrayCollection = new ArrayCollection();
+			public var iterator3:ArrayCollection = new ArrayCollection();
+			
+			
+			public var d0Image:Image = new Image();
+			public var d1Image:Image = new Image();
+			public var d2Image:Image = new Image();
+			public var d3Image:Image = new Image();
+			public var d4Image:Image = new Image();
+			public var d5Image:Image = new Image();
+			public var d6Image:Image = new Image();
+			public var d7Image:Image = new Image();
+			public var d8Image:Image = new Image();
+			public var d9Image:Image = new Image();
+			public var d10Image:Image = new Image();
+			public var d11Image:Image = new Image();
+			public var d12Image:Image = new Image();
+			public var d13Image:Image = new Image();
+			public var d14Image:Image = new Image();
+			public var d15Image:Image = new Image();
+			public var d16Image:Image = new Image();
+			public var d17Image:Image = new Image();
+			public var d18Image:Image = new Image();
+			public var d19Image:Image = new Image();
+			public var d20Image:Image = new Image();
+			
+			
+			
+			
+			private var fileRef:FileReference = new FileReference();
+			public var matrix:Matrix3D = new Matrix3D();
+			
+			//keep a counter to check number of iterations 
+			public var iteratorCounter:Number = 10; 
+			public var result:String = "";
+			
+			public var data:BitmapData;
+			
+			//scale factor initialization
+			var scaleFactorX:Number = 1;
+			var scaleFactorY:Number = 1;
+			var scaleFactorZ:Number = 1;
+			
+			//rotation 
+			var rotationAngleX:Number = 0;
+			var rotationAngleY:Number = 0;
+			var rotationAngleZ:Number = 0;
+			
+			//scale factor initialization
+			var translateFactorX:Number = 0;
+			var translateFactorY:Number = 0;
+			var translateFactorZ:Number = 0;
+			
+			public var bitmapData0:Bitmap = new Bitmap();
+			public var imageRotationCorrection:Number = 0;
+			var tempAngle:Number = 0;
+			
+			//Run this function for number of iterations 
+			private function getBitmapDifference(bitmapData1:BitmapData, bitmapData2:BitmapData):Number 
+			{
+				//compare with 240 X 480 image
+				var counter:Number = 0;
+				for(var x:int =0; x<bitmapData1.width; x++)
+				{
+					for(var y:int =0; y<(bitmapData2.height); y++)
+					{
+						if(bitmapData1.getPixel(x,y) != bitmapData2.getPixel(x,y))
+						{
+							counter++;
+						}
+					}
+				}
+				return counter;
+			}
+			
+			public function processBitmaps():void {
+				//rotationAngleX = imageRotationCorrection;
+				tempAngle = tempAngle +(- imageRotationCorrection);
+				
+				rotationAngleX = (imageRotationCorrection); 
+				rotationAngleY = (imageRotationCorrection);
+				rotationAngleZ = (imageRotationCorrection);
+				
+				//				rotationAngleZ = 0;
+				/* 	matrix = distortedImage.transform.matrix3D;
+				matrix.appendScale(scaleFactorX, scaleFactorY, scaleFactorZ);
+				
+				matrix.appendRotation(rotationAngleX, Vector3D.X_AXIS, null); 
+				matrix.appendRotation(rotationAngleY, Vector3D.Z_AXIS, null);
+				
+				matrix.appendTranslation(translateFactorX, translateFactorY, translateFactorZ);
+				distortedImage.transform.matrix3D = matrix;
+				*///
+				
+				//var tempRadians:Number = (40)* (180/Math.PI);
+				
+				/*	if(iteratorCounter ==1)
+				{
+				distortedImage.rotationX = distortedImage.rotationY =0;
+				distortedImage.rotationX = tempAngle;
+				distortedImage.rotationY = tempAngle;
+				}*/
+				distortedImage.rotationX = imageRotationCorrection;
+				distortedImage.rotationY = imageRotationCorrection;
+				distortedImage.rotationZ = imageRotationCorrection;
+				
+				//distortedImage.rotationZ = -tempRadians;
+				
+				
+				data = new BitmapData(everything.width, everything.height, false, 0xFFFFFF);
+				data.draw(everything);
+				var encod:JPEGEncoder = new JPEGEncoder(100);               
+				byteArr2 = encod.encode(data);
+				bitmapData0.bitmapData = data;
+			}
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				var imageSample:String = "sample3.jpg";
+				
+				while (iteratorCounter !=0) {
+					
+					//load sample image 
+					
+					if(iteratorCounter== 10) {	bitmapData0 = Bitmap(distortedImage.content); }
+					
+					[Embed("assets/exp2/snellenxyz/0.jpg")]
+					var img1:Class;
+					d1Image.load(img1);
+					var bitmapData1:Bitmap = Bitmap(d1Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/2.jpg")]
+					var img2:Class;
+					d2Image.load(img2);
+					var bitmapData2:Bitmap = Bitmap(d2Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/4.jpg")]
+					var img3:Class;
+					d3Image.load(img3);
+					var bitmapData3:Bitmap = Bitmap(d3Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/6.jpg")]
+					var img4:Class;
+					d4Image.load(img4);
+					var bitmapData4:Bitmap = Bitmap(d4Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/8.jpg")]
+					var img5:Class;
+					d5Image.load(img5);
+					var bitmapData5:Bitmap = Bitmap(d5Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/10.jpg")]
+					var img6:Class;
+					d6Image.load(img6);
+					var bitmapData6:Bitmap = Bitmap(d6Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/15.jpg")]
+					var img7:Class;
+					d7Image.load(img7);
+					var bitmapData7:Bitmap = Bitmap(d7Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/20.jpg")]
+					var img8:Class;
+					d8Image.load(img8);
+					var bitmapData8:Bitmap = Bitmap(d8Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/30.jpg")]
+					var img9:Class;
+					d9Image.load(img9);
+					var bitmapData9:Bitmap = Bitmap(d9Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/40.jpg")]
+					var img10:Class;
+					d10Image.load(img10);
+					var bitmapData10:Bitmap = Bitmap(d10Image.content);
+					
+					/* [Embed("assets/exp4/allimages/angryface/xyz/0.jpg")]
+					var img11:Class;
+					d11Image.load(img11);
+					var bitmapData11:Bitmap = Bitmap(d11Image.content);
+					 */
+					[Embed("assets/exp2/snellenxyz/-2.jpg")]
+					var img12:Class;
+					d12Image.load(img12);
+					var bitmapData12:Bitmap = Bitmap(d12Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-4.jpg")]
+					var img13:Class;
+					d13Image.load(img13);
+					var bitmapData13:Bitmap = Bitmap(d13Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-6.jpg")]
+					
+					var img14:Class;
+					d14Image.load(img14);
+					var bitmapData14:Bitmap = Bitmap(d14Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-8.jpg")]
+					
+					var img15:Class;
+					d15Image.load(img15);
+					var bitmapData15:Bitmap = Bitmap(d15Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-10.jpg")]
+					
+					var img16:Class;
+					d16Image.load(img16);
+					var bitmapData16:Bitmap = Bitmap(d16Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-15.jpg")]
+					
+					var img17:Class;
+					d17Image.load(img17);
+					var bitmapData17:Bitmap = Bitmap(d17Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-20.jpg")]
+					
+					var img18:Class;
+					d18Image.load(img18);
+					var bitmapData18:Bitmap = Bitmap(d18Image.content);
+					
+					[Embed("assets/exp2/snellenxyz/-30.jpg")]
+					
+					var img19:Class;
+					d19Image.load(img19);
+					var bitmapData19:Bitmap = Bitmap(d19Image.content);
+					
+					/* [Embed("assets/exp4/allimages/angryface/xyz/40.jpg")]
+					
+					var img20:Class;
+					d20Image.load(img20);
+					var bitmapData20:Bitmap = Bitmap(d20Image.content);
+					 */
+					
+					/*
+					Calculate distortions by comparing given distortion image with sample images T1-T20 
+					*/
+					//To know the least distortion number 
+					var leastPixelDifference:int = 0;
+					var leastDistortedImage:String = ".jpg";
+					var numString:String = "\n";
+					
+					/*
+					Write all values into array 
+					*/
+					
+					//for the source non distorted image 
+					var percentDifference1:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData1.bitmapData);
+					numString =numString + "Pixel Value - "+ percentDifference1.toString() + " Image Name - Snellen XYZ 0.jpg\n";
+					iterator1.addItem(numString);
+					
+					var percentDifference2:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData2.bitmapData);
+					leastPixelDifference = percentDifference2;
+					leastDistortedImage=" Snellen chart 2.jpg";
+					imageRotationCorrection = -2;
+					
+					//numString = "Distortion for given sample image - Rotation along X: 14 \n";
+					numString =numString + "Pixel Value - "+ percentDifference2.toString() + " Image Name - Snellen XYZ 2.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference3:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData3.bitmapData);
+					if(leastPixelDifference > percentDifference3) {leastPixelDifference = percentDifference3; leastDistortedImage=" Snellen chart  Snellen chart 4.jpg";imageRotationCorrection = -4}
+					numString ="Pixel Value - "+ percentDifference3.toString() + " Image Name - Snellen XYZ 4.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference4:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData4.bitmapData);
+					if(leastPixelDifference > percentDifference4) {leastPixelDifference = percentDifference4, leastDistortedImage=" Snellen chart 6.jpg";imageRotationCorrection = -6}
+					numString ="Pixel Value - "+ percentDifference4.toString() + " Image Name - Snellen XYZ 6.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference5:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData5.bitmapData);
+					
+					if(leastPixelDifference > percentDifference5) {leastPixelDifference = percentDifference5; leastDistortedImage=" Snellen chart 8.jpg";imageRotationCorrection = -8}
+					numString ="Pixel Value - "+ percentDifference5.toString() + " Image Name - Snellen XYZ 8.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference6:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData6.bitmapData);
+					if(leastPixelDifference > percentDifference6) {leastPixelDifference = percentDifference6; leastDistortedImage=" Snellen chart 10.jpg";imageRotationCorrection = -10}
+					numString ="Pixel Value - "+ percentDifference6.toString() + " Image Name - Snellen XYZ 10.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference7:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData7.bitmapData);
+					if(leastPixelDifference > percentDifference7) {leastPixelDifference = percentDifference7; leastDistortedImage=" Snellen chart 15.jpg";imageRotationCorrection = -15}
+					numString ="Pixel Value - "+ percentDifference7.toString() + " Image Name - Snellen XYZ 15.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference8:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData8.bitmapData);
+					if(leastPixelDifference > percentDifference8) {leastPixelDifference = percentDifference8; leastDistortedImage=" Snellen chart 20.jpg";imageRotationCorrection = -20}
+					numString ="Pixel Value - "+ percentDifference8.toString() + " Image Name - Snellen XYZ 20.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference9:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData9.bitmapData);
+					if(leastPixelDifference > percentDifference9) {leastPixelDifference = percentDifference9; leastDistortedImage=" Snellen chart 30.jpg";imageRotationCorrection = -30}
+					numString ="Pixel Value - "+ percentDifference9.toString() + " Image Name - Snellen XYZ 30.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference10:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData10.bitmapData);
+					if(leastPixelDifference > percentDifference10) {leastPixelDifference = percentDifference10; leastDistortedImage=" Snellen chart 40.jpg";imageRotationCorrection = -40}
+					numString ="Pixel Value - "+ percentDifference10.toString() + " Image Name - Snellen XYZ 40.jpg";
+					iterator1.addItem(numString);
+						
+					var percentDifference11:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData12.bitmapData);
+					if(leastPixelDifference > percentDifference11) {leastPixelDifference = percentDifference11; leastDistortedImage=" Snellen chart -2.jpg";imageRotationCorrection = 2}
+					numString ="Pixel Value - "+ percentDifference11.toString() + " Image Name - Snellen chart XYZ -2.jpg";
+					iterator1.addItem(numString);
+					
+					
+					var percentDifference12:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData13.bitmapData);
+					if(leastPixelDifference > percentDifference12) {leastPixelDifference = percentDifference12; leastDistortedImage=" Snellen chart - 4.jpg";imageRotationCorrection = 4}
+					numString ="Pixel Value - "+ percentDifference12.toString() + " Image Name - Snellen chart XYZ -4.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference13:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData14.bitmapData);
+					if(leastPixelDifference > percentDifference13) {leastPixelDifference = percentDifference13; leastDistortedImage=" Snellen chart -6.jpg";imageRotationCorrection = 6}
+					numString ="Pixel Value - "+ percentDifference13.toString() + " Image Name - Snellen chart XYZ -6.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference14:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData15.bitmapData);
+					if(leastPixelDifference > percentDifference14) {leastPixelDifference = percentDifference14; leastDistortedImage=" Snellen chart -8.jpg";imageRotationCorrection = 8}
+					numString ="Pixel Value - "+ percentDifference14.toString() + " Image Name - Snellen chart XYZ -8.jpg";
+					iterator1.addItem(numString);  
+					
+					var percentDifference15:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData16.bitmapData);
+					if(leastPixelDifference > percentDifference15) {leastPixelDifference = percentDifference15; leastDistortedImage=" Snellen chart -10.jpg";imageRotationCorrection = 10}
+					numString ="Pixel Value - "+ percentDifference15.toString() + " Image Name - Snellen chart XYZ -10.jpg";
+					iterator1.addItem(numString);  
+					
+					var percentDifference16:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData17.bitmapData);
+					if(leastPixelDifference > percentDifference16) {leastPixelDifference = percentDifference16; leastDistortedImage=" Snellen chart -15.jpg";imageRotationCorrection = 15}
+					numString ="Pixel Value - "+ percentDifference16.toString() + " Image Name - Snellen chart XYZ -15.jpg";
+					iterator1.addItem(numString);
+					
+					var percentDifference17:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData18.bitmapData);
+					if(leastPixelDifference > percentDifference17) {leastPixelDifference = percentDifference17; leastDistortedImage=" Snellen chart -20.jpg";imageRotationCorrection = 20}
+					numString ="Pixel Value - "+ percentDifference17.toString() + " Image Name - Snellen chart XYZ -20.jpg";
+					iterator1.addItem(numString);  
+					
+					var percentDifference18:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData19.bitmapData);
+					if(leastPixelDifference > percentDifference18) {leastPixelDifference = percentDifference18; leastDistortedImage=" Snellen chart -30.jpg";imageRotationCorrection = 30}
+					numString ="Pixel Value - "+ percentDifference18.toString() + " Image Name - Snellen chart XYZ -30.jpg";
+					iterator1.addItem(numString);  
+					
+					/*
+					var percentDifference19:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData20.bitmapData);
+					if(leastPixelDifference > percentDifference19) {leastPixelDifference = percentDifference19; leastDistortedImage=" Snellen chart 40.jpg";imageRotationCorrection = 40}
+					numString ="Pixel Value - "+ percentDifference19.toString() + " Image Name - Snellen chart XYZ -40.jpg";
+					iterator1.addItem(numString);  
+					*/
+					//	Alert.show("Least distortion value - " + leastPixelDifference + " Least Distorted Image - " + leastDistortedImage);
+					//distortedImage.source="assets/squares/" + imageSample;
+					estimatedImage.source = "assets/exp2/snellenxyz/"+ leastDistortedImage;
+					numString = '\n' + "Estimated image - " + leastDistortedImage +'\n'; 
+					iterator1.addItem(numString);	
+					
+					// write all data to text file
+					for(var i : Number = 0; i < iterator1.length; ++i) {
+						result = result + iterator1.getItemAt(i) +'\t' + '\n';
+					}	
+					processBitmaps();						
+					// clear all kind of variables
+					matrix = null;
+					iterator1.removeAll();
+					iteratorCounter --;
+					
+				}
+			}
+			
+			public function saveFile():void 
+			{ 
+				/* var result:String = "";
+				for(var i : Number = 0; i < iterator1.length; ++i) {
+				result = result + iterator1.getItemAt(i) +'\t' + '\n';
+				}	 */
+				fileRef.save(result, "result.txt");
+			}
+			
+			
+			public function saveImage():void
+			{
+				/* var data:BitmapData = new BitmapData(everything.width, everything.height, false, 0xFFFFFF);
+				data.draw(everything);
+				
+				var encod:JPEGEncoder = new JPEGEncoder(100);               
+				byteArr2 = encod.encode(data); */
+				
+				fileRef.save(byteArr2,"iterator.jpg");
+			}
+		]]>
+	</fx:Script>
+	<s:Label text="Pixel Comparision" fontSize="18" left="600" top="50"/>
+	<mx:Box id="everything" x="100" y="50">
+		<mx:Image width="480" height="480" id="distortedImage" source="assets/exp2/snellenxyz/sample41.jpg"/>
+	</mx:Box>	
+	<s:Label text="Distorted Image" left="200" bottom="200" />
+	<mx:Image  width="300" height="300" left="700" bottom="250" id="estimatedImage" />
+	<s:Label text="Estimated Least Distorted Image" left="800" bottom="200" />
+	<s:Button label="Save Image" bottom="20" left="10" click="saveImage()"/>
+	<s:Button label="Save Values" bottom="50" left="10" click="saveFile()"/>
+</s:Application>

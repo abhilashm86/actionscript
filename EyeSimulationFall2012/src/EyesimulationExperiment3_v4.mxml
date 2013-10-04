@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+read the image scaled by the user
+1) Estimate the height and 
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.ColorMatrixFilter;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.controls.Alert;
+			import mx.controls.Text;
+			import mx.events.FlexEvent;
+			
+			public var imageCount:int = 1; 
+			public var bmp210:Bitmap = new Bitmap();
+			public var pixelString:Array;
+			public var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+				0.3, 0.59, 0.11, 0, 0,
+				0.3, 0.59, 0.11, 0, 0,
+				0, 0, 0, 1, 0];
+			
+			public var image:Image = new Image();
+			public var correctedPixelValues:String = new String();
+
+			public var fr:FileReference = new FileReference();
+			protected function application1_creationCompleteHandler():void
+			{
+				if (imageCount==1) 
+				{
+					var imageName:String = "assets/inputImageFromExp3a/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/1.jpg")]
+					var img1:Class;
+					image.load(img1);
+				}
+				if (imageCount==2) 
+				{
+					var imageName:String = "assets/inputImageFromExp3a/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/2.jpg")]
+					var img2:Class;
+					image.load(img2);
+				}
+				if (imageCount==3) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/3.jpg")]
+					var img3:Class;
+					image.load(img3);
+				}
+				if (imageCount==4) 
+				{
+					var imageName:String = "assets/inputImageFromExp3a/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/4.jpg")]
+					var img4:Class;
+					image.load(img4);
+				}
+				if (imageCount==5) 
+				{
+					var imageName:String = "assets/inputImageFromExp3a/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/5.jpg")]
+					var img5:Class;
+					image.load(img5);
+				}
+				if (imageCount==6) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/6.jpg")]
+					var img6:Class;
+					image.load(img6);
+				}
+				if (imageCount==7) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/7.jpg")]
+					var img7:Class;
+					image.load(img7);
+				}
+				if (imageCount==8) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/8.jpg")]
+					var img8:Class;
+					image.load(img8);
+				}
+				if (imageCount==9) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/9.jpg")]
+					var img9:Class;
+					image.load(img9);
+				}
+				if (imageCount==10) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/10.jpg")]
+					var img10:Class;
+					image.load(img10);
+				}
+				if (imageCount==11) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/11.jpg")]
+					var img11:Class;
+					image.load(img11);
+				}
+				
+				if (imageCount==12) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/12.jpg")]
+					var img12:Class;
+					image.load(img12);
+				}
+				if (imageCount==13) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/13.jpg")]
+					var img13:Class;
+					image.load(img13);
+				}
+				if (imageCount==14) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/14.jpg")]
+					var img14:Class;
+					image.load(img14);
+				}
+				if (imageCount==15) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/15.jpg")]
+					var img15:Class;
+					image.load(img15);
+				}
+				if (imageCount==16) 
+				{
+					var imageName:String = "assets/" +imageCount+".jpg";
+					[Embed("assets/inputImageFromExp3a/16.jpg")]
+					var img16:Class;
+					image.load(img16);
+				}
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+				
+				var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+				for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						//check condition for black
+						if(original.bitmapData.getPixel(x,y)!= 0)
+						{
+								var a:uint = original.bitmapData.getPixel(x, y);
+								var b:uint = original.bitmapData.getPixel(x+1, y);
+								var c:uint = original.bitmapData.getPixel(x, y+1);
+								var d:uint = original.bitmapData.getPixel(x+1, y+1);
+								var greyScalePixel:uint = (a * x) + (b * y) + (c * x * y) + d;   
+								bitmap30X30.setPixel((x/16)  ,(y/16)   , greyScalePixel);
+						}
+						
+					}
+					
+				}
+	
+				/*
+				copy all bitmapdata30X30 to a string and export 
+				*/
+				
+				for (var x:int = 0; x < bitmap30X30.width; x = x+1)
+				{
+					for (var y:int = 0; y < bitmap30X30.height; y = y+1)
+					{
+						correctedPixelValues = correctedPixelValues + bitmap30X30.getPixel(x,y) + '\t';
+					}
+					correctedPixelValues =correctedPixelValues + '\n'; 
+					
+				}
+		
+				
+				//copy image 30 X 30 to new 210 X 210 image
+				
+				var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+				var pixelArray:Array = new Array();
+				
+				for(var h:int =0; h< bitmap30X30.width; h= h+1)
+				{
+					for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+					{
+						//store pixel values in array 
+						pixelArray.push(bitmap30X30.getPixel(h,k));
+					}
+				}
+				
+				pixelArray.reverse();
+				
+				for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+				{
+					for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+					{
+						//to get 30 X 30 pixels
+						//var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+									
+							var temp:uint = pixelArray.pop()
+							bitmap210X210.setPixel(ii,jj,temp);
+							bitmap210X210.setPixel(ii,jj+1,temp);
+							bitmap210X210.setPixel(ii+1,jj,temp);
+							bitmap210X210.setPixel(ii+1,jj+1,temp);
+					}
+				} 
+				
+				
+				bmp210.bitmapData = bitmap210X210;
+				var grayscaleFilter2:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+
+				bmp210.filters = [grayscaleFilter2];
+				panel.x = 400;
+				panel.y = 90;
+				
+				//panel.scaleX = 1.5;
+				//panel.scaleY = 1.5;
+				
+				panel.addChild(bmp210);
+ 			}
+			
+			public function saveBitmap30X30():void
+			{
+				fr = new FileReference();
+				var tempString:String;
+				fr.save(correctedPixelValues, imageCount + 'C 30X30'+ '.txt');
+			}
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				correctedPixelValues = "";
+				if(imageCount == 16)
+				{
+					Alert.show("End of the experiment");
+				}
+				imageCount = imageCount + 1;
+				application1_creationCompleteHandler();
+				
+			}
+
+		]]>
+	</fx:Script>
+	
+	<mx:Image width="100%" height="100%"
+			  id="panel" 
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"/>
+	<s:VGroup left="50" top="200">
+		<mx:Label top="10"
+			text="x-scale: { xScale.value }"
+			toolTip="click to reset xScale to 1"
+			click="{ xScale.value = 1 }" />
+		
+		<mx:HSlider
+		 
+			id="xScale"
+			value="1" 
+			liveDragging="true"
+			snapInterval="0.1"
+			tickInterval="0.5"
+			minimum="0.1" maximum="3" 
+			/>
+		<mx:Label  top="30"
+			text="y-scale: { yScale.value }"
+			toolTip="click to reset yScale to 1"
+			click="{ yScale.value = 1 }" />
+		
+		<mx:HSlider
+		 
+			id="yScale"
+			value="1" 
+			liveDragging="true"
+			snapInterval="0.1"
+			tickInterval="0.5"
+			minimum="0.1" maximum="3" 
+			/>
+		<s:Button  top="80" label="Save Bitmap 30X30" 
+				   click="saveBitmap30X30()"  enabled="true"/>
+		<s:Button  top="120" label="Next Image" bottom=" " 
+				   click="button1_clickHandler(event)"/>
+	</s:VGroup>
+</s:Application>

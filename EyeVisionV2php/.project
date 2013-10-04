@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>EyeVisionV2php</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>bin-debug</name>
+			<type>2</type>
+			<location>C:/wamp/www/EyeVisionV2php-debug</location>
+		</link>
+		<link>
+			<name>bin-release1</name>
+			<type>2</type>
+			<location>C:/Users/abhilash/Desktop/eye simulation</location>
+		</link>
+		<link>
+			<name>php/patientService.php</name>
+			<type>1</type>
+			<location>C:/wamp/www/patient/patientService.php</location>
+		</link>
+		<link>
+			<name>php/vo.php</name>
+			<type>1</type>
+			<location>C:/wamp/www/patient/vo.php</location>
+		</link>
+		<link>
+			<name>services/patientService.php</name>
+			<type>1</type>
+			<location>C:/wamp/www/patient/patientService.php</location>
+		</link>
+	</linkedResources>
+</projectDescription>

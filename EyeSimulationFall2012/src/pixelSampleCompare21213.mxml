@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+to check the compatibility of bitmap comparisions
+version2 - automate things - only keep bitmaps and process
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			private var byteArr2:ByteArray;
+			/*
+			Load all images which are in assets folder- T1 - T20
+			compare the distored image with the T1-T20 set
+			*/
+			
+			/*
+			Keep a image called sample, apply transformations and save it. Then compare it. 
+			*/
+			
+			public var iterator1:ArrayCollection = new ArrayCollection();
+			public var iterator2:ArrayCollection = new ArrayCollection();
+			public var iterator3:ArrayCollection = new ArrayCollection();
+			
+			
+			public var d0Image:Image = new Image();
+			public var d1Image:Image = new Image();
+			public var d2Image:Image = new Image();
+			public var d3Image:Image = new Image();
+			public var d4Image:Image = new Image();
+			public var d5Image:Image = new Image();
+			public var d6Image:Image = new Image();
+			
+			private var fileRef:FileReference = new FileReference();
+			public var matrix:Matrix3D = new Matrix3D();
+
+			//keep a counter to check number of iterations 
+			public var iteratorCounter:Number = 10; 
+			
+			//scale factor initialization
+			var scaleFactorX:Number = 1;
+			var scaleFactorY:Number = 1;
+			var scaleFactorZ:Number = 1;
+			
+			//rotation 
+			var rotationAngleX:Number = 0;
+			var rotationAngleY:Number = 0;
+			var rotationAngleZ:Number = 0;
+			
+			//scale factor initialization
+			var translateFactorX:Number = 0;
+			var translateFactorY:Number = 0;
+			var translateFactorZ:Number = 0;
+
+		 
+			
+			public var imageRotationCorrection:Number = 0;
+			
+			//Run this function for number of iterations 
+				private function getBitmapDifference(bitmapData1:BitmapData, bitmapData2:BitmapData):Number 
+				{
+					var counter:Number = 0;
+					for(var x:int =0; x<bitmapData1.width; x++)
+					{
+						for(var y:int =0; y<bitmapData2.height; y++)
+						{
+							if(bitmapData1.getPixel(x,y) != bitmapData2.getPixel(x,y))
+							{
+								counter++;
+							}
+						}
+					}
+					return counter;
+				}
+				
+				
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				 
+				
+				var imageSample:String = "sample58.jpg";
+				
+				[Embed("assets/exp/sample58.jpg")]
+				var img0:Class;
+				d0Image.load(img0);
+				var bitmapData0:Bitmap = Bitmap(d0Image.content);
+				
+				distortedImage.source =  "assets/exp/" +imageSample;
+									
+				[Embed("assets/exp/5.jpg")]
+				var img2:Class;
+				d2Image.load(img2);
+				var bitmapData2:Bitmap = Bitmap(d2Image.content);
+				
+				[Embed("assets/exp/10.jpg")]
+				var img3:Class;
+				d3Image.load(img3);
+				var bitmapData3:Bitmap = Bitmap(d3Image.content);
+				
+				[Embed("assets/exp/20.jpg")]
+				var img4:Class;
+				d4Image.load(img4);
+				var bitmapData4:Bitmap = Bitmap(d4Image.content);
+				
+				[Embed("assets/exp/30.jpg")]
+				var img5:Class;
+				d5Image.load(img5);
+				var bitmapData5:Bitmap = Bitmap(d5Image.content);
+				
+				[Embed("assets/exp/40.jpg")]
+				var img6:Class;
+				d6Image.load(img6);
+				var bitmapData6:Bitmap = Bitmap(d6Image.content);
+				
+				/*
+				Calculate distortions by comparing given distortion image with sample images T1-T20 
+				*/
+				//To know the least distortion number 
+				var leastPixelDifference:int = 0;
+				var leastDistortedImage:String = ".jpg";
+				var numString:String = null;
+				
+			
+			 	/*
+				Write all values into array 
+				*/
+			
+				var percentDifference2:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData2.bitmapData);
+				leastPixelDifference = percentDifference2;
+				leastDistortedImage="5.jpg";
+				imageRotationCorrection = -5;
+				
+				numString = "Distortion for given sample image - Rotation along X: 14 \n";
+				numString =numString + "Pixel Value - "+ percentDifference2.toString() + " Image Name - 5.jpg";
+				iterator1.addItem(numString);
+				var percentDifference3:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData3.bitmapData);
+				if(leastPixelDifference > percentDifference3) {leastPixelDifference = percentDifference3; leastDistortedImage="10.jpg";imageRotationCorrection = -10}
+				numString ="Pixel Value - "+ percentDifference3.toString() + " Image Name - 10.jpg";
+				iterator1.addItem(numString);
+				
+				var percentDifference4:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData4.bitmapData);
+				if(leastPixelDifference > percentDifference4) {leastPixelDifference = percentDifference4, leastDistortedImage="20.jpg";imageRotationCorrection = -20}
+				numString ="Pixel Value - "+ percentDifference4.toString() + " Image Name - 20.jpg";
+				iterator1.addItem(numString);
+				
+				var percentDifference5:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData5.bitmapData);
+				
+				if(leastPixelDifference > percentDifference5) {leastPixelDifference = percentDifference5; leastDistortedImage="30.jpg";imageRotationCorrection = -30}
+				numString ="Pixel Value - "+ percentDifference5.toString() + " Image Name - 30.jpg";
+				iterator1.addItem(numString);
+				
+				var percentDifference6:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData6.bitmapData);
+				
+				if(leastPixelDifference > percentDifference6) {leastPixelDifference = percentDifference6; leastDistortedImage="40.jpg";imageRotationCorrection = -40}
+				numString ="Pixel Value - "+ percentDifference6.toString() + " Image Name - 40.jpg";
+				iterator1.addItem(numString);
+				
+				
+				Alert.show("Least distortion value - " + leastPixelDifference + " Least Distorted Image - " + leastDistortedImage);
+				//distortedImage.source="assets/squares/" + imageSample;
+				estimatedImage.source = "assets/squares/"+ leastDistortedImage;
+				numString = '\n' + "Estimated image - " + leastDistortedImage +'\n'; 
+				iterator1.addItem(numString);	
+
+			}
+			
+			public function saveFile():void 
+			{ 
+					var result:String = "";
+						for(var i : Number = 0; i < iterator1.length; ++i) {
+							result = result + iterator1.getItemAt(i) +'\t' + '\n';
+									
+ 					}	
+						fileRef.save(result, "result.txt");
+			}
+			
+			public function saveImage():void
+			{
+				/* var data:BitmapData = new BitmapData(everything.width, everything.height, false, 0xFFFFFF);
+				data.draw(everything);
+				
+				var encod:JPEGEncoder = new JPEGEncoder(100);               
+				byteArr2 = encod.encode(data); */
+				fileRef.save(byteArr2,"iterator.jpg");
+				
+			}
+			
+			public function toByteArray():void
+			{
+				var data:BitmapData = new BitmapData(everything.width, everything.height, false, 0xFFFFFF);
+				data.draw(everything);
+				
+				var encod:JPEGEncoder = new JPEGEncoder(100);               
+				byteArr2 = encod.encode(data);
+			}
+			public function process():void
+			{	
+				rotationAngleX = imageRotationCorrection;
+				
+				matrix = distortedImage.transform.matrix3D;
+				matrix.appendScale(scaleFactorX, scaleFactorY, scaleFactorZ);
+				
+				matrix.appendRotation(rotationAngleX, Vector3D.X_AXIS, null); 
+				matrix.appendRotation(rotationAngleY, Vector3D.Z_AXIS, null);
+				
+				matrix.appendTranslation(translateFactorX, translateFactorY, translateFactorZ);
+				distortedImage.transform.matrix3D = matrix;
+				callLater(toByteArray);
+			}
+		]]>
+	</fx:Script>
+	<s:Label text="Pixel Comparision" fontSize="18" left="600" top="50" />
+	<mx:Box id="everything" x="100" y="50">
+	<mx:Image width="480" height="480" id="distortedImage"/>
+	</mx:Box>	
+	<s:Label text="Distorted Image" left="200" bottom="200" />
+	<mx:Image  width="300" height="300" left="700" bottom="250" id="estimatedImage"/>
+	<s:Label text="Estimated Least Distorted Image" left="800" bottom="200" />
+	
+	<s:Button label="Save Values" bottom="50" left="10" click="saveFile()"/>
+	<s:Button label="Save Image" bottom="20" left="10" click="saveImage()"/>
+	<s:Button label="Process" bottom="0" left="10" click="process()"/>
+</s:Application>

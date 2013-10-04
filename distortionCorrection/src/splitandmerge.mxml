@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Main aim - develop different distortions in an image 
+Algorithm - 
+- consider uniform 480 X 480 image
+- divide it into two parts 240 X 240
+- create an instance of image and copy pixels
+- apply random distortions to image
+- merge two parts of image into one by copypixels - 480 X 480
+
+- downsampling and upsampling tests later
+-->
+
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="initProcessing()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import CustomClasses.ImageProcessing;
+			import CustomClasses.SaveableImage;
+			
+			import flash.display.*;
+			import flash.display.Bitmap;
+			import flash.display.BitmapData;
+			import flash.external.ExternalInterface;
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.geom.Point;
+			import flash.geom.Rectangle;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.containers.VBox;
+			import mx.controls.ColorPicker;
+			import mx.controls.Image;
+			import mx.controls.Label;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.states.State;
+		
+			private var _degreeRange:int = 180;
+			
+			private function invertImage():void {
+				
+				var imageInvert:Matrix3D =  panel.transform.matrix3D;
+				imageInvert.invert();	
+			}
+			
+			protected function initProcessing():void
+			{
+				panel.rotationX = 0;
+				panel.rotationY = 0;
+				panel.rotationZ = 0;
+				
+				//to convert image to greyscale
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				var image:SaveableImage = new SaveableImage();
+				
+				[Embed("assets/angryface.jpg")]
+				var img:Class;
+				image.load(img);
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				
+				image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+				
+				//process pixels
+								
+				var red:Number = 0;
+				var green:Number = 0;
+				var blue:Number = 0;
+				
+				var count:Number = 0;
+				var pixel:Number;
+	 
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				var bitmap30X30:BitmapData = new BitmapData(90, 90, false, 0X000000);
+				for (var x:int = 0; x < original.bitmapData.width/2; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						bitmap30X30.setPixel((x/8),(y/8), original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+				var bitmap30X30b:BitmapData = new BitmapData(90, 90, false, 0X000000);
+ 				for (var x:int = original.bitmapData.width/2; x < original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						bitmap30X30b.setPixel(x/8, y/8, original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+			 	var bitmap30X30Final:BitmapData = new BitmapData(90, 90, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+				var rect2:Rectangle = new Rectangle();
+				rect1.width = 480;
+				rect1.height = 480;
+				rect2.width = 480;
+				rect2.height = 480;
+				var destpoint:Point = new Point(0, 0);
+				var destpoint1:Point = new Point(28, 0);
+			   bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+			   bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint1,null,null,true);	
+ 
+				panel.x = 300;
+				panel.y = 10;
+				
+				//applying sample affine transformation
+		     	 panel.rotationX = 5;
+				panel.scaleY = 4;
+				panelb.scaleX= 3;
+			
+				
+				var bmp210:Bitmap = new Bitmap(bitmap30X30);
+				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+			
+				panelb.x = 600;
+				panelb.y = 10;
+				
+				//try to merge the images 
+			 
+				//to display bitmap
+				panel.addChild(bmp210);
+				panelb.addChild(bmp210b);
+ 			}	
+		]]>
+	</fx:Script>
+	
+	
+	<s:Label text="Sample Application" left="300" top="10"/>
+	<mx:Image width="100%" height="100%"
+			  id="panel"
+			  source="{panel}"
+			  
+			  rotationX="{ xRotation.value }"
+			  rotationY="{ yRotation.value }"
+			  rotationZ="{ zRotation.value }"
+			  
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"
+			  scaleZ="{ zScale.value }"
+			  
+			  z="{ zTranslation.value }" activate="invertImage()" />
+
+	<mx:Image width="100%" height="100%"
+			  id="panelb"/>
+	<mx:HBox
+		id="controlsBox"
+		bottom="15"
+		width="510">
+		
+		<!-- ROTATION --> 
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-rotation -->
+			<mx:Label
+				text="x-rotation: { xRotation.value }"
+				toolTip="click to reset xRotation to 0"
+				click="{ xRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="xRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+			<!-- y-rotation -->
+			<mx:Label
+				text="y-rotation: { yRotation.value }"
+				toolTip="click to reset yRotation to 0"
+				click="{ yRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="yRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+			<!-- z-rotation -->
+			<mx:Label
+				text="z-rotation: { zRotation.value }"
+				toolTip="click to reset zRotation to 0"
+				click="{ zRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="zRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+		</mx:VBox>
+		
+		<!-- TRANSLATION -->
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-translation -->
+			<mx:Label
+				text="x-translation: { xTranslation.value }"
+				toolTip="click to reset xTranslation to center"
+				click="{ xTranslation.value = ( this.width - panel.width ) / 2 }" />
+			
+			<mx:HSlider
+				id="xTranslation"
+				value="{ ( this.width - panel.width ) / 2 }" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="0" maximum="{ this.width - panel.width }" 
+				change="invertImage()"/>
+			
+			<!-- y-translation -->
+			<mx:Label
+				text="y-translation: { yTranslation.value }"
+				toolTip="click to reset yTranslation to center"
+				click="{ yTranslation.value = ( this.height - panel.height ) / 2 }" />
+			
+			<mx:HSlider
+				id="yTranslation"
+				value="{ ( this.height - panel.height ) / 2 }" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="0" maximum="{ this.height - panel.height }" 
+				change="invertImage()"/>
+			
+			<!-- z-translation -->
+			<mx:Label
+				text="z-translation: { zTranslation.value }"
+				toolTip="click to reset zTranslation to 0"
+				click="{ zTranslation.value = 0 }" />
+			
+			<mx:HSlider
+				id="zTranslation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -250 }" maximum="{ 500 }"
+				change="invertImage()"/>
+			
+		</mx:VBox>
+		
+		<!-- SCALE -->
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-scale -->
+			<mx:Label
+				text="x-scale: { xScale.value }"
+				toolTip="click to reset xScale to 1"
+				click="{ xScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="xScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval=".5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+			
+			<!-- y-scale -->
+			<mx:Label
+				text="y-scale: { yScale.value }"
+				toolTip="click to reset yScale to 1"
+				click="{ yScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="yScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval="0.5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+			
+			<!-- z-scale -->
+			<mx:Label
+				text="z-scale: { zScale.value }"
+				toolTip="click to reset zScale to 1"
+				click="{ zScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="zScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval="0.5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+		</mx:VBox>
+	</mx:HBox>
+ 	
+</s:Application>

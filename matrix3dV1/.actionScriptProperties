@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<actionScriptProperties mainApplicationPath="matrix3dV1.mxml" projectUUID="b9cd823f-77c2-4bd2-8862-6e378ba58ba0" version="6">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="0">
+      <libraryPathEntry kind="4" path="">
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
+        </excludedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="1" linkType="1" path="libs"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="matrix3dV1.mxml"/>
+    <application path="circleTransform.mxml"/>
+    <application path="linesTransform.mxml"/>
+    <application path="matrix3d.mxml"/>
+    <application path="squareCentering.mxml"/>
+    <application path="matrix3d_aphanum.mxml"/>
+    <application path="starTransform.mxml"/>
+  </applications>
+  <modules/>
+  <buildCSSFiles/>
+</actionScriptProperties>

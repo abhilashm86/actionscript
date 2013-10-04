@@ -1,0 +1,250 @@
+
+Pixel Value - 213124 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 213124 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 206779 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 201815 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 196701 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 191742 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 186793 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 175580 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 163758 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 131294 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 72637 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 207686 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 202283 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 197206 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 192370 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 189588 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 186832 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 187222 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 191188 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 40.jpg
+	
+
+Pixel Value - 203544 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 203544 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 196350 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 191745 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 187357 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 183001 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 179163 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 168637 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 157488 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 129638 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 112313 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 199628 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 198113 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 196845 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 196149 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 195887 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 195631 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 197886 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 206379 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 40.jpg
+	
+
+Pixel Value - 190775 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 190775 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 184808 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 182378 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 180422 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 177913 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 175868 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 168939 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 160419 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 151723 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 166240 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 186628 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 187036 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 187844 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 188197 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 189564 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 194145 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 199168 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 214191 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 30.jpg
+	
+
+Pixel Value - 186610 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 186610 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 179470 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 176989 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 174327 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 171306 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 169142 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 161911 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 164870 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 174576 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 188646 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 181957 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 182220 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 183135 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 183966 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 185405 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 189698 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 193461 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 209155 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 15.jpg
+	
+
+Pixel Value - 185164 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 185164 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 178479 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 176461 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 174458 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 172873 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 174133 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 177774 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 179759 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 188008 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 198843 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 180005 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 179571 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 179775 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 180087 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 181239 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 184592 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 192907 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 206372 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 8.jpg
+	
+
+Pixel Value - 186790 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 186790 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 179893 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 178135 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 178788 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 179450 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 180243 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 183626 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 186400 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 191058 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 202211 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 182646 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 183944 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 185235 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 186706 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 188497 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 193217 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 199131 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 210526 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart  Snellen chart 4.jpg
+	
+
+Pixel Value - 195860 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 195860 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 190851 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 191822 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 193076 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 193921 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 194479 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 196178 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 197939 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 204208 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 208047 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 192997 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 194102 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 195553 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 197321 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 199003 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 202882 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 209714 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 217009 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 2.jpg
+	
+
+Pixel Value - 210026 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 210026 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 208075 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 208694 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 209576 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 209930 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 210288 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 213199 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 214403 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 216883 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 220775 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 209926 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 211176 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 212292 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 213324 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 214662 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 217339 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 219625 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 221770 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 2.jpg
+	
+
+Pixel Value - 223113 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 223113 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 223064 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 223426 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 224515 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 225160 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 225530 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 226109 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 226632 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 227211 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 227930 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 223341 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 223572 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 223765 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 224202 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 224420 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 224320 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 224987 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 226104 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 2.jpg
+	
+
+Pixel Value - 226967 Image Name - Snellen XYZ 0.jpg
+	
+
+Pixel Value - 226967 Image Name - Snellen XYZ 0.jpg
+Pixel Value - 226632 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 227414 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 227598 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 227866 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 227997 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 228142 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 228219 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 228619 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 229102 Image Name - Snellen XYZ 40.jpg	
+Pixel Value - 226747 Image Name - Snellen chart XYZ -2.jpg	
+Pixel Value - 226819 Image Name - Snellen chart XYZ -4.jpg	
+Pixel Value - 226857 Image Name - Snellen chart XYZ -6.jpg	
+Pixel Value - 226892 Image Name - Snellen chart XYZ -8.jpg	
+Pixel Value - 227056 Image Name - Snellen chart XYZ -10.jpg	
+Pixel Value - 227230 Image Name - Snellen chart XYZ -15.jpg	
+Pixel Value - 227153 Image Name - Snellen chart XYZ -20.jpg	
+Pixel Value - 228074 Image Name - Snellen chart XYZ -30.jpg	
+
+Estimated image -  Snellen chart 2.jpg
+	

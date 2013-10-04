@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			/*
+			Load all images which are in assets folder- T1 - T20
+			compare the distored image with the T1-T20 set
+			*/
+			
+			/*
+			Keep a image called sample, apply transformations and save it. Then compare it. 
+			*/
+			
+			
+			public var d0Image:Image = new Image();
+			public var d1Image:Image = new Image();
+			public var d2Image:Image = new Image();
+			public var d3Image:Image = new Image();
+			public var d4Image:Image = new Image();
+			public var d5Image:Image = new Image();
+			public var d6Image:Image = new Image();
+			public var d7Image:Image = new Image();
+			public var d8Image:Image = new Image();
+			public var d9Image:Image = new Image();
+			public var d10Image:Image = new Image();
+			public var d11Image:Image = new Image();
+			public var d12Image:Image = new Image();
+			public var d13Image:Image = new Image();
+			public var d14Image:Image = new Image();
+			public var d15Image:Image = new Image();
+			public var d16Image:Image = new Image();
+			public var d17Image:Image = new Image();
+			public var d18Image:Image = new Image();
+			public var d19Image:Image = new Image();
+			public var d20Image:Image = new Image();
+			
+			
+			
+			
+			private function getBitmapDifference(bitmapData1:BitmapData, bitmapData2:BitmapData):Number 
+			{
+				/*
+				Store computed value of estimated distortion 
+				Compare with newly computed value
+				Store image name as well
+				*/
+				
+				
+				var bmpDataDif:BitmapData = bitmapData1.compare(bitmapData2) as BitmapData;
+				var differentPixelCount:int = 0;
+				if(!bmpDataDif) {
+ 					return 0;
+				}
+				var pixelVector:Vector.<uint> =  bmpDataDif.getVector(bmpDataDif.rect);
+				var pixelCount:int = pixelVector.length;
+				
+				for (var i:int = 0; i < pixelCount; i++) 
+				{
+					if (pixelVector[i] != 0)
+						differentPixelCount ++;
+				}
+				
+				var tempPixelDiff:Number = (differentPixelCount / pixelCount)*100;
+				
+				Alert.show(tempPixelDiff.toString());
+				
+				//condition to check exact values 
+				
+				return tempPixelDiff;
+			}
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				/*
+				Steps: 
+				1) Load the given distorted image d0
+				2) Load each of the existing 20 images in order and pass getBitmapDifference function
+				3) Compare least estimated distored value and grab the image
+				
+				4) Include slider adjustments to correct image later
+				
+				*/
+				
+				/*
+				Have a sample image here to construct
+			 	*/
+				
+				var imageSample:String = "SampleImage.jpg";
+				
+				[Embed("assets/squares/5.jpg")]
+				var img0:Class;
+				d0Image.load(img0);
+				var bitmapData0:Bitmap = Bitmap(d0Image.content);
+				
+				[Embed("assets/squares/1.jpg")]
+				var img1:Class;
+				d1Image.load(img1);
+				var bitmapData1:Bitmap = Bitmap(d1Image.content);
+				
+				[Embed("assets/squares/2.jpg")]
+				var img2:Class;
+				d2Image.load(img2);
+				var bitmapData2:Bitmap = Bitmap(d2Image.content);
+				
+				[Embed("assets/squares/3.jpg")]
+				var img3:Class;
+				d3Image.load(img3);
+				var bitmapData3:Bitmap = Bitmap(d3Image.content);
+				
+				[Embed("assets/squares/4.jpg")]
+				var img4:Class;
+				d4Image.load(img4);
+				var bitmapData4:Bitmap = Bitmap(d4Image.content);
+				
+				[Embed("assets/squares/5.jpg")]
+				var img5:Class;
+				d5Image.load(img5);
+				var bitmapData5:Bitmap = Bitmap(d5Image.content);
+				
+				[Embed("assets/squares/6.jpg")]
+				var img6:Class;
+				d6Image.load(img6);
+				var bitmapData6:Bitmap = Bitmap(d6Image.content);
+				
+				[Embed("assets/squares/7.jpg")]
+				var img7:Class;
+				d7Image.load(img7);
+				var bitmapData7:Bitmap = Bitmap(d7Image.content);
+				
+				[Embed("assets/squares/8.jpg")]
+				var img8:Class;
+				d8Image.load(img8);
+				var bitmapData8:Bitmap = Bitmap(d8Image.content);
+				
+				[Embed("assets/squares/9.jpg")]
+				var img9:Class;
+				d9Image.load(img9);
+				var bitmapData9:Bitmap = Bitmap(d9Image.content);
+				
+				[Embed("assets/squares/10.jpg")]
+				var img10:Class;
+				d10Image.load(img10);
+				var bitmapData10:Bitmap = Bitmap(d10Image.content);	
+				
+				[Embed("assets/squares/11.jpg")]
+				var img11:Class;
+				d11Image.load(img11);
+				var bitmapData11:Bitmap = Bitmap(d11Image.content);
+				
+				[Embed("assets/squares/12.jpg")]
+				var img12:Class;
+				d12Image.load(img12);
+				var bitmapData12:Bitmap = Bitmap(d12Image.content);
+				
+				[Embed("assets/squares/13.jpg")]
+				var img13:Class;
+				d13Image.load(img13);
+				var bitmapData13:Bitmap = Bitmap(d13Image.content);
+				
+				[Embed("assets/squares/14.jpg")]
+				var img14:Class;
+				d14Image.load(img14);
+				var bitmapData14:Bitmap = Bitmap(d14Image.content);
+				
+				[Embed("assets/squares/15.jpg")]
+				var img15:Class;
+				d15Image.load(img15);
+				var bitmapData15:Bitmap = Bitmap(d15Image.content);
+				
+				[Embed("assets/squares/16.jpg")]
+				var img16:Class;
+				d16Image.load(img16);
+				var bitmapData16:Bitmap = Bitmap(d16Image.content);
+				
+				[Embed("assets/squares/17.jpg")]
+				var img17:Class;
+				d17Image.load(img17);
+				var bitmapData17:Bitmap = Bitmap(d17Image.content);
+				
+				[Embed("assets/squares/18.jpg")]
+				var img18:Class;
+				d18Image.load(img18);
+				var bitmapData18:Bitmap = Bitmap(d18Image.content);
+				
+				[Embed("assets/squares/19.jpg")]
+				var img19:Class;
+				d19Image.load(img19);
+				var bitmapData19:Bitmap = Bitmap(d19Image.content);
+				
+				[Embed("assets/squares/20.jpg")]
+				var img20:Class;
+				d20Image.load(img20);
+				var bitmapData20:Bitmap = Bitmap(d20Image.content);	
+				
+				/*
+				Calculate distortions by comparing given distortion image with sample images T1-T20 
+				*/
+				//To know the least distortion number 
+				var leastPixelDifference:Number = 0;
+				var leastDistortedImage:String = "1.jpg";
+				
+				var percentDifference1:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData1.bitmapData);
+				leastPixelDifference = percentDifference1;
+				
+				var percentDifference2:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData2.bitmapData);
+				if(leastPixelDifference>=percentDifference2) {leastPixelDifference = percentDifference2;
+					leastDistortedImage="2.jpg";}				
+				var percentDifference3:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData3.bitmapData);
+				if(leastPixelDifference>=percentDifference3) {leastPixelDifference = percentDifference3; leastDistortedImage="3.jpg";}
+				var percentDifference4:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData4.bitmapData);
+				if(leastPixelDifference>=percentDifference4) {leastPixelDifference = percentDifference4; leastDistortedImage="4.jpg";}
+				var percentDifference5:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData5.bitmapData);
+				if(leastPixelDifference>=percentDifference5) {leastPixelDifference = percentDifference5; leastDistortedImage="5.jpg";}
+				var percentDifference6:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData6.bitmapData);
+				if(leastPixelDifference>=percentDifference6) {leastPixelDifference = percentDifference6; leastDistortedImage="6.jpg";}
+				var percentDifference7:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData7.bitmapData);
+				if(leastPixelDifference>=percentDifference7) {leastPixelDifference = percentDifference7; leastDistortedImage="7.jpg";}
+				var percentDifference8:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData8.bitmapData);
+				if(leastPixelDifference>=percentDifference8) {leastPixelDifference = percentDifference8; leastDistortedImage="8.jpg";}
+				var percentDifference9:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData9.bitmapData);
+				if(leastPixelDifference>=percentDifference9) {leastPixelDifference = percentDifference9; leastDistortedImage="9.jpg";}
+				var percentDifference10:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData10.bitmapData);
+				if(leastPixelDifference>=percentDifference10) {leastPixelDifference = percentDifference10; leastDistortedImage="10.jpg";} 
+				var percentDifference11:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData11.bitmapData);
+				if(leastPixelDifference>=percentDifference11) {leastPixelDifference = percentDifference11; leastDistortedImage="11.jpg";}
+				
+				 var percentDifference12:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData12.bitmapData);
+				if(leastPixelDifference>=percentDifference12) {leastPixelDifference = percentDifference12; leastDistortedImage="12.jpg";}				
+				var percentDifference13:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData13.bitmapData);
+				if(leastPixelDifference>=percentDifference13) {leastPixelDifference = percentDifference13; leastDistortedImage="13.jpg";}
+				var percentDifference14:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData14.bitmapData);
+				if(leastPixelDifference>=percentDifference14) {leastPixelDifference = percentDifference14; leastDistortedImage="14.jpg";}
+				var percentDifference15:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData15.bitmapData);
+				if(leastPixelDifference>=percentDifference15) {leastPixelDifference = percentDifference15; leastDistortedImage="15.jpg";}
+				var percentDifference16:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData16.bitmapData);
+				if(leastPixelDifference>=percentDifference16) {leastPixelDifference = percentDifference16; leastDistortedImage="16.jpg";}
+				var percentDifference17:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData17.bitmapData);
+				if(leastPixelDifference>=percentDifference17) {leastPixelDifference = percentDifference17; leastDistortedImage="17.jpg";}
+				var percentDifference18:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData18.bitmapData);
+				if(leastPixelDifference>=percentDifference18) {leastPixelDifference = percentDifference18; leastDistortedImage="18.jpg";}
+				var percentDifference19:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData19.bitmapData);
+				if(leastPixelDifference>=percentDifference19) {leastPixelDifference = percentDifference19; leastDistortedImage="19.jpg";}
+				var percentDifference20:Number = getBitmapDifference(bitmapData0.bitmapData, bitmapData20.bitmapData);
+				if(leastPixelDifference>=percentDifference20) {leastPixelDifference = percentDifference20; leastDistortedImage="20.jpg";}
+				
+				Alert.show("Least distortion value - " + leastPixelDifference.toString() + " Least Distorted Image - " + leastDistortedImage);
+				
+				//distortedImage.source="assets/squares/" + imageSample;
+				estimatedImage.source = "assets/squares/"+ leastDistortedImage;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label text="Pixel Comparision" fontSize="18" left="600" top="50" />
+	<mx:Image left="100" bottom="250" source="assets/squares/SampleImage" id="distortedImage"/>
+	<s:Label text="Distorted Image" left="200" bottom="200" />
+	<mx:Image  left="700" bottom="250" id="estimatedImage"/>
+	<s:Label text="Estimated Least Distorted Image" left="800" bottom="200" />
+</s:Application>

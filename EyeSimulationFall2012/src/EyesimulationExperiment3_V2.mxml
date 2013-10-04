@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+tranformations on following factors 
+1) two images - 1a)circle, 1b)square
+2) axis - 2a) x, 2b) y , 2c) xy
+3) 6 scale values - 0.25, 0.5, 0.75, 1.5, 2, 2.5
+
+changes needs to be done:
+scale ratios of x and y should be different
+
+Changes V2:
+1) dump 30 X 30 values - distorted 
+2) dump 30 X 30 values - corrected at end
+
+
+changes 1/12/2012
+1) Dump corrected scale values 
+
+1/12/2012
+1) Keep the bitmap of scaled corrected 30 X 30 dump big - 400 X 400 
+This will keep all pixels in place and display
+2) ax + bx + cxy+ d - do bi linear interpolation
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.utils.getTimer;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.SliderEvent;
+			
+			public var distortedPixelValues:String = new String();
+			public var correctedPixelValues:String = new String();
+
+			private var _degreeRange:int = 180;
+			private var matrix:Matrix3D = new Matrix3D();
+			public var imageInvert:Matrix3D;
+			/*filename parameters
+			fr - saving square.txt
+			fr1 - saving circle.txt
+			*/
+			private var fr:FileReference;
+			private var fr1:FileReference;
+			private var fr2:FileReference;
+			private var fr3:FileReference;
+			private var fr4:FileReference;
+
+			//To show next image 
+			private var countImage:int = 1;
+			//public var imageName:int = 1;
+			
+			/*
+			String text : Format it according to needs with \r\n 
+			To store recorded values from transformations
+			*/
+			private var textValuesCircle:String = new String();
+			private var textValuesSquare:String = new String();
+			
+			public var task:String = new String();
+			public var distortionType:String = new String();
+			public var pictureID:String = new String();
+			public var distortionMatrix:String = new String();
+			public var flowID:String = new String();
+			public var distortionCorrection:String = new String();
+			public var timeTaken:Number = new Number();
+			public var currentTime:int = new int();
+			public var bmp210:Bitmap = new Bitmap();
+			
+			/*
+			Recognise the image - yes or no 
+			*/
+			
+			public var clickCount:int = 0;
+			
+			
+			/*
+			Setting scale factor for either X, Y or XY 
+			*/
+			public var scaleFactorX:Number;
+			public var scaleFactorY:Number;
+			public var scaleFactorXY:int;
+			
+			/*
+			to calculate for corrected scale image
+			*/
+			public var widthDistorted:Number;
+			public var heightDistorted:Number;
+			
+			public var image:Image = new Image();
+			
+			/*
+			Saving image 
+			*/
+			import mx.graphics.codec.JPEGEncoder;
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				currentState = "welcomeState"; 
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = "experimentState";
+				// First line of text in the txt file
+				textValuesCircle = "Experiment 3 values - Simulating Prosthetic Vision with Distortions for Retinal Prosthesis Design" + "\r\n\r\n";
+				textValuesCircle = textValuesCircle + "Name of Person: " + namePerson.text + "\r\n\r\n";
+				
+				textValuesSquare = "Experiment 3 values - Simulating Prosthetic Vision with Distortions for Retinal Prosthesis Design" + "\r\n\r\n";
+				textValuesSquare = 	textValuesSquare + "Name of Person: " + namePerson.text + "\r\n\r\n";  
+				// possible combinations are 35 without flow id
+				
+				currentTime = getTimer();
+				initProcessing();
+			}
+			
+			private function invertImage():void {
+				
+				imageInvert =  panel.transform.matrix3D;
+				
+			}
+			
+			
+			
+			private function onSaveClick():void
+			{
+				//D save distorted scale values
+				fr = new FileReference();
+				var scaled:String = "Xscale - "+ scaleFactorX + "\n" +"Yscale - "+ scaleFactorY + "\n"
+ 				fr.save(scaled, namePerson.text+ pictureID + '-D' +countImage + '.txt');
+ 			}
+			
+			protected function onSaveClick2():void
+			{
+				//C - to save corrected scale x and y. 
+				fr1 = new FileReference();
+				var scalec:String = "Xscale - "+ xScale.value + "\n" +"Yscale - "+ yScale.value + "\n"
+				fr1.save(scalec, namePerson.text+ pictureID + '-C' +countImage + '.txt');
+			}
+			
+		
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(countImage == 16)
+				{
+					Alert.show("End of experiment, thanks for participating " +namePerson.text + "!!");
+				}
+				/*
+				check whether yes or no has been clicked
+				*/
+				
+					countImage = countImage + 1;
+					/*
+					initiaalise back all sliders.
+					*/
+					clickCount = 0;
+					/*
+					1) write all slider values to text file
+					2) Write all martix value 
+					*/
+					timeTaken = (getTimer() - currentTime)/ 1000.0000 ;
+				
+					xTranslation.value = yTranslation.value = zTranslation.value = 0;		
+					xScale.value = 		yScale.value =	zScale.value = 1;
+					xRotation.value = yRotation.value = zRotation.value = 0;
+					
+					//distortedPixelValues = null;
+					currentTime = getTimer();
+					initProcessing();
+				
+			}
+			
+			public function initProcessing():void {
+				/*
+				To identify and correct the images using scaling 
+				Set different scale values 
+				*/
+				
+				// remove image from panel 
+				
+				//panel.removeChild(bmp210);
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+	
+				if(countImage ==1)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img1:Class;
+					image.load(img1);
+					
+					scaleFactorX = 2;
+					scaleFactorY = 1;
+					pictureID = 'circle.jpg';
+				}
+				
+				if(countImage ==2)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img2:Class;
+					image.load(img2);
+					
+					scaleFactorX = 2.5;
+					scaleFactorY = 1;
+					
+					pictureID = 'square.jpg';
+				}
+				
+				if(countImage ==3)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img3:Class;
+					image.load(img3);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 0.5;
+				 
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==4)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img4:Class;
+					image.load(img4);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 2;
+					//scaleFactorXY = 1;
+					
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==5)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img5:Class;
+					image.load(img5);
+					
+					scaleFactorX = .5;
+					scaleFactorY = 1;
+					//scaleFactorXY = 2.5;
+					
+					task = "sr";
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==6)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img6:Class;
+					image.load(img6);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 2;
+					//scaleFactorXY = 2.5;
+					
+					
+					pictureID = 'circle.jpg';
+				}
+				
+				if(countImage ==7)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img7:Class;
+					image.load(img7);
+					
+					scaleFactorX = 2;
+					scaleFactorY = 1;
+					//scaleFactorXY = 2.5;
+					
+					task = "sr";
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==8)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img8:Class;
+					image.load(img8);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 2.5;
+					//scaleFactorXY = 2.5;
+					
+					task = "sr";
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==9)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img9:Class;
+					image.load(img9);
+					
+					scaleFactorX = 2.5;
+					scaleFactorY = 1;
+					
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==10)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img10:Class;
+					image.load(img10);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 1;
+					
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==11)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img11:Class;
+					image.load(img11);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 1;
+					 
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==12)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img12:Class;
+					image.load(img12);
+					
+					scaleFactorX = .5;
+					scaleFactorY = 1;
+				
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==13)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img13:Class;
+					image.load(img13);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 2.5;
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==14)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img14:Class;
+					image.load(img14);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 0.5;
+					
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==15)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img15:Class;
+					image.load(img15);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 1;
+					
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==16)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img16:Class;
+					image.load(img16);
+					
+					scaleFactorX = 1;
+					scaleFactorY = 1;
+				 
+					pictureID = 'square.jpg';
+				}
+				
+				/* 
+				Write functions to draw specified scale image
+				*/
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+				
+				var red:Number = 0;
+				var green:Number = 0;
+				var blue:Number = 0;
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+				for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel((x/16)  ,(y/16)   , original.bitmapData.getPixel(x,y));
+						
+					}
+				}
+				//copy image 30 X 30 to new 210 X 210 image
+				
+				var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+				var pixelArray:Array = new Array();
+				
+				for(var h:int =0; h< bitmap30X30.width; h= h+1)
+				{
+					for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+					{
+						//store pixel values in array 
+						pixelArray.push(bitmap30X30.getPixel(h,k));
+					}
+				}
+				
+				// write the pixel values to 210 X 210 image
+				// reverse array to get elements first
+				pixelArray.reverse();
+				
+				for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+				{
+					for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+					{
+						bitmap210X210.setPixel(ii,jj,pixelArray.pop());
+					}
+				} 
+				
+				/*Scale the image accordingly specified in count
+				Assign ScaleX and ScaleY values if not initalized earlier
+				ScaleX  
+				ScaleY
+				*/
+				
+				widthDistorted = bitmap210X210.width * scaleFactorX;
+				heightDistorted = bitmap210X210.height * scaleFactorY;
+				
+				
+				if((scaleFactorX >= 1) && (scaleFactorY >= 1))
+				{
+					
+					var bitmapScale:BitmapData = new BitmapData((bitmap210X210.width * scaleFactorX),(bitmap210X210.height* scaleFactorY), false, 0X000000);
+					for (var x:int = 0; x < bitmapScale.width; x = x+ 1)
+					{
+						for (var y:int = 0; y < bitmapScale.height; y = y+1)
+						{		
+							bitmapScale.setPixel(x * scaleFactorX ,y *scaleFactorY , bitmap210X210.getPixel(x,y));
+							bitmapScale.setPixel((x * scaleFactorX) + 1 ,(y *scaleFactorY) , bitmap210X210.getPixel(x,y));
+							bitmapScale.setPixel((x * scaleFactorX) ,(y *scaleFactorY)+ 1 , bitmap210X210.getPixel(x,y));
+							bitmapScale.setPixel((x * scaleFactorX) + 1 ,(y *scaleFactorY)+ 1 , bitmap210X210.getPixel(x,y));	
+						}
+					}
+					
+					/*
+					Write the pixel values to text file.
+					*/
+					
+					/*
+					have scale variable int to calculate width and height iteration
+					To use in the for loop for iteration
+					*/
+					var iteratewidth:int = bitmapScale.width/30;
+					var iterateheight:int = bitmapScale.height/30;
+					
+					
+					//text file for writing out pixel values
+					
+					
+					
+					var scaled30X30:BitmapData = new BitmapData(30, 30, false, 0x00000);
+					distortedPixelValues = "";
+					for(var x:int =0; x<bitmapScale.width; x= x+iteratewidth)
+					{
+						for(var y:int = 0; y<bitmapScale.height; y = y+iterateheight)
+						{
+							//get average of one block
+							var averagePixel:uint = new uint();
+							for(var i:int = 0; i<iteratewidth; i++)
+							{
+								for(var j:int = 0; j<iterateheight; j++)
+								{
+									averagePixel = averagePixel + bitmapScale.getPixel(i+x,j+y);			
+								}
+							}
+							// problem
+ 							var temp:uint = averagePixel/(iterateheight+iteratewidth);
+							distortedPixelValues = distortedPixelValues + temp.toString() + '\t'; 
+						}
+						distortedPixelValues = distortedPixelValues + '\n';
+					}
+					
+ 				}
+				
+				if((scaleFactorX < 1) || (scaleFactorY < 1))
+				{
+					
+					var bitmapScale:BitmapData = new BitmapData((bitmap210X210.width/ scaleFactorX),(bitmap210X210.height/ scaleFactorY), false, 0X000000);
+					for (var x:int = 0; x < bitmapScale.width; x = x+ 1)
+					{
+						for (var y:int = 0; y < bitmapScale.height; y = y+1)
+						{	
+							bitmapScale.setPixel(x *  scaleFactorX ,(y *scaleFactorY) , bitmap210X210.getPixel(x,y));
+							bitmapScale.setPixel((x * scaleFactorX) + 1 ,(y *scaleFactorY) , bitmap210X210.getPixel(x,y));
+							bitmapScale.setPixel((x * scaleFactorX) ,(y *scaleFactorY)+ 1 , bitmap210X210.getPixel(x,y));
+							bitmapScale.setPixel((x * scaleFactorX) + 1 ,(y *scaleFactorY)+ 1 , bitmap210X210.getPixel(x,y));	
+						}
+					}	
+				}
+				//display scaled image
+		
+				bmp210.bitmapData = bitmapScale;
+				// Gaussian blur
+				/* var blur1:BlurFilter = new BlurFilter();
+				blur1.blurX = 2;
+				blur1.blurY = 2;
+				blur1.quality = BitmapFilterQuality.LOW;
+				bmp210.filters = [blur1];
+				 */
+				panel.x = 400;
+				panel.y = 90;
+		
+				panel.addChild(bmp210);
+				
+				}
+			
+
+			protected function button5_clickHandler():void
+			{
+				// TODO Auto-generated method stub
+				fr2 = new FileReference();
+				fr2.save(distortedPixelValues,namePerson.text+ pictureID + '-D 30X30' +countImage + '.txt');
+				
+			}
+
+
+			protected function button7_clickHandler():void
+			{
+				// TODO Auto-generated method stub
+			
+				/*
+				To save corrected scale values - pixel of 10X10
+				
+				*/
+				//grab scale values modifed by the user
+				var scaleCorrectedX:Number = xScale.value;
+				var scaleCorrectedY:Number = yScale.value;
+				
+				
+				fr3 = new FileReference();
+			
+			
+				fr3.save(correctedPixelValues, namePerson.text+ '-square C'+'.txt');
+				
+			}
+				
+				
+			public function button6_clickHandler():void
+			{
+			
+				
+				/*
+					Apply bi linear interpolation 
+				*/
+				
+				var bitmapOriginal:Bitmap = Bitmap(image.content); 
+				
+				var correctedScaled210X210:BitmapData = new BitmapData(420 *xScale.value ,210 *yScale.value, false, 0x00000);
+				//var correctedScaled210X210:BitmapData = new BitmapData(420*xScale.value, 210, false, 0x00000);
+				
+				for(var x:int =0; x<correctedScaled210X210.width; x= x+1)
+				{
+					for(var y:int = 0; y<correctedScaled210X210.height; y = y+1)
+					{
+				
+						if(bmp210.bitmapData.getPixel(x,y) == 0x00000)
+						{
+						var a:uint = bmp210.bitmapData.getPixel(x, y-1);
+						var b:uint = bmp210.bitmapData.getPixel(x-1, y);
+						var c:uint = bmp210.bitmapData.getPixel(x+1, y);
+						var d:uint = bmp210.bitmapData.getPixel(x, y+1);
+						var greyScalePixel:uint = (a * x) + (b * y) + (c * x * y) + d;   
+						//var greyScalePixel:uint = (a) + (b) + (c) + d;
+						}
+						
+						correctedScaled210X210.setPixel(x ,y  , greyScalePixel);
+						
+					}
+ 				}
+			 	fr4 = new FileReference();
+			 	
+				var bitmapCorrected:Bitmap = new Bitmap();
+				bitmapCorrected.bitmapData = correctedScaled210X210;
+			//	panel.removeChild(bmp210);
+			//	panel.addChild(bitmapCorrected);
+ 				
+				//save the 210 X 210 bitmap
+				
+				var jpgenc:JPEGEncoder = new JPEGEncoder(80);
+				var imgByteArray:ByteArray = jpgenc.encode(correctedScaled210X210);
+			 	//dump 30 X 30 pixel values
+				
+				fr4.save(imgByteArray, countImage+ ".jpg" );
+				
+				
+				var iterateWidth:int = correctedScaled210X210.width/30;
+				var iterateHeight:int = correctedScaled210X210.height/30;
+				
+				
+				/*
+				Use average pixel method
+				*/
+				var averagePixel:uint = new uint();
+				var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+				for (var x:int = 0; x < correctedScaled210X210.width; x = x+iterateWidth)
+				{
+					for (var y:int = 0; y < correctedScaled210X210.height; y = y+iterateWidth)
+					{
+						/* bitmap30X30.setPixel(x/iterateWidth  ,y/iterateHeight   , correctedScaled210X210.getPixel(x, y));
+						correctedPixelValues = correctedPixelValues + correctedScaled210X210.getPixel(x, y) +'\t';
+						 */
+						for(var i:int = 0; i<iterateWidth; i++)
+						{
+							for(var j:int = 0; j<iterateHeight; j++)
+							{
+								averagePixel = averagePixel + correctedScaled210X210.getPixel(i+x,j+y);			
+							}
+						}
+						// problem
+						
+						var temp:uint = averagePixel/(iterateHeight+iterateWidth);
+						correctedPixelValues = correctedPixelValues + temp.toString() + '\t';
+							 
+					}
+					averagePixel = 0;
+					correctedPixelValues = correctedPixelValues + '\n';		
+					}
+				
+					
+				
+				//fr4.save(correctedPixelValues,namePerson.text+ '-square C'+'.txt');
+			}
+			
+			
+	
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="welcomeState"/>
+		<s:State name="experimentState"/>
+	</s:states>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	
+	<s:Label includeIn="welcomeState" top="100" left="400" 
+			 text="Simulating Prosthetic Vision with Distortions for &#13;&#009;&#009; Retinal Prosthesis Design"  
+			 fontSize="24"/>
+	<s:Label includeIn="welcomeState" text="Enter Name" top="195" left="550" />
+	
+	<s:TextInput includeIn="welcomeState" id="namePerson" top="190" left="630"/>
+	<s:Button includeIn="welcomeState" label="Start" top="250" left="630" click="button1_clickHandler(event)"/>
+	
+	<mx:Image width="100%" height="100%"
+			  id="panel" 
+			  rotationX="{ xRotation.value }"
+			  rotationY="{ yRotation.value }"
+			  rotationZ="{ zRotation.value }"
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"
+			  scaleZ="{ zScale.value }"
+			  z="{ zTranslation.value }"  includeIn="experimentState"/>
+	
+	
+	<!--
+	Write all controls for correction - Do write in a group, easy to include/exclude
+	-->
+	<s:Label includeIn="experimentState" left="550" bottom="200" text="Controls for correction"
+			 fontSize="18"/> 
+	<s:Group id="controlsCorrection" includeIn="experimentState" 
+			 bottom="50" left="200">
+		
+		
+		<mx:HBox top="15">
+			<!-- ROTATION --> 
+			<mx:VBox visible="false"
+				horizontalAlign="center">
+				
+				<!-- x-rotation -->
+				<mx:Label
+					text="x-rotation: { xRotation.value }"
+					toolTip="click to reset xRotation to 0"
+					click="{ xRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="xRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+				<!-- y-rotation -->
+				<mx:Label
+					text="y-rotation: { yRotation.value }"
+					toolTip="click to reset yRotation to 0"
+					click="{ yRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="yRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+				<!-- z-rotation -->
+				<mx:Label
+					text="z-rotation: { zRotation.value }"
+					toolTip="click to reset zRotation to 0"
+					click="{ zRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="zRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+			</mx:VBox>
+			
+			<!-- TRANSLATION -->
+			<mx:VBox visible="false"
+				horizontalAlign="center">
+				
+				<!-- x-translation -->
+				<mx:Label
+					text="x-translation: { xTranslation.value }"
+					toolTip="click to reset xTranslation to center"
+					click="{ xTranslation.value = ( this.width - panel.width ) / 2 }" />
+				
+				<mx:HSlider
+					id="xTranslation"
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					value="0"
+					minimum="-30" maximum="30" 
+					change="{panel.x =panel.x+ xTranslation.value}"/>
+				
+				<!-- y-translation -->
+				<mx:Label
+					text="y-translation: { yTranslation.value }"
+					toolTip="click to reset yTranslation to center"
+					click="{ yTranslation.value = ( this.height - panel.height ) / 2 }" />
+				
+				<mx:HSlider
+					id="yTranslation"					 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					value="0"
+					minimum="-30" maximum="30" 
+					change="{panel.y =panel.y+ yTranslation.value}"/>
+				
+				<!-- z-translation -->
+				<mx:Label
+					text="z-translation: { zTranslation.value }"
+					toolTip="click to reset zTranslation to 0"
+					click="{ zTranslation.value = 0 }" />
+				
+				<mx:HSlider
+					id="zTranslation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{-30}" maximum="{ 30 }"
+					change="{panel.z = panel.z + zTranslation.value}"/>
+				
+			</mx:VBox>
+			
+			<!-- SCALE -->
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-scale -->
+				<mx:Label
+					text="x-scale: { xScale.value }"
+					toolTip="click to reset xScale to 1"
+					click="{ xScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="xScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval=".5"
+					minimum="0.1" maximum="3" 
+					/>
+				
+				<!-- y-scale -->
+				<mx:Label
+					text="y-scale: { yScale.value }"
+					toolTip="click to reset yScale to 1"
+					click="{ yScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="yScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval="0.5"
+					minimum="0.1" maximum="3" 
+					/>
+				
+				<!-- z-scale -->
+				<mx:Label
+					text="z-scale: { zScale.value }"
+					toolTip="click to reset zScale to 1"
+					click="{ zScale.value = 1 }"  visible="false"/>
+				
+				<mx:HSlider visible="false"
+					id="zScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval="0.5"
+					minimum="0.1" maximum="3" 
+					/>
+			</mx:VBox>
+		</mx:HBox>
+	</s:Group>
+	<!-- 
+	button to save all the recorded slider values
+	button for moving onto next image
+	-->
+	<s:VGroup bottom="150" left="250" >
+		
+	
+	<s:Button includeIn="experimentState" label="Save D scales" id="saveButton" 
+			  click="onSaveClick()" enabled="true"/>
+	
+	<s:Button includeIn="experimentState" label="Save C Scales" id="saveButton2" 
+			  click="onSaveClick2()" enabled="true"/>
+	
+	
+	<s:Button  includeIn="experimentState" label="Save D 30X30" 
+			   click="button5_clickHandler()"  enabled="true"/>
+
+	<s:Button  includeIn="experimentState" label="Export jpg"  id="saveJpg" 
+			   click="button6_clickHandler()"  enabled="true"/>
+		
+		<s:Button  includeIn="experimentState" label="Next Image" 
+				   click="button2_clickHandler(event)"/>
+		
+	</s:VGroup>
+</s:Application>

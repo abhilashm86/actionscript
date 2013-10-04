@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="e6717a49-dfed-44a6-baea-aeefc47212c9" projectUUID="e6717a49-dfed-44a6-baea-aeefc47212c9" sdkVersion="4.0.0" uuid="7d5c9bda-3899-4293-975a-b568b228bd0f" version="4">
+  <projects/>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="7d5c9bda-3899-4293-975a-b568b228bd0f"/>
+    <linked location="C:/Users/abhilash/Dropbox/Adobe Flex/ProthesesColorAnalysisv1/libs" path="/libs" position="1" uuid="7d5c9bda-3899-4293-975a-b568b228bd0f"/>
+  </swc>
+  <misc/>
+  <theme/>
+</fxpProperties>

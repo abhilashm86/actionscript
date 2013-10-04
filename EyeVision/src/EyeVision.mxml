@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="initApp()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.example.programmingas3.geometry.MatrixTransformer;
+			[Bindable]
+			[Embed("../img/Human_eyesight_two_children_and_ball_normal_vision.jpg")]
+			private var image1:Class;
+			
+  			public function initApp():void
+			{
+				resetFields();
+				setImageMask();
+				
+			}
+			
+			/**
+			 * Creates a mask that matches the dimensions of the imagePanel, to prevent
+			 * the transformed image from covering the rest of the UI.
+			 */
+			public function setImageMask():void
+			{
+				// create a rectangluar mask shape
+				var maskImage:Shape = new Shape();
+				
+				maskImage.graphics.beginFill(0x666666);
+				maskImage.graphics.drawRect(0, 0, imagePanel.width, imagePanel.height);
+				maskImage.graphics.endFill();
+				
+				// align the mask with the parent imagePanel
+				var maskOrigin:Point = maskImage.globalToLocal(imagePanel.localToGlobal(new Point(0,0)));
+				maskImage.x = maskOrigin.x;
+				maskImage.y = maskOrigin.y;
+				
+				img.content.mask = maskImage;
+				
+				/* 	var maskImage1:Shape = new Shape();
+				
+				maskImage1.graphics.beginFill(0x666666);
+				maskImage1.graphics.drawRect(0, 0, imagePanel.width, imagePanel.height);
+				maskImage1.graphics.endFill();
+				
+				var maskOrigin1:Point = maskImage.globalToLocal(imagePanel.localToGlobal(new Point(10,10)));
+				maskImage1.x = maskOrigin1.x;
+				maskImage1.y = maskOrigin1.y;
+				
+				img1.content.mask = maskImage; */
+			}
+			private function resetTransform():void
+			{
+				img.content.transform.matrix = new Matrix();
+				resetFields();
+				
+				img1.content.transform.matrix = new Matrix();
+				resetFields();
+			}
+			
+			private function resetFields():void 
+			{
+				xScaleSlider.value = 100;
+				yScaleSlider.value = 100;
+				dxSlider.value = 0;
+				dySlider.value = 0;
+				rotationSlider.value = 0;
+				skewSlider.value = 0;
+			}
+			
+			/**
+			 * Transforms the matrix and then applies the matrix to the image.
+			 *
+			 * Runs the same transformation matrix through successive transformations and then applies
+			 * the matrix to the image at the very end, which is more efficient than applying after
+			 * each individual transformation.
+			 */
+			private function transformDisplayObject():void 
+			{
+				var tempMatrix:Matrix = img.content.transform.matrix;
+				
+				// defines the skew type code
+				var skewSide:String = new String;
+				/* if (skewRight.selected) 
+				{
+				skewSide = "right"; 
+				} 
+				else 
+				{
+				skewSide = "bottom";
+				} */
+				skewSide = "right"; 
+				tempMatrix = MatrixTransformer.transform(tempMatrix, 
+					xScaleSlider.value, 
+					yScaleSlider.value,
+					dxSlider.value, 
+					dySlider.value,
+					rotationSlider.value,
+					skewSlider.value, 
+					skewSide );
+				
+				img.content.transform.matrix = tempMatrix;
+				
+				var tempinverse:Matrix = tempMatrix.clone();
+				tempinverse.invert();
+				img1.content.transform.matrix = tempinverse;
+				
+				
+				//resetFields();
+			}
+		]]>
+	</fx:Script>
+	
+	<!-- to develop controls used for project -->
+	
+	
+	
+	<s:Panel width="320" height="600"  top="20"  left="5" title="Controls" textAlign="center">
+ 		    <mx:Form width="100%" height="100%">
+			<mx:FormItem label="Scale X (%):" horizontalGap="0">
+				<mx:HSlider id="xScaleSlider" width="170" minimum="0" maximum="200" 
+							tickInterval="20" snapInterval="1" labels="[0,100,200]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label= "Scale Y (%):">
+				<mx:HSlider id="yScaleSlider" width="170" minimum="0" maximum="200" 
+							tickInterval="20" snapInterval="1" labels="[0,100,200]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Move X (Pixels):">
+				<mx:HSlider id="dxSlider" width="170" minimum="-100" maximum="100" 
+							tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Move Y (Pixels)">
+				<mx:HSlider id="dySlider" width="170" minimum="-100" maximum="100" 
+							tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Rotate (°):">
+				<mx:HSlider id="rotationSlider" width="170" minimum="-360" maximum="360" 
+							tickInterval="90" snapInterval="1" labels="[-360, 0, 360]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>	
+			
+			<mx:FormItem label="Skew Mode:" visible="true">
+				
+				<mx:RadioButtonGroup id="skewMode"/>
+				
+				<mx:RadioButton groupName="skewMode" 
+								id="skewRight" 
+								value="skewRight" 
+								label="Slide right-hand side down" 
+								width="170" 
+								selected="true" 
+								visible="false"/>
+				
+				<mx:RadioButton groupName="skewMode" 
+								id="skewBottom" 
+								value="skewBottom" 
+								label="Slide bottom side to right" 
+								width="170" 
+								visible="false"/>                           
+			</mx:FormItem>
+			
+			<mx:FormItem label="Skew angle (°):" visible="true">
+				<mx:HSlider id="skewSlider" width="170" minimum="-90" maximum="90" 
+							tickInterval="10" snapInterval="1" labels="[-90,0,90]" visible="true"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+		</mx:Form>
+		
+		<mx:ControlBar width="100%" horizontalAlign="center" bottom="20">
+			<mx:Button label="Transform" click="transformDisplayObject()"  />
+			<mx:Button label="Reset" click="resetTransform()" />
+		</mx:ControlBar>
+	</s:Panel>
+
+	<!-- To have original image and control the transformations -->
+	 
+	<s:Panel id="imagePanel" width="700" height="600" top="20"  left="330" title="Image Transformation" textAlign="center">
+		<s:Label text="Original Image" top="5" left="80"/>
+		<mx:Image id="imgoriginal" scaleContent="true" top="30" left="10"
+				  source="{image1}"  autoLoad="true"/>			
+		
+		
+		<mx:Image id="img" scaleContent="true" top="250" left="250"
+				  source="{image1}"  autoLoad="true"/>			    
+		
+		
+	</s:Panel>
+		
+	<s:Panel width="320" height="600" top="20" right="10" title="Transformed Image" textAlign="center">
+		<mx:Image id="img1" scaleContent="true" top="30" left="10"
+				  source="{image1}"  autoLoad="true"/>			    
+		</s:Panel>
+</s:Application>

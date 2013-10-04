@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   xmlns:comps="comps.*"
+			   creationComplete="initApp()" currentState="trainingphase">
+	<s:states>
+		<s:State name="trainingphase"/>
+		<s:State name="testphase"/>
+	</s:states>
+	
+	<s:transitions>
+		<s:Transition fromState="trainingphase"  toState="testphase" autoReverse="true">
+			<s:Fade alphaFrom="0" alphaTo="1" targets="{[rectangle, rectangletwo, rectanglethree]}" duration="6000"/>
+		</s:Transition>
+		
+		<s:Transition toState="trainingphase"  fromState="testphase" autoReverse="true">
+			<s:Fade alphaFrom="0" alphaTo="1" targets="{[rectangle, rectangletwo, rectanglethree]}" duration="0"/>
+		</s:Transition>
+	</s:transitions>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+						
+			import com.example.programmingas3.geometry.MatrixTransformer;
+			[Bindable]
+			[Embed("../img/Human_eyesight_two_children_and_ball_normal_vision.jpg")]
+			private var image1:Class;
+			
+			import flash.geom.Rectangle;
+			public var rx:Number = 0;
+			public var ry:Number = 0;
+			public var rwidth:Number = 100;
+			public var rheight:Number = 50;
+			[Bindable]
+			public var rect:Rectangle = new Rectangle(rx, ry, rwidth, rheight);
+
+			
+			public function initApp():void
+			{
+				resetFields();
+				//setImageMask();		
+				
+			}
+			
+			public function setImageMask():void
+			{
+				var maskImage:Shape = new Shape();
+				
+				maskImage.graphics.beginFill(0x666666);
+				maskImage.graphics.drawRect(0, 0, imagePanel.width, imagePanel.height);
+				maskImage.graphics.endFill();
+				
+				// align the mask with the parent imagePanel
+				var maskOrigin:Point = maskImage.globalToLocal(imagePanel.localToGlobal(new Point(0,0)));
+				maskImage.x = maskOrigin.x;
+				maskImage.y = maskOrigin.y;
+				
+				//rectangletwo.content.mask = maskImage;
+				
+				/* 	var maskImage1:Shape = new Shape();
+				
+				maskImage1.graphics.beginFill(0x666666);
+				maskImage1.graphics.drawRect(0, 0, imagePanel.width, imagePanel.height);
+				maskImage1.graphics.endFill();
+				
+				var maskOrigin1:Point = maskImage.globalToLocal(imagePanel.localToGlobal(new Point(10,10)));
+				maskImage1.x = maskOrigin1.x;
+				maskImage1.y = maskOrigin1.y;
+				
+				img1.content.mask = maskImage; */
+				
+			}
+			
+			private function resetTransform():void
+			{
+				//img.content.transform.matrix = new Matrix();
+				rectangletwo.transform.matrix = new Matrix();
+				resetFields();
+				
+				rectanglethree.transform.matrix = new Matrix();
+				resetFields();
+			}
+			
+			private function resetFields():void 
+			{
+				xScaleSlider.value = 100;
+				yScaleSlider.value = 100;
+				dxSlider.value = 0;
+				dySlider.value = 0;
+				rotationSlider.value = 0;
+				skewSlider.value = 0;
+			}
+			private function transformDisplayObject():void 
+			{
+				var tempMatrix:Matrix = rectangletwo.transform.matrix;
+				
+				// defines the skew type code
+				var skewSide:String = new String;
+				/* if (skewRight.selected) 
+				{
+				skewSide = "right"; 
+				} 
+				else 
+				{
+				
+				skewSide = "bottom";
+				} */
+			    label.text = xScaleSlider.value.toString();
+				skewSide = "right"; 
+				tempMatrix = MatrixTransformer.transform(tempMatrix, 
+					xScaleSlider.value, 
+					yScaleSlider.value,
+					dxSlider.value, 
+					dySlider.value,
+					rotationSlider.value,
+					skewSlider.value, 
+					skewSide );
+				
+				 rectangletwo.transform.matrix = tempMatrix;
+				
+				/*var tempinverse:Matrix = tempMatrix.clone();
+				tempinverse.invert();
+				rectanglethree.transform.matrix = tempinverse;
+				 */
+				
+				rectanglethree.width =  xScaleSlider.value;
+				
+			}
+			
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+ 
+	
+	<s:Panel id="panelImage1" width="100%" height="230" left="5" right="5" title.trainingphase="Training Phase" 
+			 title.testphase="Test Phase" textAlign="center"  
+			 includeIn="trainingphase,testphase">
+	<!--	<mx:Image id="originalimg" scaleContent="true" left="5" top="5" 
+				  source="{rect}"  autoLoad="true"/>	-->
+		<s:Button left="10" top="5" label="Testing Phase" click="currentState='testphase'" excludeFrom="testphase" >
+			
+		</s:Button> 
+		<s:Button left="10" top="5" label="Training Phase" click="currentState='trainingphase'"   excludeFrom="trainingphase">
+			
+		</s:Button> 
+		<s:Label left="75"  text="Original Image" top="180">
+			
+		</s:Label>
+		 
+		<s:Group left="650" top="30">
+			<s:Rect id="rectanglethree" height="100" width="100">                              
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1"/>
+				</s:stroke>
+				<s:fill>
+					<s:RadialGradient>
+						<s:GradientEntry color="0x11111" ratio="0" alpha=".5"/>
+					</s:RadialGradient>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+		<s:Label left="650" text="Perceived Image" top="180">
+			
+		</s:Label>
+		<s:Group  left="80" top="30">
+			<s:Rect id="rectangle" height="100" width="100">                              
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1"/>
+				</s:stroke>
+				<s:fill>
+					<s:RadialGradient>
+						<s:GradientEntry color="0x11111" ratio="0" alpha=".5"/>
+					</s:RadialGradient>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+		
+	</s:Panel>
+	<s:Panel id="imagePanel" width="100%" height="400"  title.testphase="Customized Image"
+			 bottom="0" right="5" left="5" title="Controls" textAlign="center"
+			 includeIn="trainingphase, testphase">
+		<mx:Form width="100%" height="100%" excludeFrom="testphase">
+			<mx:FormItem label="Scale X (%):" horizontalGap="0">
+				<mx:HSlider id="xScaleSlider" width="170" minimum="0" maximum="200" 
+							tickInterval="20" snapInterval="1" labels="[0,100,200]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label= "Scale Y (%):">
+				<mx:HSlider id="yScaleSlider" width="170" minimum="0" maximum="200" 
+							tickInterval="20" snapInterval="1" labels="[0,100,200]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Move X (Pixels):">
+				<mx:HSlider id="dxSlider" width="170" minimum="-100" maximum="100" 
+							tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Move Y (Pixels)">
+				<mx:HSlider id="dySlider" width="170" minimum="-100" maximum="100" 
+							tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Rotate (°):">
+				<mx:HSlider id="rotationSlider" width="170" minimum="-360" maximum="360" 
+							tickInterval="90" snapInterval="1" labels="[-360, 0, 360]"
+							change="{transformDisplayObject()}"
+							/>
+			</mx:FormItem>	
+			
+			<mx:FormItem label="Skew Mode:" visible="true">
+				
+				<mx:RadioButtonGroup id="skewMode"/>
+				
+				<mx:RadioButton groupName="skewMode" 
+								id="skewRight" 
+								value="skewRight" 
+								label="Slide right-hand side down" 
+								width="170" 
+								selected="true" 
+								visible="true"/>
+				
+				<mx:RadioButton groupName="skewMode" 
+								id="skewBottom" 
+								value="skewBottom" 
+								label="Slide bottom side to right" 
+								width="170" 
+								visible="true"/>                           
+			</mx:FormItem>
+			
+			<mx:FormItem label="Skew angle (°):" visible="true">
+				<mx:HSlider id="skewSlider" width="170" minimum="-90" maximum="90" 
+							tickInterval="10" snapInterval="1" labels="[-90,0,90]" visible="true"
+							change="{transformDisplayObject()}"/>
+			</mx:FormItem>
+			
+			<mx:FormItem label="Slider X value">
+				<s:Label id="label"/>
+			</mx:FormItem>
+			
+		</mx:Form>
+		
+		<mx:ControlBar width="100%" horizontalAlign="center" bottom="20"
+					   excludeFrom="testphase">
+			<mx:Button label="Transform" click="transformDisplayObject()"  />
+			<mx:Button label="Reset" click="resetTransform()" />
+			
+		</mx:ControlBar>
+		
+		<s:Label left="650"  text="Customized Image" top="240" excludeFrom="testphase">
+			
+		</s:Label>
+		<s:Group left="650" top="100">
+			<s:Rect id="rectangletwo" height="100" width="200">                              
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1"/>
+				</s:stroke>
+				<s:fill>
+					<s:RadialGradient>
+						<s:GradientEntry color="0x11111" ratio="0" alpha=".5"/>
+					</s:RadialGradient>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+		
+	</s:Panel>
+
+	
+	<!-- Training phase code goes here-->
+	
+</s:Application>

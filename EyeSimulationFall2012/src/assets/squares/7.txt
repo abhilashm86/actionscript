@@ -1,0 +1,19 @@
+DTX7 - 0
+DTY7 - 0
+DTZ7 - 0
+DSX7 - 1
+DSY7 - 1
+DSZ7 - 1
+DRX7 - -30
+DRY7 - 0
+DRZ7 - 0
+
+CTX7 - 0
+CTY7 - 0
+CTZ7 - 0
+CSX7 - 1
+CSY7 - 1
+CSZ7 - 1
+CRX7 - -30
+CRY7 - 0
+CRZ7 - 0

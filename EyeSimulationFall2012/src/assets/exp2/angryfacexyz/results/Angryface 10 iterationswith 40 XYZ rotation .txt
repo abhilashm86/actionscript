@@ -1,0 +1,240 @@
+
+Pixel Value - 193474 Image Name - 0.jpg
+	
+
+Pixel Value - 193474 Image Name - 0.jpg
+Pixel Value - 184047 Image Name - 2.jpg	
+Pixel Value - 179197 Image Name - 4.jpg	
+Pixel Value - 174606 Image Name - 6.jpg	
+Pixel Value - 169408 Image Name - 8.jpg	
+Pixel Value - 166040 Image Name - 10.jpg	
+Pixel Value - 154868 Image Name - 15.jpg	
+Pixel Value - 143432 Image Name - 20.jpg	
+Pixel Value - 111458 Image Name - 30.jpg	
+Pixel Value - 0 Image Name - 40.jpg	
+Pixel Value - 184873 Image Name - -2.jpg	
+Pixel Value - 179421 Image Name - -4.jpg	
+Pixel Value - 174156 Image Name - -6.jpg	
+Pixel Value - 170007 Image Name - -8.jpg	
+Pixel Value - 167728 Image Name - -10.jpg	
+Pixel Value - 167302 Image Name - -15.jpg	
+Pixel Value - 171456 Image Name - -20.jpg	
+
+Estimated image - 40.jpg
+	
+
+Pixel Value - 169318 Image Name - 0.jpg
+	
+
+Pixel Value - 169318 Image Name - 0.jpg
+Pixel Value - 157789 Image Name - 2.jpg	
+Pixel Value - 153776 Image Name - 4.jpg	
+Pixel Value - 149688 Image Name - 6.jpg	
+Pixel Value - 146374 Image Name - 8.jpg	
+Pixel Value - 142798 Image Name - 10.jpg	
+Pixel Value - 133742 Image Name - 15.jpg	
+Pixel Value - 124845 Image Name - 20.jpg	
+Pixel Value - 100750 Image Name - 30.jpg	
+Pixel Value - 107202 Image Name - 40.jpg	
+Pixel Value - 161505 Image Name - -2.jpg	
+Pixel Value - 161506 Image Name - -4.jpg	
+Pixel Value - 161750 Image Name - -6.jpg	
+Pixel Value - 162020 Image Name - -8.jpg	
+Pixel Value - 162759 Image Name - -10.jpg	
+Pixel Value - 166812 Image Name - -15.jpg	
+Pixel Value - 173064 Image Name - -20.jpg	
+
+Estimated image - 30.jpg
+	
+
+Pixel Value - 145389 Image Name - 0.jpg
+	
+
+Pixel Value - 145389 Image Name - 0.jpg
+Pixel Value - 134397 Image Name - 2.jpg	
+Pixel Value - 133379 Image Name - 4.jpg	
+Pixel Value - 132757 Image Name - 6.jpg	
+Pixel Value - 131130 Image Name - 8.jpg	
+Pixel Value - 129317 Image Name - 10.jpg	
+Pixel Value - 124278 Image Name - 15.jpg	
+Pixel Value - 116249 Image Name - 20.jpg	
+Pixel Value - 124163 Image Name - 30.jpg	
+Pixel Value - 154374 Image Name - 40.jpg	
+Pixel Value - 135230 Image Name - -2.jpg	
+Pixel Value - 136601 Image Name - -4.jpg	
+Pixel Value - 138564 Image Name - -6.jpg	
+Pixel Value - 140964 Image Name - -8.jpg	
+Pixel Value - 143502 Image Name - -10.jpg	
+Pixel Value - 150655 Image Name - -15.jpg	
+Pixel Value - 160868 Image Name - -20.jpg	
+
+Estimated image - 20.jpg
+	
+
+Pixel Value - 137117 Image Name - 0.jpg
+	
+
+Pixel Value - 137117 Image Name - 0.jpg
+Pixel Value - 125481 Image Name - 2.jpg	
+Pixel Value - 125522 Image Name - 4.jpg	
+Pixel Value - 125114 Image Name - 6.jpg	
+Pixel Value - 124359 Image Name - 8.jpg	
+Pixel Value - 123292 Image Name - 10.jpg	
+Pixel Value - 124030 Image Name - 15.jpg	
+Pixel Value - 131079 Image Name - 20.jpg	
+Pixel Value - 147693 Image Name - 30.jpg	
+Pixel Value - 172606 Image Name - 40.jpg	
+Pixel Value - 126359 Image Name - -2.jpg	
+Pixel Value - 127778 Image Name - -4.jpg	
+Pixel Value - 128802 Image Name - -6.jpg	
+Pixel Value - 129850 Image Name - -8.jpg	
+Pixel Value - 131764 Image Name - -10.jpg	
+Pixel Value - 138388 Image Name - -15.jpg	
+Pixel Value - 152369 Image Name - -20.jpg	
+
+Estimated image - 10.jpg
+	
+
+Pixel Value - 144835 Image Name - 0.jpg
+	
+
+Pixel Value - 144835 Image Name - 0.jpg
+Pixel Value - 132216 Image Name - 2.jpg	
+Pixel Value - 131222 Image Name - 4.jpg	
+Pixel Value - 130320 Image Name - 6.jpg	
+Pixel Value - 131698 Image Name - 8.jpg	
+Pixel Value - 134746 Image Name - 10.jpg	
+Pixel Value - 140654 Image Name - 15.jpg	
+Pixel Value - 146679 Image Name - 20.jpg	
+Pixel Value - 159299 Image Name - 30.jpg	
+Pixel Value - 180078 Image Name - 40.jpg	
+Pixel Value - 135282 Image Name - -2.jpg	
+Pixel Value - 136578 Image Name - -4.jpg	
+Pixel Value - 137701 Image Name - -6.jpg	
+Pixel Value - 139328 Image Name - -8.jpg	
+Pixel Value - 141658 Image Name - -10.jpg	
+Pixel Value - 149134 Image Name - -15.jpg	
+Pixel Value - 161015 Image Name - -20.jpg	
+
+Estimated image - 6.jpg
+	
+
+Pixel Value - 156469 Image Name - 0.jpg
+	
+
+Pixel Value - 156469 Image Name - 0.jpg
+Pixel Value - 145910 Image Name - 2.jpg	
+Pixel Value - 147289 Image Name - 4.jpg	
+Pixel Value - 149730 Image Name - 6.jpg	
+Pixel Value - 152091 Image Name - 8.jpg	
+Pixel Value - 154362 Image Name - 10.jpg	
+Pixel Value - 159005 Image Name - 15.jpg	
+Pixel Value - 163017 Image Name - 20.jpg	
+Pixel Value - 175984 Image Name - 30.jpg	
+Pixel Value - 185450 Image Name - 40.jpg	
+Pixel Value - 149748 Image Name - -2.jpg	
+Pixel Value - 151566 Image Name - -4.jpg	
+Pixel Value - 153179 Image Name - -6.jpg	
+Pixel Value - 155563 Image Name - -8.jpg	
+Pixel Value - 157916 Image Name - -10.jpg	
+Pixel Value - 166571 Image Name - -15.jpg	
+Pixel Value - 178009 Image Name - -20.jpg	
+
+Estimated image - 2.jpg
+	
+
+Pixel Value - 165810 Image Name - 0.jpg
+	
+
+Pixel Value - 165810 Image Name - 0.jpg
+Pixel Value - 159728 Image Name - 2.jpg	
+Pixel Value - 161651 Image Name - 4.jpg	
+Pixel Value - 163562 Image Name - 6.jpg	
+Pixel Value - 164498 Image Name - 8.jpg	
+Pixel Value - 166676 Image Name - 10.jpg	
+Pixel Value - 173020 Image Name - 15.jpg	
+Pixel Value - 176137 Image Name - 20.jpg	
+Pixel Value - 181268 Image Name - 30.jpg	
+Pixel Value - 189831 Image Name - 40.jpg	
+Pixel Value - 161491 Image Name - -2.jpg	
+Pixel Value - 163340 Image Name - -4.jpg	
+Pixel Value - 165459 Image Name - -6.jpg	
+Pixel Value - 167651 Image Name - -8.jpg	
+Pixel Value - 170295 Image Name - -10.jpg	
+Pixel Value - 179610 Image Name - -15.jpg	
+Pixel Value - 192563 Image Name - -20.jpg	
+
+Estimated image - 2.jpg
+	
+
+Pixel Value - 177901 Image Name - 0.jpg
+	
+
+Pixel Value - 177901 Image Name - 0.jpg
+Pixel Value - 175343 Image Name - 2.jpg	
+Pixel Value - 176803 Image Name - 4.jpg	
+Pixel Value - 179715 Image Name - 6.jpg	
+Pixel Value - 181280 Image Name - 8.jpg	
+Pixel Value - 182263 Image Name - 10.jpg	
+Pixel Value - 184441 Image Name - 15.jpg	
+Pixel Value - 186272 Image Name - 20.jpg	
+Pixel Value - 190008 Image Name - 30.jpg	
+Pixel Value - 197452 Image Name - 40.jpg	
+Pixel Value - 175001 Image Name - -2.jpg	
+Pixel Value - 176728 Image Name - -4.jpg	
+Pixel Value - 178675 Image Name - -6.jpg	
+Pixel Value - 181308 Image Name - -8.jpg	
+Pixel Value - 184333 Image Name - -10.jpg	
+Pixel Value - 194322 Image Name - -15.jpg	
+Pixel Value - 206071 Image Name - -20.jpg	
+
+Estimated image - -2.jpg
+	
+
+Pixel Value - 188870 Image Name - 0.jpg
+	
+
+Pixel Value - 188870 Image Name - 0.jpg
+Pixel Value - 189750 Image Name - 2.jpg	
+Pixel Value - 190966 Image Name - 4.jpg	
+Pixel Value - 192203 Image Name - 6.jpg	
+Pixel Value - 193237 Image Name - 8.jpg	
+Pixel Value - 194061 Image Name - 10.jpg	
+Pixel Value - 196096 Image Name - 15.jpg	
+Pixel Value - 197914 Image Name - 20.jpg	
+Pixel Value - 201183 Image Name - 30.jpg	
+Pixel Value - 206863 Image Name - 40.jpg	
+Pixel Value - 189160 Image Name - -2.jpg	
+Pixel Value - 190478 Image Name - -4.jpg	
+Pixel Value - 192449 Image Name - -6.jpg	
+Pixel Value - 194934 Image Name - -8.jpg	
+Pixel Value - 198218 Image Name - -10.jpg	
+Pixel Value - 206188 Image Name - -15.jpg	
+Pixel Value - 215005 Image Name - -20.jpg	
+
+Estimated image - -2.jpg
+	
+
+Pixel Value - 200420 Image Name - 0.jpg
+	
+
+Pixel Value - 200420 Image Name - 0.jpg
+Pixel Value - 203098 Image Name - 2.jpg	
+Pixel Value - 203743 Image Name - 4.jpg	
+Pixel Value - 204631 Image Name - 6.jpg	
+Pixel Value - 205293 Image Name - 8.jpg	
+Pixel Value - 205670 Image Name - 10.jpg	
+Pixel Value - 207823 Image Name - 15.jpg	
+Pixel Value - 208923 Image Name - 20.jpg	
+Pixel Value - 211133 Image Name - 30.jpg	
+Pixel Value - 215242 Image Name - 40.jpg	
+Pixel Value - 202935 Image Name - -2.jpg	
+Pixel Value - 203907 Image Name - -4.jpg	
+Pixel Value - 205556 Image Name - -6.jpg	
+Pixel Value - 207183 Image Name - -8.jpg	
+Pixel Value - 209015 Image Name - -10.jpg	
+Pixel Value - 214062 Image Name - -15.jpg	
+Pixel Value - 218681 Image Name - -20.jpg	
+
+Estimated image - -2.jpg
+	

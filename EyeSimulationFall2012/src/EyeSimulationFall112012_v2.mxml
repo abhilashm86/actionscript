@@ -1,0 +1,1490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+changes 1 -
+1) having a button "yes" or "no"
+2) pre correct and post correct operation
+
+changes 2 -
+1) Added radio buttons for identifying emotions of face recognition and rows of snellen chart
+2) Restored matrix values for transformations
+
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.utils.getTimer;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.ItemClickEvent;
+			import mx.events.SliderEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			private var _degreeRange:int = 180;
+			private var matrix:Matrix3D = new Matrix3D();
+			
+			/*filename parameters 
+			*/
+			private var fr:FileReference;
+			//To show next image
+			private var fileRef:FileReference;
+
+			private var countImage:int = 38;
+			
+			/*
+			String text : Format it according to needs with \r\n 
+			To store recorded values from transformations
+			*/
+			private var textValues:String = new String();
+			
+			//boolean waveflag to display wave transformation 
+			private var waveFlag:Boolean;
+			private var roiFlag:Boolean;
+			
+			/*Type of flow - 2 
+			1 - Distort image first and then sample
+			2 - Sample the image and then distort
+			*/
+			
+			public var task:String = new String();
+			public var distortionType:String = new String();
+			public var pictureID:String = new String();
+			public var resMode:String = new String();
+			public var distortionMatrix:String = new String();
+			public var flowID:String = new String();
+			public var distortionCorrection:String = new String();
+			public var timeTaken:Number = new Number();
+			public var currentTime:int = new int();
+			
+			/*
+			Recognise the image - yes or no 
+			*/
+			public var recognisePreCorrection:String = "";
+			public var recognisePostCorrection:String = "";
+			public var clickCount:int = 0;
+			
+			/*
+			To record face recognition emotion and snellen chart 
+			*/
+			public var faceEmotion:String = new String();
+			public var snellenRow:String = new String();
+			
+			public var bmp210:Bitmap = new Bitmap();
+			public var bmp210ROI:Bitmap = new Bitmap();
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				currentState = "welcomeState"; 
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = "experimentState";
+				
+				// First line of text in the txt file
+				textValues = "Experiment values - Simulating Prosthetic Vision with Distortions for Retinal Prosthesis Design" + "\r\n\r\n";
+				textValues = textValues + "Name of Person: " + namePerson.text + "\r\n\r\n";  
+				// possible combinations are 35 without flow id
+				
+				currentTime = getTimer();
+				initProcessing();
+			}
+			
+			private function invertImage():void {
+				
+				var imageInvert:Matrix3D =  panel.transform.matrix3D;
+				//imageInvert.invert();	
+			}
+			
+			/*
+			early save method 
+			
+			*/
+			private function onSaveClick():void
+			{
+				var data:BitmapData = new BitmapData(everything.width, everything.height, false, 0xFFFFFF);
+				var byteArr2:ByteArray = new ByteArray();
+				data.draw(everything);
+				var encod:JPEGEncoder = new JPEGEncoder(100);               
+				byteArr2 = encod.encode(data);
+				
+				fileRef.save(byteArr2,"iterator.jpg");
+
+			}
+			
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			
+				
+				/*
+				Testing for radiobutton 
+				*/
+			 
+				if(countImage == 41)
+				{
+					Alert.show("End of experiment, thanks for participating " +namePerson.text + "!!");
+				}
+				
+				/*
+				check whether yes or no has been clicked
+				*/
+				
+				if(recognisePostCorrection != ""  || recognisePreCorrection != "")
+				{
+					countImage = countImage + 1;
+				
+					/*
+					initiaalise back all sliders.
+					
+					*/
+				clickCount = 0;
+				waveFlag = false;
+				roiFlag = false;
+				/*
+				1) write all slider values to text file
+				2) Write all martix value 
+				*/
+				
+				/*
+				Matrix representation - http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Matrix.html
+				a : Number
+				The value that affects the positioning of pixels along the x axis when scaling or rotating an image.
+				Matrix
+				b : Number
+				The value that affects the positioning of pixels along the y axis when rotating or skewing an image.
+				Matrix
+				c : Number
+				The value that affects the positioning of pixels along the x axis when rotating or skewing an image.
+				Matrix
+				d : Number
+				The value that affects the positioning of pixels along the y axis when scaling or rotating an image.
+				Matrix
+				tx : Number
+				The distance by which to translate each point along the x axis.
+				Matrix
+				ty : Number
+				The distance by which to translate each point along the y axis.
+				*/
+				
+				timeTaken = (getTimer() - currentTime)/ 1000.0000 ;
+				
+				distortionCorrection = "a = " + panel.transform.matrix.a + '\r\n' + 
+					"b = " + panel.transform.matrix.b + '\r\n' + "c= " + panel.transform.matrix.c +'\r\n' +"d =" +panel.transform.matrix.d +'\r\n' +
+					"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = " +panel.transform.matrix.ty + "\r\n";
+				
+				textValues = textValues +  "task = " + task + "\r\n" + "Distortion Type = " + distortionType +"\r\n"+
+					"pictureID = "+  pictureID + "\r\n" + 
+					"Distortion Matrix Values = \r\n" + distortionMatrix 
+					+ "Corrected distortion values = \r\n" + distortionCorrection + 
+					"Time taken = " + timeTaken.toString() + "\r\n" + "Recognise Pre Correction = " +recognisePreCorrection +"\r\n"
+					+ "Recognise Post Correction = " +recognisePostCorrection + "\r\n" + "Snellen chart Rows = " +snellenRow+"\r\n"
+					+ "Face Emotion = " +faceEmotion +"\r\n";
+				
+				currentTime = getTimer();
+				recognisePreCorrection = "";
+				recognisePostCorrection = "";
+				//clear radio button values
+				snellenRow = "";
+				faceEmotion = "";
+				snellenChart.selection = null;
+				facetype.selection = null;
+				
+				
+				xTranslation.value = yTranslation.value = zTranslation.value = 0;		
+				xScale.value = 		yScale.value =	zScale.value = 1;
+				xRotation.value = yRotation.value = zRotation.value = 0;
+				
+				
+				initProcessing();
+				}
+			}
+			
+			protected function initProcessing():void
+			{	
+				
+				//to convert image to greyscale
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				var image:Image = new Image();
+				if(countImage ==1)
+				{
+					
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					//[Embed("assets/geometricalShape.png")]
+					[Embed("assets/exp2/angryface/0.jpg")]
+					
+					var img1:Class;
+					image.load(img1);
+					
+					//distortionType = "T3";
+					distortionType = "T0";
+					//task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					
+				}
+				
+				if(countImage ==2)
+				{
+					panel.removeChild(bmp210);
+					roiFlag = true;
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img2:Class;
+					image.load(img2);
+					
+					distortionType = "T0";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+				}
+				
+				if(countImage ==3)
+				{
+					panel.removeChild(bmp210ROI);
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					distortionType = "T0";
+					task = "fr";
+					
+				[Embed("assets/angryface.jpg")]
+					var img3:Class;
+					image.load(img3);
+					pictureID = 'angryface.jpg';
+					
+				}
+				
+				if(countImage ==4)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -20;
+					panel.rotationZ = -10;					
+					
+					[Embed("assets/sadface.jpg")]
+					var img4:Class;
+					image.load(img4);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+				}
+				
+				if(countImage ==5)
+				{
+					//wave
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					waveFlag = true;
+					
+					[Embed("assets/happyface.jpg")]
+					var img5:Class;
+					image.load(img5);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+				}
+				
+				if(countImage ==6)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					[Embed("assets/snellen_chart.jpg")]
+					var img6:Class;
+					image.load(img6);
+					
+					distortionType = "T0";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+				}
+				
+				if(countImage ==7)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					[Embed("assets/geometricalShape.png")]
+					var img7:Class;
+					image.load(img7);
+					
+					distortionType = "T0";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+				}
+				
+				if(countImage ==8)
+				{
+					//wave
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					waveFlag = true;				
+					[Embed("assets/sadface.jpg")]
+					var img8:Class;
+					image.load(img8);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+					
+				}
+				
+				if(countImage ==9)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -11;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/angryface.jpg")]
+					var img9:Class;
+					image.load(img9);
+					
+					distortionType = "T2";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					
+					
+				}
+				
+				if(countImage ==10)
+				{
+					roiFlag = true;
+					panel.removeChild(bmp210);
+					
+					panel.rotationX = 31;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img10:Class;
+					image.load(img10);
+					
+					distortionType = "T1";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+					
+				}
+				
+				if(countImage ==11)
+				{
+					panel.removeChild(bmp210ROI);
+					
+					panel.rotationX = 31;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img11:Class;
+					image.load(img11);
+					
+					distortionType = "T1";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+					
+				}
+				
+				if(countImage ==12)
+				{
+					
+					roiFlag = true;
+					panel.removeChild(bmp210);
+					
+					panel.rotationX = 0;
+					panel.rotationY = -11;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img12:Class;
+					image.load(img12);
+					
+					distortionType = "T2";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+					
+				}
+				
+				if(countImage ==13)
+				{
+					panel.removeChild(bmp210ROI);
+					
+					panel.rotationX = 35;
+					panel.rotationY = 25;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/happyface.jpg")]
+					var img13:Class;
+					image.load(img13);
+					
+					distortionType = "T3";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+					
+					
+				}
+				
+				if(countImage ==14)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -11;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/geometricalShape.png")]
+					var img14:Class;
+					image.load(img14);
+					
+					distortionType = "T2";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					
+					
+				}	
+				if(countImage ==15)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					task = "fr";
+					[Embed("assets/sadface.jpg")]
+					var img15:Class;
+					image.load(img15);
+					
+					distortionType = "T0";
+					pictureID = 'sadface.jpg';
+					
+					
+					
+				}
+				
+				if(countImage ==16)
+				{
+					roiFlag = true;
+					panel.removeChild(bmp210);
+					
+					panel.rotationX = 35;
+					panel.rotationY = 25;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img16:Class;
+					image.load(img16);
+					
+					distortionType = "T3";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+				}
+				
+				if(countImage ==17)
+				{
+					panel.removeChild(bmp210ROI);
+					
+					panel.rotationX = 32;
+					panel.rotationY = -30;
+					panel.rotationZ = -28;
+					
+					[Embed("assets/geometricalShape.png")]
+					var img17:Class;
+					image.load(img17);
+					
+					distortionType = "T5";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					
+					
+				}		
+				
+				if(countImage ==18)
+				{
+					roiFlag = true;
+					panel.removeChild(bmp210);
+					
+					panel.rotationX = 0;
+					panel.rotationY = -20;
+					panel.rotationZ = -10;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img18:Class;
+					image.load(img18);
+					
+					distortionType = "T4";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+					
+					
+				}		
+				if(countImage ==19)
+				{
+					panel.removeChild(bmp210ROI);
+					
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					waveFlag = true;
+					[Embed("assets/angryface.jpg")]
+					var img19:Class;
+					image.load(img19);
+					task = "fr";
+					distortionType = "T6";
+					
+					pictureID = 'angryface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==20)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					waveFlag = true;
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img20:Class;
+					image.load(img20);
+					
+					distortionType = "T6";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+				}		
+				if(countImage ==21)
+				{
+					panel.rotationX = 35;
+					panel.rotationY = 25;
+					panel.rotationZ = 0;
+					[Embed("assets/angryface.jpg")]
+					var img21:Class;
+					image.load(img21);
+					
+					distortionType = "T3";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==22)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -20;
+					panel.rotationZ = -10;
+					
+					[Embed("assets/happyface.jpg")]
+					var img22:Class;
+					image.load(img22);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==23)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					waveFlag = true;
+					
+					[Embed("assets/geometricalShape.png")]
+					var img23:Class;
+					image.load(img23);
+					
+					distortionType = "T6";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					
+					
+				}
+				
+				
+				if(countImage ==24)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -11;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/sadface.jpg")]
+					var img24:Class;
+					image.load(img24);
+					
+					distortionType = "T2";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==25)
+				{
+					roiFlag = true;
+					panel.removeChild(bmp210);
+					
+					panel.rotationX = 32;
+					panel.rotationY = -30;
+					panel.rotationZ = -28;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img25:Class;
+					image.load(img25);
+					
+					distortionType = "T6";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+				}		
+				if(countImage ==26)
+				{
+					panel.removeChild(bmp210ROI);
+					
+					panel.rotationX = 35;
+					panel.rotationY = 25;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img26:Class;
+					image.load(img26);
+					
+					distortionType = "T3";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+				}		
+				if(countImage ==27)
+				{
+					panel.rotationX = 31;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/sadface.jpg")]
+					var img27:Class;
+					image.load(img27);
+					
+					distortionType = "T1";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+					
+					
+				}
+				if(countImage ==28)
+				{
+					panel.rotationX = 32;
+					panel.rotationY = -30;
+					panel.rotationZ = -28;
+					
+					[Embed("assets/sadface.jpg")]
+					var img28:Class;
+					image.load(img28);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+					
+					
+				}	
+				if(countImage ==29)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -20;
+					panel.rotationZ = -10;
+					
+					[Embed("assets/angryface.jpg")]
+					var img29:Class;
+					image.load(img29);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					
+					
+					
+					
+				}	
+				if(countImage ==30)
+				{
+					
+					
+					panel.rotationX = 35;
+					panel.rotationY = 25;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/sadface.jpg")]
+					var img30:Class;
+					image.load(img30);
+					
+					distortionType = "T3";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==31)
+				{
+					panel.rotationX = 31;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/geometricalShape.png")]
+					var img31:Class;
+					image.load(img31);
+					
+					distortionType = "T1";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					
+					
+				}
+				
+				if(countImage ==32)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -20;
+					panel.rotationZ = -10;
+					
+					distortionType = "T4";
+					task = "sc";
+					[Embed("assets/snellen_chart.jpg")]
+					var img32:Class;
+					image.load(img32);
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+				}		
+				if(countImage ==33)
+				{
+					panel.rotationX = 32;
+					panel.rotationY = -30;
+					panel.rotationZ = -28;
+					
+					[Embed("assets/happyface.jpg")]
+					var img33:Class;
+					image.load(img33);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==34)
+				{
+					panel.rotationX = 32;
+					panel.rotationY = -30;
+					panel.rotationZ = -28;
+					
+					
+					[Embed("assets/angryface.jpg")]
+					var img34:Class;
+					image.load(img34);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					
+					
+					
+				}		
+				if(countImage ==35)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -11;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/happyface.jpg")]
+					var img35:Class;
+					image.load(img35);
+					
+					distortionType = "T2";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+					
+					
+				}		
+				
+				if(countImage ==36)
+				{
+					panel.rotationX = 32;
+					panel.rotationY = -30;
+					panel.rotationZ = -28;
+					
+					[Embed("assets/snellen_chart.jpg")]
+					
+					var img36:Class;
+					image.load(img36);
+					
+					distortionType = "T5";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+					
+				}		
+				
+				if(countImage ==37)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/happyface.jpg")]
+					var img37:Class;
+					image.load(img37);
+					
+					distortionType = "T0";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+					
+					
+					
+					
+					
+				}	
+				if(countImage ==38)
+				{
+					
+					panel.rotationX = 0;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					[Embed("assets/angryface.jpg")]
+					var img38:Class;
+					image.load(img38);
+					
+					distortionType = "T4";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					
+					
+					
+					
+				}	
+				if(countImage ==39)
+				{
+					panel.rotationX = 31;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					
+					[Embed("assets/happyface.jpg")]
+					var img39:Class;
+					image.load(img39);
+					
+					distortionType = "T1";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					
+					
+					
+					
+					
+					
+				}	
+				if(countImage ==40)
+				{
+					panel.rotationX = 0;
+					panel.rotationY = -11;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img40:Class;
+					image.load(img40);
+					
+					distortionType = "T2";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					
+					
+					
+					
+				}	
+				if(countImage ==41)
+				{
+					
+					panel.rotationX = 31;
+					panel.rotationY = 0;
+					panel.rotationZ = 0;
+					
+					[Embed("assets/angryface.jpg")]
+					var img41:Class;
+					image.load(img41);
+					
+					distortionType = "T1";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					
+					
+					
+					
+					
+				}	
+				
+				if(roiFlag == true)
+				{
+					//panel.removeChild(bmp210);
+					
+					var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+					image.content.filters = [grayscaleFilter];
+					var original:Bitmap = Bitmap(image.content);
+					
+					var red:Number = 0;
+					var green:Number = 0;
+					var blue:Number = 0;
+					
+					var count:Number = 0;
+					var pixel:Number;
+					
+					var printColors:Array = new Array();
+					var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+					
+					for (var x:int = 0; x < original.bitmapData.width; x = x+8)
+					{
+						for (var y:int = 200; y < original.bitmapData.height; y = y+8)
+						{ 
+							bitmap30X30.setPixel(x/8,(y/8)- 25 , original.bitmapData.getPixel(x,y));
+							
+						}
+					}
+					//copy image 30 X 30 to new 210 X 210 image
+					
+					var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+					
+					
+					var pixelArray:Array = new Array();
+					
+					for(var h:int =0; h< bitmap30X30.width; h= h+1)
+					{
+						for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+						{
+							//store pixel values in array 
+							pixelArray.push(bitmap30X30.getPixel(h,k));
+							
+						}
+					}
+					
+					// write the pixel values to 210 X 210 image
+					// reverse array to get elements first
+					pixelArray.reverse();
+					
+					for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+					{
+						for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+						{
+							//to get 30 X 30 pixels
+							bitmap210X210.setPixel(ii,jj,pixelArray.pop());
+							
+						}
+					}
+					
+					bmp210ROI.bitmapData = bitmap210X210;	
+					
+				
+					// Gaussian blur
+					var blur1:BlurFilter = new BlurFilter();
+					blur1.blurX = 2;
+					blur1.blurY = 2;
+					
+					blur1.quality = BitmapFilterQuality.LOW;
+					bmp210.filters = [blur1];
+				
+					
+					//panel.scaleX = 1.5;
+					//panel.scaleY = 1.5;
+					
+					
+					panel.x = 400;
+					panel.y = 90;
+					
+					panel.addChild(bmp210ROI);	
+					
+				}//end of (ROI=true) condition 
+					
+					
+					
+				else if(roiFlag == false)
+				{
+					//panel.removeChild(bmp210ROI);
+					var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+					image.content.filters = [grayscaleFilter];
+					var original:Bitmap = Bitmap(image.content);
+					
+					var red:Number = 0;
+					var green:Number = 0;
+					var blue:Number = 0;
+					
+					var count:Number = 0;
+					var pixel:Number;
+					
+					var printColors:Array = new Array();
+					//new bitmap for 30 X 30
+					var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+					
+					for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+					{
+						for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+						{
+							bitmap30X30.setPixel((x/16)  ,(y/16)   , original.bitmapData.getPixel(x,y));
+							
+						}
+					}
+					//copy image 30 X 30 to new 210 X 210 image
+					
+					var bitmap210X210:BitmapData = new BitmapData(630, 630, false, 0X000000);
+					var pixelArray:Array = new Array();
+					
+					for(var h:int =0; h< bitmap30X30.width; h= h+1)
+					{
+						for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+						{
+							//store pixel values in array 
+							pixelArray.push(bitmap30X30.getPixel(h,k));
+						}
+					}
+					
+					// write the pixel values to 210 X 210 image
+					// reverse array to get elements first
+					pixelArray.reverse();
+					
+					for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+					{
+						for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+						{
+							//to get 30 X 30 pixels
+							//var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+							
+							if(waveFlag == true)
+							{
+								var temp:int = ii + 20 * Math.sin(((2* Math.PI)/10) * jj);
+								var pixelValue:uint = pixelArray.pop();
+								bitmap210X210.setPixel(temp,jj,pixelValue);
+								bitmap210X210.setPixel(temp,jj+1,pixelValue);
+								bitmap210X210.setPixel(temp+1,jj,pixelValue);
+								bitmap210X210.setPixel(temp+1,jj+1,pixelValue);
+							}
+							else
+								var pixelvalues:uint = pixelArray.pop();
+								bitmap210X210.setPixel(ii,jj,pixelvalues);
+								bitmap210X210.setPixel(ii,jj+1,pixelvalues);
+								bitmap210X210.setPixel(ii+1,jj,pixelvalues);
+								bitmap210X210.setPixel(ii+1,jj+1,pixelvalues);
+								
+						}
+					} 
+					
+					
+					bmp210.bitmapData = bitmap210X210;
+					
+					// Gaussian blur
+					var blur1:BlurFilter = new BlurFilter();
+					blur1.blurX = 2;
+					blur1.blurY = 2;
+					blur1.quality = BitmapFilterQuality.LOW;
+					bmp210.filters = [blur1];
+					
+					var imageE:Image = new Image();
+					imageE.addChild(bmp210);
+					imageE.id = "bitmap210";
+					
+					 
+					
+				//	panel.scaleX = 1.5;
+				//	panel.scaleY = 1.5;
+					
+					panel.addChild(bmp210);
+					//panel.source = "assets/exp2/squarexy/resexp/sample17.jpg";
+					//panel.removeChild(bmp210);
+					
+				}//end of if(roiFlag) condition
+				
+				
+				distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+					"b = " + panel.transform.matrix.b + '\r\n' + "c= " + panel.transform.matrix.c +'\r\n' +"d =" +panel.transform.matrix.d +'\r\n' +
+					"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = " +panel.transform.matrix.ty + "\r\n";
+				
+			}
+			
+			
+
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				/*
+				Recognised the image
+				*/
+				clickCount ++;
+				if(clickCount == 1)
+				{ 
+					recognisePreCorrection = "yes";	
+				}
+				else 
+					recognisePostCorrection = "yes";
+				
+			}
+
+
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				clickCount ++;
+				if(clickCount == 1)
+				{
+					recognisePreCorrection = "no";
+				}
+				else
+				recognisePostCorrection = "no";	
+			}
+
+			private function handleFace(event:ItemClickEvent):void {
+				//Print the value of the selected RadioButton in the Text Area
+				var faceValue:Object = facetype.selectedValue;
+				faceEmotion = faceValue.toString();
+				
+				//Alert.show(faceEmotion);
+			}
+			private function handleSnellen(event:ItemClickEvent):void {
+				//Print the value of the selected RadioButton in the Text Area
+				var snellenChartRecognition:Object = snellenChart.selectedValue;
+				snellenRow = snellenChartRecognition.toString();
+				
+				//Alert.show(snellenRow);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="welcomeState"/>
+		<s:State name="experimentState"/>
+	</s:states>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:RadioButtonGroup id="facetype" 
+							itemClick="handleFace(event);"/>
+		
+		<s:RadioButtonGroup id="snellenChart" 
+							itemClick="handleSnellen(event);"/>
+	</fx:Declarations>
+	
+	<s:Label includeIn="welcomeState" top="100" left="400" 
+			 text="Simulating Prosthetic Vision with Distortions for &#13;&#009;&#009; Retinal Prosthesis Design"  
+			 fontSize="24"/>
+	<s:Label includeIn="welcomeState" text="Enter Name" top="195" left="550" />
+	
+	<s:TextInput includeIn="welcomeState" id="namePerson" top="190" left="630"/>
+	<s:Button includeIn="welcomeState" label="Start" top="250" left="630" click="button1_clickHandler(event)"/>
+
+	<mx:Box id="everything" x="100" y="50">
+
+	<mx:Image width="480" height="480"
+			  id="panel" 
+			  rotationX="{ xRotation.value }"
+			  rotationY="{ yRotation.value }"
+			  rotationZ="{ zRotation.value }"
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"
+			  scaleZ="{ zScale.value }"
+			  z="{ zTranslation.value }" activate="invertImage()"  includeIn="experimentState"/>
+	
+	</mx:Box>
+	<!--
+	Write all controls for correction - Do write in a group, easy to include/exclude
+	-->
+	<s:Group id="controlsCorrection" includeIn="experimentState" 
+			 bottom="10" left="10">
+		<s:Label includeIn="experimentState" left="150" text="Controls for correction"
+				 fontSize="18"/> 
+		
+		<mx:HBox top="15">
+			<!-- ROTATION --> 
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-rotation -->
+				<mx:Label
+					text="x-rotation: { xRotation.value }"
+					toolTip="click to reset xRotation to 0"
+					click="{ xRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="xRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+				<!-- y-rotation -->
+				<mx:Label
+					text="y-rotation: { yRotation.value }"
+					toolTip="click to reset yRotation to 0"
+					click="{ yRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="yRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+				<!-- z-rotation -->
+				<mx:Label
+					text="z-rotation: { zRotation.value }"
+					toolTip="click to reset zRotation to 0"
+					click="{ zRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="zRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+			</mx:VBox>
+			
+			<!-- TRANSLATION -->
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-translation -->
+				<mx:Label
+					text="x-translation: { xTranslation.value }"
+					toolTip="click to reset xTranslation to center"
+					click="{ xTranslation.value = ( this.width - panel.width ) / 2 }" />
+				
+				<mx:HSlider
+					id="xTranslation"
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					value="0"
+					minimum="-30" maximum="30" 
+					change="{panel.x =panel.x+ xTranslation.value}"/>
+				
+				<!-- y-translation -->
+				<mx:Label
+					text="y-translation: { yTranslation.value }"
+					toolTip="click to reset yTranslation to center"
+					click="{ yTranslation.value = ( this.height - panel.height ) / 2 }" />
+				
+				<mx:HSlider
+					id="yTranslation"					 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					value="0"
+					minimum="-30" maximum="30" 
+					change="{panel.y =panel.y+ yTranslation.value}"/>
+				
+				<!-- z-translation -->
+				<mx:Label
+					text="z-translation: { zTranslation.value }"
+					toolTip="click to reset zTranslation to 0"
+					click="{ zTranslation.value = 0 }" />
+				
+				<mx:HSlider
+					id="zTranslation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{-30}" maximum="{ 30 }"
+					change="{panel.z = panel.z + zTranslation.value}"/>
+				
+			</mx:VBox>
+			
+			<!-- SCALE -->
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-scale -->
+				<mx:Label
+					text="x-scale: { xScale.value }"
+					toolTip="click to reset xScale to 1"
+					click="{ xScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="xScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval=".5"
+					minimum="0.1" maximum="3" 
+					change="invertImage()"/>
+				
+				<!-- y-scale -->
+				<mx:Label
+					text="y-scale: { yScale.value }"
+					toolTip="click to reset yScale to 1"
+					click="{ yScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="yScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval="0.5"
+					minimum="0.1" maximum="3" 
+					change="invertImage()"/>
+				
+				<!-- z-scale -->
+				<mx:Label
+					text="z-scale: { zScale.value }"
+					toolTip="click to reset zScale to 1"
+					click="{ zScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="zScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval="0.5"
+					minimum="0.1" maximum="3" 
+					change="invertImage()"/>
+			</mx:VBox>
+		</mx:HBox>
+	</s:Group>
+	<!-- 
+	button to save all the recorded slider values
+	button for moving onto next image
+	-->
+	<s:Button includeIn="experimentState" label="Save File" right="10" bottom="10" id="saveButton" 
+			  click="onSaveClick()" enabled="true"/>
+	<s:Button  includeIn="experimentState" label="Next Image" bottom="350" left="250" 
+			   click="button2_clickHandler(event)"/>
+	<s:Button  includeIn="experimentState" label="Yes" bottom="400" left="200" 
+			   click="button3_clickHandler(event)"/>
+	<s:Button  includeIn="experimentState" label="No" bottom="400" left="300" 
+			   click="button4_clickHandler(event)"/>
+	
+	
+	<s:HGroup bottom="200" left="50" includeIn="experimentState">
+		
+	
+	<s:VGroup>
+		<s:Label text="Face Recognition" fontWeight="bold"/>
+		<s:RadioButton groupName="facetype" 
+					   id="angryface"
+					   label="Angry Face" 
+					   />
+		<s:RadioButton groupName="facetype" 
+					   id="happyface"
+					   label="Happy Face" 
+					  />
+		<s:RadioButton groupName="facetype" 
+					   id="sadface"
+					   label="Sad Face" 
+					   />    
+		<s:RadioButton groupName="facetype" 
+					   id="face"
+					   label="Just Face" 
+					   />
+	</s:VGroup>
+	<s:VGroup >
+		<s:Label text="Snellen Chart Recognition" fontWeight="bold"/>
+		<s:RadioButton groupName="snellenChart" 
+					   id="onerow"
+					   label="1 Row" 
+					   width="150"/>
+		<s:RadioButton groupName="snellenChart" 
+					   id="tworow"
+					   label="2 Rows" 
+					   width="150"/>
+		<s:RadioButton groupName="snellenChart" 
+					   id="threerow"
+					   label="3 Rows" 
+					   width="150"/>     
+		<s:RadioButton groupName="snellenChart" 
+					   id="fourrow"
+					   label="4 Rows" 
+					   width="150"/>
+	</s:VGroup>
+		
+	</s:HGroup>
+</s:Application>

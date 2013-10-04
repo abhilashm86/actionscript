@@ -1,0 +1,19 @@
+DTX3 - 0
+DTY3 - 0
+DTZ3 - 0
+DSX3 - 1
+DSY3 - 1
+DSZ3 - 1
+DRX3 - 10
+DRY3 - 0
+DRZ3 - 10
+
+CTX3 - 0
+CTY3 - 0
+CTZ3 - 0
+CSX3 - 1
+CSY3 - 1
+CSZ3 - 1
+CRX3 - 10
+CRY3 - 0
+CRZ3 - 10

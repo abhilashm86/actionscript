@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<s:Move id="moveImage"  target="{imageA}"/>
+
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.core.INavigatorContent;
+			import mx.events.FlexEvent;
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				var coOrdinates:Array = new Array();
+				imageA.x = 0;
+				imageA.y = 0;
+   	       		moveImg(800, 0);
+				
+			}
+
+			public function moveImg(xTemp:int, yTemp:int):void
+			{
+				
+				moveImage.xTo = xTemp;
+				moveImage.yTo = yTemp;
+				moveImage.duration = 4000;
+				moveImage.play();
+
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<mx:Image id="panelb"/>
+	
+	<mx:Image id="imageA" source="assets/shape.jpg"/>
+	
+
+</s:Application>

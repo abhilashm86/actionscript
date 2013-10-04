@@ -1,0 +1,170 @@
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 7934 Image Name - 2.jpg	
+Pixel Value - 7927 Image Name - 4.jpg	
+Pixel Value - 16750 Image Name - 6.jpg	
+Pixel Value - 24549 Image Name - 8.jpg	
+Pixel Value - 32464 Image Name - 10.jpg	
+Pixel Value - 50492 Image Name - 15.jpg	
+Pixel Value - 66211 Image Name - 20.jpg	
+Pixel Value - 92831 Image Name - 30.jpg	
+Pixel Value - 114135 Image Name - 40.jpg	
+Pixel Value - 130505 Image Name - 50.jpg	
+Pixel Value - 151356 Image Name - 70.jpg	
+Pixel Value - 180259 Image Name - 90.jpg	
+Pixel Value - 195131 Image Name - 100.jpg	
+
+Estimated image - 4.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 12741 Image Name - 2.jpg	
+Pixel Value - 20883 Image Name - 4.jpg	
+Pixel Value - 29214 Image Name - 6.jpg	
+Pixel Value - 36887 Image Name - 8.jpg	
+Pixel Value - 44865 Image Name - 10.jpg	
+Pixel Value - 62897 Image Name - 15.jpg	
+Pixel Value - 78644 Image Name - 20.jpg	
+Pixel Value - 105207 Image Name - 30.jpg	
+Pixel Value - 126398 Image Name - 40.jpg	
+Pixel Value - 142615 Image Name - 50.jpg	
+Pixel Value - 163251 Image Name - 70.jpg	
+Pixel Value - 192153 Image Name - 90.jpg	
+Pixel Value - 207020 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 14056 Image Name - 2.jpg	
+Pixel Value - 22243 Image Name - 4.jpg	
+Pixel Value - 30289 Image Name - 6.jpg	
+Pixel Value - 37749 Image Name - 8.jpg	
+Pixel Value - 45610 Image Name - 10.jpg	
+Pixel Value - 63637 Image Name - 15.jpg	
+Pixel Value - 79372 Image Name - 20.jpg	
+Pixel Value - 105962 Image Name - 30.jpg	
+Pixel Value - 127251 Image Name - 40.jpg	
+Pixel Value - 142911 Image Name - 50.jpg	
+Pixel Value - 163124 Image Name - 70.jpg	
+Pixel Value - 192027 Image Name - 90.jpg	
+Pixel Value - 206896 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 15299 Image Name - 2.jpg	
+Pixel Value - 23460 Image Name - 4.jpg	
+Pixel Value - 31554 Image Name - 6.jpg	
+Pixel Value - 38813 Image Name - 8.jpg	
+Pixel Value - 46524 Image Name - 10.jpg	
+Pixel Value - 64457 Image Name - 15.jpg	
+Pixel Value - 80187 Image Name - 20.jpg	
+Pixel Value - 106736 Image Name - 30.jpg	
+Pixel Value - 128038 Image Name - 40.jpg	
+Pixel Value - 143118 Image Name - 50.jpg	
+Pixel Value - 162973 Image Name - 70.jpg	
+Pixel Value - 191876 Image Name - 90.jpg	
+Pixel Value - 206745 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 16702 Image Name - 2.jpg	
+Pixel Value - 24865 Image Name - 4.jpg	
+Pixel Value - 32952 Image Name - 6.jpg	
+Pixel Value - 40236 Image Name - 8.jpg	
+Pixel Value - 47806 Image Name - 10.jpg	
+Pixel Value - 65486 Image Name - 15.jpg	
+Pixel Value - 81137 Image Name - 20.jpg	
+Pixel Value - 107616 Image Name - 30.jpg	
+Pixel Value - 129114 Image Name - 40.jpg	
+Pixel Value - 143501 Image Name - 50.jpg	
+Pixel Value - 162804 Image Name - 70.jpg	
+Pixel Value - 191707 Image Name - 90.jpg	
+Pixel Value - 206576 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 18147 Image Name - 2.jpg	
+Pixel Value - 26319 Image Name - 4.jpg	
+Pixel Value - 34322 Image Name - 6.jpg	
+Pixel Value - 41660 Image Name - 8.jpg	
+Pixel Value - 49153 Image Name - 10.jpg	
+Pixel Value - 66678 Image Name - 15.jpg	
+Pixel Value - 82180 Image Name - 20.jpg	
+Pixel Value - 108735 Image Name - 30.jpg	
+Pixel Value - 130162 Image Name - 40.jpg	
+Pixel Value - 143812 Image Name - 50.jpg	
+Pixel Value - 162621 Image Name - 70.jpg	
+Pixel Value - 191524 Image Name - 90.jpg	
+Pixel Value - 206393 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 19513 Image Name - 2.jpg	
+Pixel Value - 27676 Image Name - 4.jpg	
+Pixel Value - 35740 Image Name - 6.jpg	
+Pixel Value - 42923 Image Name - 8.jpg	
+Pixel Value - 50447 Image Name - 10.jpg	
+Pixel Value - 67775 Image Name - 15.jpg	
+Pixel Value - 83201 Image Name - 20.jpg	
+Pixel Value - 109699 Image Name - 30.jpg	
+Pixel Value - 131055 Image Name - 40.jpg	
+Pixel Value - 144017 Image Name - 50.jpg	
+Pixel Value - 162533 Image Name - 70.jpg	
+Pixel Value - 191323 Image Name - 90.jpg	
+Pixel Value - 206192 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 21067 Image Name - 2.jpg	
+Pixel Value - 29235 Image Name - 4.jpg	
+Pixel Value - 37276 Image Name - 6.jpg	
+Pixel Value - 44451 Image Name - 8.jpg	
+Pixel Value - 51913 Image Name - 10.jpg	
+Pixel Value - 69206 Image Name - 15.jpg	
+Pixel Value - 84498 Image Name - 20.jpg	
+Pixel Value - 110828 Image Name - 30.jpg	
+Pixel Value - 132135 Image Name - 40.jpg	
+Pixel Value - 144381 Image Name - 50.jpg	
+Pixel Value - 162569 Image Name - 70.jpg	
+Pixel Value - 191116 Image Name - 90.jpg	
+Pixel Value - 205985 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 22664 Image Name - 2.jpg	
+Pixel Value - 30826 Image Name - 4.jpg	
+Pixel Value - 38860 Image Name - 6.jpg	
+Pixel Value - 46015 Image Name - 8.jpg	
+Pixel Value - 53402 Image Name - 10.jpg	
+Pixel Value - 70648 Image Name - 15.jpg	
+Pixel Value - 85860 Image Name - 20.jpg	
+Pixel Value - 112043 Image Name - 30.jpg	
+Pixel Value - 132860 Image Name - 40.jpg	
+Pixel Value - 144514 Image Name - 50.jpg	
+Pixel Value - 162549 Image Name - 70.jpg	
+Pixel Value - 190831 Image Name - 90.jpg	
+Pixel Value - 205700 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Distortion for given sample image - Rotation along X: 14 
+Pixel Value - 24321 Image Name - 2.jpg	
+Pixel Value - 32482 Image Name - 4.jpg	
+Pixel Value - 40510 Image Name - 6.jpg	
+Pixel Value - 47654 Image Name - 8.jpg	
+Pixel Value - 54970 Image Name - 10.jpg	
+Pixel Value - 72141 Image Name - 15.jpg	
+Pixel Value - 87231 Image Name - 20.jpg	
+Pixel Value - 113292 Image Name - 30.jpg	
+Pixel Value - 133830 Image Name - 40.jpg	
+Pixel Value - 144896 Image Name - 50.jpg	
+Pixel Value - 162548 Image Name - 70.jpg	
+Pixel Value - 190552 Image Name - 90.jpg	
+Pixel Value - 205421 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	

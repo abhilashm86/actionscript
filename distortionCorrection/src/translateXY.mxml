@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="init()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:Move id="moveImage"  target="{panelb}"/>
+
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.effects.Pause;
+			
+			import org.osmf.events.TimeEvent;
+			private var myTimer1:Timer;
+	
+			function image1Translate(event:TimerEvent):void {
+			/*	
+				1) divide an image based on x and y properties 
+				2) apply affine transformations
+				3) merge and show original image and distorted image
+				*/
+				var new_timer1:Timer = new Timer(3000, 1);
+			
+				[Embed("assets/angryface.jpg")]
+				var img:Class;
+				OriginalImage.load(img);
+				var original:Bitmap = Bitmap(OriginalImage.content);
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				var bitmap30X30:BitmapData = new BitmapData(OriginalImage.width/2, OriginalImage.height, false, 0X000000);
+				for (var x:int =0; x < original.bitmapData.width/2; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel(x,y, original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+				var bitmap30X30b:BitmapData = new BitmapData(OriginalImage.width/2, OriginalImage.height, false, 0X000000);
+				
+				//To control other part of the image
+				var temp:int = (original.bitmapData.width/2);
+				
+				for (var x:int = temp ; x <original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30b.setPixel(x-temp , y , original.bitmapData.getPixel(x,y));
+					}
+				} 
+				
+				var bitmap30X30Final:BitmapData = new BitmapData(960, 960, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+				var rect2:Rectangle = new Rectangle();
+				rect1.width = 480;
+				rect1.height = 480;
+				rect2.width = 480;
+				rect2.height = 480;
+				
+				var destpoint:Point = new Point(rect1.width/2, rect1.height/2);
+				var destpoint1:Point = new Point(520, 0);
+				
+				bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+				bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint1,null,null,true);
+				
+				//copying of bitmap bmp210 to a bitmapdata
+				//var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+				panelb.x = 600;
+				panelb.y= 10;
+				panelb.scaleX =panelb.scaleY= 0.5;
+				panelb.source = bmp210b;
+				
+				new_timer1.addEventListener(TimerEvent.TIMER, image1Rotate);
+				new_timer1.start();
+			}
+
+			function image1Rotate(event:TimerEvent):void {
+				var new_timer2:Timer = new Timer(3000, 1);
+
+				[Embed("assets/angryface.jpg")]
+				var img:Class;
+				OriginalImage.load(img);
+				var original:Bitmap = Bitmap(OriginalImage.content);
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				var bitmap30X30:BitmapData = new BitmapData(OriginalImage.width/2, OriginalImage.height, false, 0X000000);
+				for (var x:int =0; x < original.bitmapData.width/2; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel(x,y, original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+				var bitmap30X30b:BitmapData = new BitmapData(OriginalImage.width *2 , OriginalImage.height * 2, false, 0X000000);
+				
+				//To control other part of the image
+				var temp:int = (original.bitmapData.width/2);
+				
+				for (var x:int = temp ; x <original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30b.setPixel(x-temp , y  , original.bitmapData.getPixel(x,y));
+					}
+				} 
+				var bitmap30X30Final:BitmapData = new BitmapData(960, 960, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+				var rect2:Rectangle = new Rectangle();
+				rect1.width = 480;
+				rect1.height = 480;
+				rect2.width = 960;
+				rect2.height = 960;
+				
+				var destpoint:Point = new Point(rect1.width/2, rect1.height/2);
+				var destpoint1:Point = new Point(520, rect1.height/2);
+				
+				
+				bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+				bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint1,null,null,true);	
+				//copying of bitmap bmp210 to a bitmapdata
+				//var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+				panelb.x = 600;
+				panelb.y= 10;
+				panelb.scaleX =panelb.scaleY= 0.5;
+				panelb.rotation = 30;
+				panelb.source = bmp210b;
+				
+				new_timer2.addEventListener(TimerEvent.TIMER, image1Scale);
+				new_timer2.start();
+			}
+			
+			function image1Scale(event:TimerEvent):void {
+				var new_timer3:Timer = new Timer(3000, 1);
+				
+				[Embed("assets/angryface.jpg")]
+				var img:Class;
+				OriginalImage.load(img);
+				var original:Bitmap = Bitmap(OriginalImage.content);
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				var bitmap30X30:BitmapData = new BitmapData(OriginalImage.width/2, OriginalImage.height, false, 0X000000);
+				for (var x:int =0; x < original.bitmapData.width/2; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel(x,y, original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+				var bitmap30X30b:BitmapData = new BitmapData(OriginalImage.width *2 , OriginalImage.height * 2, false, 0X000000);
+				
+				//To control other part of the image
+				var temp:int = (original.bitmapData.width/2);
+				
+				for (var x:int = temp ; x <original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30b.setPixel(x-temp , y * .7 , original.bitmapData.getPixel(x,y));
+					}
+				} 
+				var bitmap30X30Final:BitmapData = new BitmapData(960, 960, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+				var rect2:Rectangle = new Rectangle();
+				rect1.width = 480;
+				rect1.height = 480;
+				rect2.width = 960;
+				rect2.height = 960;
+				
+				var destpoint:Point = new Point(rect1.width/2, rect1.height/2);
+				var destpoint1:Point = new Point(520, rect1.height/2);
+				
+				
+				bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+				bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint1,null,null,true);	
+				//copying of bitmap bmp210 to a bitmapdata
+				//var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+				panelb.x = 600;
+				panelb.y= 10;
+				panelb.rotation = 0;
+				panelb.scaleX =panelb.scaleY= 0.5;
+				panelb.source = bmp210b;
+				
+				new_timer3.addEventListener(TimerEvent.TIMER, image2Translate);
+				new_timer3.start();
+			}
+			
+			function image2Translate():void
+			{
+				
+			}
+	 	
+			function image2Rotate(event:TimerEvent):void {
+				var new_timer3:Timer = new Timer(3000, 1);
+			 
+				[Embed(source='C:/Users/abhilash/Dropbox/Adobe Flex/distortionCorrection/src/assets/angryface.jpg')]
+				var img1:Class;
+				OriginalImage.load(img1);
+				var original:Bitmap = Bitmap(OriginalImage.content);
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				var bitmap30X30:BitmapData = new BitmapData(OriginalImage.width/2, OriginalImage.height, false, 0X000000);
+				for (var x:int =0; x < original.bitmapData.width/2; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel(x,y, original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+				var bitmap30X30b:BitmapData = new BitmapData(OriginalImage.width *2 , OriginalImage.height * 2, false, 0X000000);
+ 				//To control other part of the image
+				var temp:int = (original.bitmapData.width/2);
+				
+				for (var x:int = temp ; x <original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30b.setPixel(x-temp , y  , original.bitmapData.getPixel(x,y));
+					}
+				} 
+				
+				var bitmap30X30Final:BitmapData = new BitmapData(400, 400, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+				var rect2:Rectangle = new Rectangle();
+				rect1.width = 200;
+				rect1.height = 200;
+				rect2.width = 200;
+				rect2.height = 200;
+				
+				var destpoint:Point = new Point(0, 0);
+				var destpoint1:Point = new Point(200, 0);
+			
+				bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+				bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint1,null,null,true);	
+				//copying of bitmap bmp210 to a bitmapdata
+				//var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+				panelb.x = 600;
+				panelb.y= 10;
+				panelb.scaleX =panelb.scaleY= 0.5;
+				
+				panelb.source = bmp210b;
+				OriginalImage.source = "assets/angryface.jpg";
+			
+				moveImg(800, 500);
+				//new_timer3.addEventListener(TimerEvent.TIMER, image2Scale);
+				//new_timer3.start();
+			}
+			public function moveImg(xTemp:int, yTemp:int):void
+			{
+				
+				moveImage.xTo = xTemp;
+				moveImage.yTo = yTemp;
+				moveImage.duration = 6000;
+				moveImage.play();
+				
+			}
+			function image2Scale(event:TimerEvent):void {
+ 				OriginalImage.source= panelb.source ="assets/sadface.jpg";
+				panelb.x = 700;
+				panelb.y= 100;
+			}
+			
+			
+			public function init()
+			{
+				var new_timer:Timer = new Timer(1000, 1);
+				new_timer.addEventListener(TimerEvent.TIMER, image1Translate);
+				new_timer.start();
+			}
+		]]>
+	</fx:Script>
+
+	<s:Label x="600" y="80" text="Distorted Image"/> 
+	<mx:Image id="panelb"/>
+	
+	<s:Label x="50" y="80" text="Original Image"/> 
+	<mx:Image id="OriginalImage" x="100" y="100" width="200" height="200"/>
+
+</s:Application>

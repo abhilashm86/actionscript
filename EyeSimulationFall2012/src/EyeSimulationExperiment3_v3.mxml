@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="init()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.ColorMatrixFilter;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.controls.Alert;
+			import mx.controls.Text;
+			import mx.events.FlexEvent;
+			
+			public var bmp210:Bitmap = new Bitmap();
+			public var pixelString:Array;
+			public var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+				0.3, 0.59, 0.11, 0, 0,
+				0.3, 0.59, 0.11, 0, 0,
+				0, 0, 0, 1, 0];
+			
+			protected function init():void
+			{
+				var url:String = "abc.txt";
+				var loadit:URLLoader = new URLLoader();
+				
+				loadit.addEventListener(Event.COMPLETE, completeHandler);
+				loadit.load(new URLRequest(url));
+				
+				
+				
+				
+			}
+			protected function completeHandler(event:Event):void {
+ 
+				var abc:String = event.target.data.toString().split("\n\r");
+				pixelString = abc.split("\t");
+				application1_creationCompleteHandler();
+				
+				
+  			}
+			
+			protected function application1_creationCompleteHandler():void
+			{
+				// TODO Auto-generated method stub
+		
+				var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+		/* 		for(var i:int = 0;i<30;i= i+1)
+				{
+				
+					for(var j:int = 0; j<30; j = j+1)
+					{
+						var temp:uint = pixelString.pop();		
+						bitmap30X30.setPixel(i, j, temp);
+					}
+				} */
+				
+				
+				var bitmap210X210:BitmapData = new BitmapData(210*2.5*1.5, 210, false, 0X000000);
+				
+				for(var i:int = 0;i<30;i= i+1)
+				{
+					for(var j:int = 0; j<30; j = j+1)
+					{
+						var temp:uint = pixelString.pop();
+						bitmap210X210.setPixel(i *7, j*7,temp);
+ 					}
+				}
+	 			bmp210.bitmapData = bitmap210X210;
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				bmp210.filters = [grayscaleFilter];
+				panel.x = 400;
+				panel.y = 90;
+				
+				panel.addChild(bmp210);
+				
+			}
+
+		]]>
+	</fx:Script>
+	
+	<mx:Image width="100%" height="100%"
+			  id="panel" 
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"/>
+	<mx:HSlider
+		x="10" y="10"
+		id="xScale"
+		value="1" 
+		liveDragging="true"
+		snapInterval="0.1"
+		tickInterval="0.5"
+		minimum="0.1" maximum="3" 
+		/>
+	<mx:HSlider
+		x="10" y="40"
+		id="yScale"
+		value="1" 
+		liveDragging="true"
+		snapInterval="0.1"
+		tickInterval="0.5"
+		minimum="0.1" maximum="3" 
+		/>
+</s:Application>

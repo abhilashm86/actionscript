@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   creationComplete="application1_creationCompleteHandler(event)"  width="100%" height="100%"
+			   fontSize="20">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		
+	
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private var _degreeRange:int = 180;
+			private var matrix:Matrix3D = new Matrix3D();
+			
+			private function invertImage():void {
+				
+				var imageInvert:Matrix3D =  panel.transform.matrix3D;
+				imageInvert.invert();	
+				panelPercieved.transform.matrix3D = imageInvert;
+			}
+			
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				panel.rotationX = 27;
+				panel.rotationY = -16;
+				panel.rotationZ = -9;
+				//invertImage();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Label text="Original Image" left="80" top="5"  textAlign="center"/>
+	<mx:Image
+		
+		left="10" top="20"
+		width="200" height="200"
+		source="assets/fig.10A.png"
+		/>
+	
+	
+	<s:Label text="Perceived Image" left="600" top="10" />
+	<mx:Image
+		id="panelPercieved" 
+		left="500" top="20"
+		width="200" height="200"
+		source="assets/fig.10A.png"
+		
+	 />
+	
+	<s:Label text="Customized Image" right="300" top="300" />
+	<mx:Image
+		id="panel" 
+		right="20" bottom="20"
+		width="200" height="200"
+		source="assets/fig.10A.png"
+	
+	
+	rotationX="{ xRotation.value }"
+	rotationY="{ yRotation.value }"
+	rotationZ="{ zRotation.value }"
+	
+	scaleX="{ xScale.value }"
+	scaleY="{ yScale.value }"
+	scaleZ="{ zScale.value }"
+	
+	z="{ zTranslation.value }" activate="invertImage()" />
+	
+	
+	<mx:HBox
+		id="controlsBox"
+		bottom="15"
+		width="510">
+		
+		<!-- ROTATION --> 
+		<mx:VBox width="100%" height="100%"
+			horizontalAlign="center">
+			
+			<!-- x-rotation -->
+			<mx:Label
+				text="x-rotation: { xRotation.value }"
+				toolTip="click to reset xRotation to 0"
+				click="{ xRotation.value = 0 }"/>
+			
+			<mx:HSlider
+				id="xRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+			<!-- y-rotation -->
+			<mx:Label
+				text="y-rotation: { yRotation.value }"
+				toolTip="click to reset yRotation to 0"
+				click="{ yRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="yRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+			<!-- z-rotation -->
+			<mx:Label
+				text="z-rotation: { zRotation.value }"
+				toolTip="click to reset zRotation to 0"
+				click="{ zRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="zRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+		</mx:VBox>
+		
+		<!-- TRANSLATION -->
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-translation -->
+			<mx:Label
+				text="x-translation: { xTranslation.value }"
+				toolTip="click to reset xTranslation to center"
+				click="{ xTranslation.value = ( this.width - panel.width ) / 2 }" />
+			
+			<mx:HSlider
+				id="xTranslation"
+				value="{ ( this.width - panel.width ) / 2 }" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="0" maximum="{ this.width - panel.width }" 
+				change="invertImage()"/>
+			
+			<!-- y-translation -->
+			<mx:Label
+				text="y-translation: { yTranslation.value }"
+				toolTip="click to reset yTranslation to center"
+				click="{ yTranslation.value = ( this.height - panel.height ) / 2 }" />
+			
+			<mx:HSlider
+				id="yTranslation"
+				value="{ ( this.height - panel.height ) / 2 }" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="0" maximum="{ this.height - panel.height }" 
+				change="invertImage()"/>
+			
+			<!-- z-translation -->
+			<mx:Label
+				text="z-translation: { zTranslation.value }"
+				toolTip="click to reset zTranslation to 0"
+				click="{ zTranslation.value = 0 }" />
+			
+			<mx:HSlider
+				id="zTranslation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -250 }" maximum="{ 500 }"
+				change="invertImage()"/>
+			
+		</mx:VBox>
+		
+		<!-- SCALE -->
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-scale -->
+			<mx:Label
+				text="x-scale: { xScale.value }"
+				toolTip="click to reset xScale to 1"
+				click="{ xScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="xScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval=".5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+			
+			<!-- y-scale -->
+			<mx:Label
+				text="y-scale: { yScale.value }"
+				toolTip="click to reset yScale to 1"
+				click="{ yScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="yScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval="0.5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+			
+			<!-- z-scale -->
+			<mx:Label
+				text="z-scale: { zScale.value }"
+				toolTip="click to reset zScale to 1"
+				click="{ zScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="zScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval="0.5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+		</mx:VBox>
+	</mx:HBox>
+</s:Application>

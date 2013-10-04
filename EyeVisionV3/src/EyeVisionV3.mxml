@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
+	<s:states>
+		<s:State name="phase1"/>
+		<s:State name="phase2"/>
+		<s:State name="database"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	<fx:Script>   
+		<![CDATA[  
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			[Bindable]
+			private var databaseData:ArrayCollection;
+			public var indexData:int = 0;
+			
+			 
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				// Navigate to phase 2
+				databaseData = new ArrayCollection();
+							currentState = "phase2";
+				
+				var a:Number;
+				a =  generateRandomInLimits(-4, 4);
+				
+				//change width of what to show image, use scaleX as the operation
+				whatToImage.scaleX =  1 - (a*0.1);
+				Alert.show(a.toString());
+				
+				//change the brain image 
+				brainImage.scaleX = 1 + (a*0.1);
+			
+				//create a new object
+				 // addItemAt is working for initialvalue = 0
+				databaseData.addItemAt({distortion:"X  " + a, originalimage:"4 * 4", w2simage: "4 * " + (4-a), brainimage: "4 *"+ (4+a),
+					transformw2s: " ",transformbrainimage:""}, indexData);
+				
+ 				 
+ 			}
+
+			static public function generateRandomInLimits(minArg:Number,maxArg:Number):Number
+			{
+				return  Math.round(minArg + (maxArg-minArg)*Math.random());
+			}
+			
+
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+ 
+				currentState = "phase1";
+				
+			}
+
+
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				currentState = "database";
+			}
+
+			private function handleUpdateComplete(e:Event):void
+			{
+				var currLen:uint = database.dataProvider.length;
+				database.scrollToIndex(currLen);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Label text="Phase 1" top="5" left="600" fontSize="20"  text.phase2="Phase 2" includeIn="phase1,phase2"/>
+		<s:Label left="50" top="50" text="Original Image"  includeIn="phase1,phase2"/>
+		<mx:Image id="originalImage" source="images/rect1.png" left="10" top="80" includeIn="phase1,phase2">
+			
+		</mx:Image>  
+		
+		<s:Label right="200" top="50" text="Brain Image"  includeIn="phase1,phase2"/>
+		<mx:Image id="brainImage" source="images/rect1.png" right="100" top="80"   includeIn="phase1,phase2">
+			
+		</mx:Image>  
+		
+		<s:Label left="400" top="400" text="What To Show Image"  includeIn="phase1,phase2"/>
+		<mx:Image id="whatToImage" source="images/rect1.png" left="409" bottom="100" includeIn="phase1,phase2">
+			
+		</mx:Image>  
+		
+		
+		<s:Button label="Next Transformation" left="10" bottom="100" click="button1_clickHandler(event)"  includeIn="phase1,phase2"/>
+		<s:Button label="Go to phase 1" left="10" bottom="60" click="button2_clickHandler(event)" includeIn="phase2, database" />
+		<s:Button label="View Database" left="10" bottom="60" click="button3_clickHandler(event)" includeIn="phase2" />
+	
+	<mx:DataGrid id="database" includeIn="database"  width="852" dataProvider="{databaseData}"
+				 updateComplete="handleUpdateComplete(event)">
+		<mx:columns>
+			<mx:DataGridColumn dataField="distortion" headerText="Distortion"/>
+			<mx:DataGridColumn dataField="originalimage" headerText="Original Image"/>
+			<mx:DataGridColumn dataField="w2simage" headerText="What to See Image"/>
+			<mx:DataGridColumn dataField="brainimage" headerText="Brain Image"/>
+			<mx:DataGridColumn dataField="transformw2s" headerText="Transform What to See Image"/>
+			<mx:DataGridColumn dataField="transformbrainimage"  headerText="Transform Brain Image"/>
+		</mx:columns>
+		
+	</mx:DataGrid>
+</s:Application>

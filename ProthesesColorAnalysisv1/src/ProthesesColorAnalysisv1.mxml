@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:Number id="rLum">0.2225</fx:Number>
+		<fx:Number id="gLum">0.7169</fx:Number>
+		<fx:Number id="bLum">0.0606</fx:Number>		
+
+		<flash.filters:ColorMatrixFilter
+			xmlns:flash.filters="flash.filters.*"
+			id="matrix"
+			matrix="{[rLum, gLum, bLum, 0, 0,
+			rLum, gLum, bLum, 0, 0,
+			rLum, gLum, bLum, 0, 0,
+			0, 0, 0, 1, 0]}" />
+		
+		<mx:BlurFilter blurX="10" quality="3" blurY="10" id="myBlur"/>
+	</fx:Declarations>
+
+	
+<s:Label text="Simulating Prosthetic Vision for Prosthesis Design" top="20" x="400" fontSize="24"/>
+	
+<s:Group top="100">
+	
+
+	<s:Label text="Colored Image" x="250" y="20" />
+	<mx:Image id="originalimage" x="200" y="50" source="shape.jpg"
+			  scaleX="0.5" scaleY="0.5"/>
+	
+	<s:Label text="Greyscaled Image" x="550" y="20" />
+	<mx:Image id="image"
+			  x="500" y="50"
+			  source="shape.jpg" filters="{[matrix]}" scaleX="0.5"
+			  scaleY="0.5"/>
+	
+	<s:Label text="Blurred Image - Gaussian Blur" x="950" y="20" />
+	<mx:Image id="imageBlur"
+			  x="900" y="50"
+			  source="shapeGrey.jpg" filters="{[myBlur]}" scaleX="0.5"
+			  scaleY="0.5" />
+	
+</s:Group>	
+</s:Application>

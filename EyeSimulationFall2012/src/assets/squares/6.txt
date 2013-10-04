@@ -1,0 +1,19 @@
+DTX6 - 0
+DTY6 - 0
+DTZ6 - 0
+DSX6 - 1
+DSY6 - 1
+DSZ6 - 1
+DRX6 - 30
+DRY6 - 0
+DRZ6 - 30
+
+CTX6 - 0
+CTY6 - 0
+CTZ6 - 0
+CSX6 - 1
+CSY6 - 1
+CSZ6 - 1
+CRX6 - 30
+CRY6 - 0
+CRZ6 - 30

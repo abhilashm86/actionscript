@@ -1,0 +1,162 @@
+Pixel Value - 40544 Image Name - 2.jpg	
+Pixel Value - 31697 Image Name - 4.jpg	
+Pixel Value - 23249 Image Name - 6.jpg	
+Pixel Value - 14906 Image Name - 8.jpg	
+Pixel Value - 7333 Image Name - 10.jpg	
+Pixel Value - 18124 Image Name - 15.jpg	
+Pixel Value - 34471 Image Name - 20.jpg	
+Pixel Value - 61844 Image Name - 30.jpg	
+Pixel Value - 82884 Image Name - 40.jpg	
+Pixel Value - 101611 Image Name - 50.jpg	
+Pixel Value - 122607 Image Name - 70.jpg	
+Pixel Value - 151510 Image Name - 90.jpg	
+Pixel Value - 166382 Image Name - 100.jpg	
+
+Estimated image - 10.jpg
+	
+Pixel Value - 19095 Image Name - 2.jpg	
+Pixel Value - 17256 Image Name - 4.jpg	
+Pixel Value - 20336 Image Name - 6.jpg	
+Pixel Value - 26829 Image Name - 8.jpg	
+Pixel Value - 33512 Image Name - 10.jpg	
+Pixel Value - 49122 Image Name - 15.jpg	
+Pixel Value - 64907 Image Name - 20.jpg	
+Pixel Value - 92706 Image Name - 30.jpg	
+Pixel Value - 114221 Image Name - 40.jpg	
+Pixel Value - 132561 Image Name - 50.jpg	
+Pixel Value - 152608 Image Name - 70.jpg	
+Pixel Value - 181508 Image Name - 90.jpg	
+Pixel Value - 196375 Image Name - 100.jpg	
+
+Estimated image - 4.jpg
+	
+Pixel Value - 18542 Image Name - 2.jpg	
+Pixel Value - 26375 Image Name - 4.jpg	
+Pixel Value - 33924 Image Name - 6.jpg	
+Pixel Value - 40542 Image Name - 8.jpg	
+Pixel Value - 47317 Image Name - 10.jpg	
+Pixel Value - 63136 Image Name - 15.jpg	
+Pixel Value - 77436 Image Name - 20.jpg	
+Pixel Value - 104798 Image Name - 30.jpg	
+Pixel Value - 126608 Image Name - 40.jpg	
+Pixel Value - 144412 Image Name - 50.jpg	
+Pixel Value - 163926 Image Name - 70.jpg	
+Pixel Value - 192017 Image Name - 90.jpg	
+Pixel Value - 206886 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 20952 Image Name - 2.jpg	
+Pixel Value - 28801 Image Name - 4.jpg	
+Pixel Value - 36421 Image Name - 6.jpg	
+Pixel Value - 43137 Image Name - 8.jpg	
+Pixel Value - 50014 Image Name - 10.jpg	
+Pixel Value - 65904 Image Name - 15.jpg	
+Pixel Value - 79985 Image Name - 20.jpg	
+Pixel Value - 106011 Image Name - 30.jpg	
+Pixel Value - 128199 Image Name - 40.jpg	
+Pixel Value - 145480 Image Name - 50.jpg	
+Pixel Value - 164648 Image Name - 70.jpg	
+Pixel Value - 191283 Image Name - 90.jpg	
+Pixel Value - 206152 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 23773 Image Name - 2.jpg	
+Pixel Value - 31620 Image Name - 4.jpg	
+Pixel Value - 39261 Image Name - 6.jpg	
+Pixel Value - 45963 Image Name - 8.jpg	
+Pixel Value - 52836 Image Name - 10.jpg	
+Pixel Value - 68818 Image Name - 15.jpg	
+Pixel Value - 83239 Image Name - 20.jpg	
+Pixel Value - 108270 Image Name - 30.jpg	
+Pixel Value - 130273 Image Name - 40.jpg	
+Pixel Value - 147070 Image Name - 50.jpg	
+Pixel Value - 165742 Image Name - 70.jpg	
+Pixel Value - 190569 Image Name - 90.jpg	
+Pixel Value - 205438 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 26631 Image Name - 2.jpg	
+Pixel Value - 34481 Image Name - 4.jpg	
+Pixel Value - 42146 Image Name - 6.jpg	
+Pixel Value - 48912 Image Name - 8.jpg	
+Pixel Value - 55876 Image Name - 10.jpg	
+Pixel Value - 71843 Image Name - 15.jpg	
+Pixel Value - 86343 Image Name - 20.jpg	
+Pixel Value - 110805 Image Name - 30.jpg	
+Pixel Value - 132762 Image Name - 40.jpg	
+Pixel Value - 148973 Image Name - 50.jpg	
+Pixel Value - 166930 Image Name - 70.jpg	
+Pixel Value - 189754 Image Name - 90.jpg	
+Pixel Value - 204623 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 29474 Image Name - 2.jpg	
+Pixel Value - 37380 Image Name - 4.jpg	
+Pixel Value - 45044 Image Name - 6.jpg	
+Pixel Value - 51810 Image Name - 8.jpg	
+Pixel Value - 58739 Image Name - 10.jpg	
+Pixel Value - 74730 Image Name - 15.jpg	
+Pixel Value - 89375 Image Name - 20.jpg	
+Pixel Value - 114062 Image Name - 30.jpg	
+Pixel Value - 135472 Image Name - 40.jpg	
+Pixel Value - 151027 Image Name - 50.jpg	
+Pixel Value - 168239 Image Name - 70.jpg	
+Pixel Value - 188884 Image Name - 90.jpg	
+Pixel Value - 203753 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 32516 Image Name - 2.jpg	
+Pixel Value - 40421 Image Name - 4.jpg	
+Pixel Value - 48207 Image Name - 6.jpg	
+Pixel Value - 55061 Image Name - 8.jpg	
+Pixel Value - 62029 Image Name - 10.jpg	
+Pixel Value - 77986 Image Name - 15.jpg	
+Pixel Value - 92544 Image Name - 20.jpg	
+Pixel Value - 117628 Image Name - 30.jpg	
+Pixel Value - 138598 Image Name - 40.jpg	
+Pixel Value - 153876 Image Name - 50.jpg	
+Pixel Value - 169314 Image Name - 70.jpg	
+Pixel Value - 187943 Image Name - 90.jpg	
+Pixel Value - 202812 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 35604 Image Name - 2.jpg	
+Pixel Value - 43523 Image Name - 4.jpg	
+Pixel Value - 51263 Image Name - 6.jpg	
+Pixel Value - 58136 Image Name - 8.jpg	
+Pixel Value - 65211 Image Name - 10.jpg	
+Pixel Value - 81340 Image Name - 15.jpg	
+Pixel Value - 96031 Image Name - 20.jpg	
+Pixel Value - 121266 Image Name - 30.jpg	
+Pixel Value - 141917 Image Name - 40.jpg	
+Pixel Value - 157960 Image Name - 50.jpg	
+Pixel Value - 169644 Image Name - 70.jpg	
+Pixel Value - 186877 Image Name - 90.jpg	
+Pixel Value - 201746 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+Pixel Value - 39380 Image Name - 2.jpg	
+Pixel Value - 47282 Image Name - 4.jpg	
+Pixel Value - 54997 Image Name - 6.jpg	
+Pixel Value - 61783 Image Name - 8.jpg	
+Pixel Value - 68777 Image Name - 10.jpg	
+Pixel Value - 84633 Image Name - 15.jpg	
+Pixel Value - 99259 Image Name - 20.jpg	
+Pixel Value - 124818 Image Name - 30.jpg	
+Pixel Value - 145954 Image Name - 40.jpg	
+Pixel Value - 161798 Image Name - 50.jpg	
+Pixel Value - 168916 Image Name - 70.jpg	
+Pixel Value - 185702 Image Name - 90.jpg	
+Pixel Value - 200571 Image Name - 100.jpg	
+
+Estimated image - 2.jpg
+	
+
+	

@@ -1,0 +1,19 @@
+DTX8 - 0
+DTY8 - 0
+DTZ8 - 0
+DSX8 - 1
+DSY8 - 1
+DSZ8 - 1
+DRX8 - 0
+DRY8 - -30
+DRZ8 - 0
+
+CTX8 - 0
+CTY8 - 0
+CTZ8 - 0
+CSX8 - 1
+CSY8 - 1
+CSZ8 - 1
+CRX8 - 0
+CRY8 - -30
+CRZ8 - 0

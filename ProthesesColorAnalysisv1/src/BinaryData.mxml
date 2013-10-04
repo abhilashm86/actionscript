@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   xmlns:cc="CustomClasses.*" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		 
+	</fx:Declarations>
+	<s:Label text="Original Image" fontSize="20" x="20" y="0" />
+	<mx:Image source="snellen_chart_duplicate.jpg" width="480" height="480" x="5" y="20" />
+	
+ 	<cc:ImageProcessingV3>
+		
+	</cc:ImageProcessingV3>
+ 		
+ 	
+ </s:Application>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   minWidth="955" minHeight="600" creationComplete="initApp()" 
+			   xmlns:patientservice="services.patientservice.*" xmlns:valueObjects="valueObjects.*">
+	<fx:Script>
+		<![CDATA[
+			import com.example.programmingas3.geometry.MatrixTransformerTranslate;
+			
+			import flash.geom.Matrix;
+			import flash.geom.Rectangle;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.SliderEvent;
+			
+			public var leftValue:Number = 0;
+			public var rightValue:Number = 0;
+			
+			public var fovleft:Number = 0;
+			public var fovright:Number = 0;
+			
+			//string to hold sequence of actions
+			
+			public var sequence_of_actions:String = "";
+			
+			public function initApp():void
+			{
+				resetFields();
+				//setImageMask();		
+				createPatientResult.token = patientService.createPatient('abc');
+			}
+			
+			private function resetFields():void 
+			{
+				dxSlider.value = 0;
+				dySlider.value = 0;
+			}
+			 			
+			private function transformDisplayObject():void 
+			{
+					//assign values to labels to display on the screen
+				
+					//take two variables - leftValue and rightValue to save slider values
+					if(dxSlider.value>0) 
+					{
+						sequence_of_actions = sequence_of_actions + 'L' +dxSlider.value;
+
+						if(leftValue < dxSlider.value)
+						{
+							leftValue = dxSlider.value;
+						}
+					}
+				
+					if(dxSlider.value < 0)
+					{
+						sequence_of_actions = sequence_of_actions + 'R' +dxSlider.value;
+						if(rightValue > dxSlider.value)
+						{
+							rightValue = dxSlider.value;
+
+						}
+						
+					}
+						
+				//	movex.text = dxSlider.value.toString();
+				//  movey.text = dySlider.value.toString();
+				
+					movex.text = leftValue.toString();
+					movey.text = rightValue.toString();
+					seq.text = sequence_of_actions;
+					
+					leftline.left = leftValue;
+					rightline.right = -rightValue;
+					
+					
+					//create a field of view. Compute calculation 
+					
+					var tempMatrix:Matrix = rectangle1.transform.matrix;
+					if(dxSlider.value >0)
+					{
+						tempMatrix = MatrixTransformerTranslate.transform(tempMatrix, dxSlider.value, dySlider.value);
+						rectangle1.transform.matrix = tempMatrix;
+					}
+					
+					if(dxSlider.value <0)
+					{
+						tempMatrix = MatrixTransformerTranslate.transform(tempMatrix, dxSlider.value, dySlider.value);
+						rectangle1.transform.matrix = tempMatrix;
+					}
+					
+					/* service to update values of sequence of actions of user to MySql 
+					
+					
+					*/
+					
+			}		 
+ 
+			
+			protected function dataGrid_creationCompleteHandler(event:FlexEvent):void
+			{
+				 
+				getpatientResult.token = patientService.getpatient();
+ 			}
+			
+ 
+	 
+			
+			 
+			
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				createPatientResult.token = patientService.createPatient('abc');
+			}
+
+			
+			protected function button_clickHandler(event:MouseEvent):void
+			{
+			}			
+
+			
+			
+			protected function formItem_creationCompleteHandler(event:FlexEvent):void
+			{
+				createPatientResult2.token = patientService.createPatient('anc');
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="patientScreen"/>
+	</s:states>
+	<fx:Declarations>
+		<s:CallResponder id="getpatientResult"/>
+		<patientservice:PatientService id="patientService" fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)" showBusyCursor="true"/>
+		<s:CallResponder id="createPatientResult"/>
+		<valueObjects:CustomDatatype id="customDatatype"/>
+		<s:CallResponder id="createPatientResult2"/>
+	 
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Binding source="dataGrid.selectedItem as CustomDatatype" destination="customDatatype"/>
+ 
+ 	
+	<s:Button left="10" top="150" id="buttonShowPatient"  click="currentState='patientScreen'" 
+			  label="Patient Records" enabled="true" includeIn="State1"/>
+	
+	<s:Group left="350" bottom="100" color="black" includeIn="State1">
+		
+	 
+		<s:Rect id="rectangle1" height="100" width="300">
+			<s:fill>
+				<s:LinearGradient rotation="0">
+					<s:GradientEntry color="0x11111" ratio="0" />
+					<s:GradientEntry color="0x11111" ratio=".2" />
+					<s:GradientEntry color="0x11111" ratio=".2" alpha="0.5" />
+				  	<s:GradientEntry color="0x11111" ratio=".8" alpha="0.5" />
+					<s:GradientEntry color="0x11111" ratio=".8" />
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
+	 
+	<s:Group right="350" top="100" color="black" includeIn="State1">
+		
+		<s:Line id="leftline" left="0" height="150">
+			<s:stroke>
+				<s:SolidColorStroke color="0x000000">
+					
+				</s:SolidColorStroke>
+			</s:stroke>
+		</s:Line>
+		
+		<s:Line id="rightline" right="0" height="150">
+			<s:stroke>
+				<s:SolidColorStroke color="0x000000">
+					
+				</s:SolidColorStroke>
+			</s:stroke>
+		</s:Line>
+		
+	<s:Rect id="rectanglefov" height="100" width="300">
+		  <s:fill>
+			<s:LinearGradient rotation="0">
+				<s:GradientEntry color="0x11111" ratio="0" />
+				<s:GradientEntry color="0x11111" ratio=".2" />
+				<s:GradientEntry color="0x11111" ratio=".2" alpha="0.5" />
+				<s:GradientEntry color="0x11111" ratio=".8" alpha="0.5" />
+				<s:GradientEntry color="0x11111" ratio=".8" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	</s:Group>
+	
+	 	
+	<s:Label text="Field of view" left="450" bottom="40" includeIn="State1"/>
+ 
+	<s:Label text="Move X (Pixels):" includeIn="State1"/>
+		<mx:HSlider id="dxSlider" width="170" minimum="-100" maximum="100" 
+					tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+					change="{transformDisplayObject()}" includeIn="State1"/>
+	
+	
+	<s:Label text="Move Y (Pixels)" x="0" y="56" includeIn="State1"/>
+		<mx:HSlider id="dySlider" width="170" minimum="-100" maximum="100" 
+					tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+					change="{transformDisplayObject()}" x="6" y="67" includeIn="State1"/>
+	 
+	<mx:FormItem x="277"  y="97" label="Move X value" includeIn="State1">
+			<s:Label  id="movex"/>
+	</mx:FormItem>
+	<mx:FormItem x="277"  y="170" label="sequence actions" includeIn="State1">
+		<s:Label  id="seq"/>
+	</mx:FormItem>
+	<mx:FormItem x="277"  y="131" label="Move Y value" includeIn="State1">
+		<s:Label  id="movey"/>
+	</mx:FormItem>
+	<mx:DataGrid includeIn="patientScreen" x="243" y="79" id="dataGrid" creationComplete="dataGrid_creationCompleteHandler(event)" dataProvider="{getpatientResult.lastResult}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="id" dataField="id"/>
+			<mx:DataGridColumn headerText="original_image" dataField="original_image"/>
+			<mx:DataGridColumn headerText="username" dataField="username"/>
+			<mx:DataGridColumn headerText="customized_image" dataField="customized_image"/>
+			<mx:DataGridColumn headerText="sequence_of_actions" dataField="sequence_of_actions"/>
+			<mx:DataGridColumn headerText="number_of_times_tested" dataField="number_of_times_tested"/>
+			<mx:DataGridColumn headerText="percieved_image" dataField="percieved_image"/>
+			<mx:DataGridColumn headerText="symptom" dataField="symptom"/>
+		</mx:columns>
+	</mx:DataGrid>
+	 
+  
+	
+</s:Application>

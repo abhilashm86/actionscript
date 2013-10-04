@@ -1,0 +1,19 @@
+DTX9 - 0
+DTY9 - 0
+DTZ9 - 0
+DSX9 - 1
+DSY9 - 1
+DSZ9 - 1
+DRX9 - -30
+DRY9 - 0
+DRZ9 - -30
+
+CTX9 - 0
+CTY9 - 0
+CTZ9 - 0
+CSX9 - 1
+CSY9 - 1
+CSZ9 - 1
+CRX9 - -30
+CRY9 - 0
+CRZ9 - -30

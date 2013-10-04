@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Eye Prostheses Simulation Experiment - 2
+Objectives: 
+1) Add a flow1 and flow2
+2) flow2: Have wave distortion T6 produce distortion later. 
+3) Distortion models considered: T6(wave), T5, T4, 
+
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.utils.getTimer;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.SliderEvent;
+			
+			private var _degreeRange:int = 180;
+			private var matrix:Matrix3D = new Matrix3D();
+			
+			/*filename parameters 
+			*/
+			private var fr:FileReference;
+			//To show next image 
+			private var countImage:int = 1;
+			
+			/*
+			String text : Format it according to needs with \r\n 
+			To store recorded values from transformations
+			*/
+			private var textValues:String = new String();
+			
+			//boolean waveflag to display wave transformation 
+			private var waveFlag:Boolean;
+			private var roiFlag:Boolean;
+			
+			/*Type of flow - 2 
+			1 - Distort image first and then sample
+			2 - Sample the image and then distort
+			*/
+			
+			public var task:String = new String();
+			public var distortionType:String = new String();
+			public var pictureID:String = new String();
+			public var resMode:String = new String();
+			public var distortionMatrix:String = new String();
+			public var flowID:int = new int();
+			public var distortionCorrection:String = new String();
+			public var timeTaken:Number = new Number();
+			public var currentTime:int = new int();
+			
+			
+			public var bmp210:Bitmap = new Bitmap();
+			public var bmp210ROI:Bitmap = new Bitmap();
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				currentState = "welcomeState"; 
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = "experimentState";
+				
+				// First line of text in the txt file
+				textValues = "Experiment 2 values - Simulating Prosthetic Vision with Distortions for Retinal Prosthesis Design" + "\r\n\r\n";
+				textValues = textValues + "Name of Person: " + namePerson.text + "\r\n\r\n";  
+				// possible combinations are 35 without flow id
+				
+				roiFlag = false;
+				waveFlag = false;
+				resMode = "Normal";
+				currentTime = getTimer();
+				initProcessing();
+			}
+			
+			private function invertImage():void {
+				
+				var imageInvert:Matrix3D =  panel.transform.matrix3D;
+				//imageInvert.invert();	
+			}
+			
+			private function onSaveClick():void
+			{
+				/*
+				To save the recorded values to a text file
+				*/
+				
+				//create the FileReference instance
+				fr = new FileReference();
+				
+				//listen for the file has been saved
+				//	fr.addEventListener(Event.COMPLETE, onFileSave);
+				
+				//listen for when then cancel out of the save dialog
+				//fr.addEventListener(Event.CANCEL,onCancel);
+				
+				//listen for any errors that occur while writing the file
+				//fr.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+				
+				//open a native save file dialog, using the default file name
+				
+				var tempString:String;
+				//tempString = "abhi \t ram \r\n \nsita";
+				
+				fr.save(textValues, namePerson.text+'.txt');
+			}
+			
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				if(countImage == 32)
+				{
+					Alert.show("End of experiment, thanks for participating " +namePerson.text + "!!");
+				}
+				
+				countImage = countImage + 1;
+				waveFlag = false;
+				roiFlag = false;
+				
+				/*
+				1) write all slider values to text file
+				2) Write all martix value 
+				*/
+				
+				/*
+				Matrix representation - http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Matrix.html
+				a : Number
+				The value that affects the positioning of pixels along the x axis when scaling or rotating an image.
+				Matrix
+				b : Number
+				The value that affects the positioning of pixels along the y axis when rotating or skewing an image.
+				Matrix
+				c : Number
+				The value that affects the positioning of pixels along the x axis when rotating or skewing an image.
+				Matrix
+				d : Number
+				The value that affects the positioning of pixels along the y axis when scaling or rotating an image.
+				Matrix
+				tx : Number
+				The distance by which to translate each point along the x axis.
+				Matrix
+				ty : Number
+				The distance by which to translate each point along the y axis.
+				*/
+				
+				timeTaken = (getTimer() - currentTime)/ 1000.0000 ;
+				
+				distortionCorrection = "a = " + panel.transform.matrix.a + '\r\n' + 
+					"b = " + panel.transform.matrix.b + '\r\n' + "c= " + panel.transform.matrix.c +'\r\n' +"d =" +panel.transform.matrix.d +'\r\n' +
+					"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = " +panel.transform.matrix.ty + "\r\n";
+				
+				textValues = textValues +  "Task = " + task + "\r\n" + "Distortion Type = " + distortionType +"\r\n"+
+					"PictureID = "+  pictureID + "\r\n" + "Resolution Mode = " + resMode + "\r\n" +
+					 "Flow ID = " + flowID.toString() + "\r\n" + 
+					"Distortion Matrix Values = \r\n" + distortionMatrix 
+					+ "Corrected Distortion Values = \r\n" + distortionCorrection + "Time Taken = " + timeTaken.toString() + "\r\n";
+				
+				currentTime = getTimer();
+				resMode = "Normal";
+				initProcessing();
+			}
+			
+			protected function initProcessing():void
+			{	
+				//to convert image to greyscale
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				var image:Image = new Image();
+				if(countImage ==1)
+				{
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					
+					waveFlag = true;
+				
+					flowID = 1;
+					[Embed("assets/geometricalShape.png")]
+
+					var img1:Class;
+					image.load(img1);
+					
+					distortionType = "T4";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = " +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==2)
+				{
+					flowID = 2;
+					[Embed("assets/angryface.jpg")]
+					var img2:Class;
+					image.load(img2);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+					
+				}
+				
+				if(countImage ==3)
+				{
+				
+					flowID = 1;
+					panel.scaleX = 0.5;
+					panel.scaleY = 0.5;
+					panel.scaleZ = 0.5;		
+					[Embed("assets/snellen_chart.jpg")]
+					var img3:Class;
+					image.load(img3);
+					pictureID = 'snellen_chart.jpg';
+					distortionType = "T5";
+					task = "sc";
+					
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==4)
+				{
+					flowID = 2; 
+					roiFlag = true;
+					resMode = "ROI";
+					[Embed("assets/snellen_chart.jpg")]
+					var img4:Class;
+					image.load(img4);
+					
+					distortionType = "T4";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==5)
+				{
+					flowID = 2;
+				
+					[Embed("assets/sadface.jpg")]
+					var img5:Class;
+					image.load(img5);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==6)
+				{
+					//wave implementation
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					
+					flowID = 1;
+					waveFlag = true;
+					
+					[Embed("assets/geometricalShape.png")]
+					var img6:Class;
+					image.load(img6);
+					
+					distortionType = "T6";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==7)
+				{
+					flowID = 2;
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img7:Class;
+					image.load(img7);
+					
+					distortionType = "T4";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==8)
+				{
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					
+					flowID = 1;
+					waveFlag = true;
+
+					[Embed("assets/sadface.jpg")]
+					var img8:Class;
+					image.load(img8);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==9)
+				{
+					flowID = 1;
+					panel.scaleX = 0.5;
+					panel.scaleY = 0.5;
+					panel.scaleZ = 0.5;
+					[Embed("assets/happyface.jpg")]
+					var img9:Class;
+					image.load(img9);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==10)
+				{
+					flowID = 1;
+					
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					
+					waveFlag = true;
+
+					
+					[Embed("assets/angryface.jpg")]
+					var img10:Class;
+					image.load(img10);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+					
+				}
+				
+				if(countImage ==11)
+				{
+					flowID = 1;
+				
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					
+					[Embed("assets/happyface.jpg")]
+					var img11:Class;
+					image.load(img11);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+					
+				}
+				
+				if(countImage ==12)
+				{
+										
+					flowID = 2;
+					[Embed("assets/sadface.jpg")]
+					var img12:Class;
+					image.load(img12);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+					
+				}
+				
+				if(countImage ==13)
+				{
+					flowID = 1;
+					panel.scaleX = 0.5;
+					panel.scaleY = 0.5;
+					panel.scaleZ = 0.5;
+					
+					[Embed("assets/angryface.jpg")]
+					var img13:Class;
+					image.load(img13);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}
+				
+				if(countImage ==14)
+				{
+					flowID =2;
+					[Embed("assets/geometricalShape.png")]
+					var img14:Class;
+					image.load(img14);
+					
+					distortionType = "T5";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}	
+				if(countImage ==15)
+				{
+					flowID =1;
+					
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					
+					waveFlag = true;
+					
+					task = "fr";
+					[Embed("assets/happyface.jpg")]
+					var img15:Class;
+					image.load(img15);
+					
+					distortionType = "T6";
+					pictureID = 'happyface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}
+				
+				if(countImage ==16)
+				{
+					flowID =2;
+					waveFlag = true;
+					[Embed("assets/snellen_chart.jpg")]
+					var img16:Class;
+					image.load(img16);
+					
+					distortionType = "T6";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}
+				
+				if(countImage ==17)
+				{
+					flowID =1;
+					
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					waveFlag = true;
+					
+					[Embed("assets/snellen_chart.jpg")]
+					var img17:Class;
+					image.load(img17);
+					
+					distortionType = "T6";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}		
+				
+				if(countImage ==18)
+				{
+					flowID = 2;
+					waveFlag = true;
+					
+					[Embed("assets/happyface.jpg")]
+					var img18:Class;
+					image.load(img18);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+					
+					
+				}		
+				if(countImage ==19)
+				{
+					flowID = 1;
+					panel.scaleX = 0.5;
+					panel.scaleY = 0.5;
+					panel.scaleZ = 0.5;
+					[Embed("assets/geometricalShape.png")]
+					var img19:Class;
+					image.load(img19);
+					task = "sr";
+					distortionType = "T5";
+					
+					pictureID = 'geometricalShape.png';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==20)
+				{
+				
+					flowID = 2;
+					
+					[Embed("assets/angryface.jpg")]
+					var img20:Class;
+					image.load(img20);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==21)
+				{
+					flowID =1;
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					[Embed("assets/snellen_chart.jpg")]
+					var img21:Class;
+					image.load(img21);
+					
+					distortionType = "T4";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==22)
+				{
+					flowID =2;
+					waveFlag = true;
+					
+					[Embed("assets/geometricalShape.png")]
+					var img22:Class;
+					image.load(img22);
+					
+					distortionType = "T6";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==23)
+				{
+					flowID = 2;
+					
+					[Embed("assets/sadface.jpg")]
+					var img23:Class;
+					image.load(img23);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}
+				
+				
+				if(countImage ==24)
+				{
+					flowID = 1;
+					panel.scaleX = 0.5;
+					panel.scaleY = 0.5;
+					panel.scaleZ = 0.5;
+					[Embed("assets/snellen_chart.jpg")]
+					var img24:Class;
+					image.load(img24);
+					
+					distortionType = "T5";
+					task = "sc";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==25)
+				{
+				
+					flowID = 1;
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					[Embed("assets/angryface.jpg")]
+					var img25:Class;
+					image.load(img25);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}		
+				if(countImage ==26)
+				{
+					flowID = 1;
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					[Embed("assets/geometricalShape.png")]
+					var img26:Class;
+					image.load(img26);
+					
+					distortionType = "T4";
+					task = "sr";
+					pictureID = 'geometricalShape.png';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==27)
+				{
+					
+					flowID = 1;
+					roiFlag = true;
+					waveFlag = true;
+					
+					resMode = "ROI";
+					[Embed("assets/snellen_chart.jpg")]
+					var img27:Class;
+					image.load(img27);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'snellen_chart.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}
+				if(countImage ==28)
+				{
+					panel.removeChild(bmp210ROI);
+					
+					flowID = 1;
+					panel.scaleX = 2;
+					panel.scaleY = 2;
+					panel.scaleZ = 2;
+					[Embed("assets/sadface.jpg")]
+					var img28:Class;
+					image.load(img28);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'sadface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}	
+				if(countImage ==29)
+				{
+					flowID = 2;
+					
+					[Embed("assets/happyface.jpg")]
+					var img29:Class;
+					image.load(img29);
+					
+					distortionType = "T4";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+					
+				}	
+				if(countImage ==30)
+				{
+					flowID = 2;
+					waveFlag = true;
+					
+					[Embed("assets/angryface.jpg")]
+					var img30:Class;
+					image.load(img30);
+					
+					distortionType = "T6";
+					task = "fr";
+					pictureID = 'angryface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+				if(countImage ==31)
+				{
+					flowID = 2;
+					
+					[Embed("assets/happyface.jpg")]
+					var img31:Class;
+					image.load(img31);
+					
+					distortionType = "T5";
+					task = "fr";
+					pictureID = 'happyface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}
+				
+				if(countImage ==32)
+				{
+					flowID = 2;
+					waveFlag = true;
+					
+					distortionType = "T6";
+					task = "fr";
+					[Embed("assets/sadface.jpg")]
+					var img32:Class;
+					image.load(img32);
+					
+					pictureID = 'sadface.jpg';
+					distortionMatrix = "a = " + panel.transform.matrix.a + '\r\n' + 
+						"b = " + panel.transform.matrix.b + '\r\n' + "c = " + panel.transform.matrix.c +'\r\n' +"d = " +panel.transform.matrix.d +'\r\n' +
+						"tx = "+panel.transform.matrix.tx + '\r\n'+ "ty = "  +panel.transform.matrix.ty + "\r\n";
+				}		
+			
+		
+				if(roiFlag == true)
+				{
+							//panel.removeChild(bmp210);
+							
+							var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+							image.content.filters = [grayscaleFilter];
+							var original:Bitmap = Bitmap(image.content);
+							
+							var red:Number = 0;
+							var green:Number = 0;
+							var blue:Number = 0;
+							
+							var count:Number = 0;
+							var pixel:Number;
+							
+							var printColors:Array = new Array();
+							var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+							
+							for (var x:int = 0; x < original.bitmapData.width; x = x+8)
+							{
+								for (var y:int = 200; y < original.bitmapData.height; y = y+8)
+								{ 
+									bitmap30X30.setPixel(x/8,(y/8)-25, original.bitmapData.getPixel(x,y));
+								}
+							}
+							//copy image 30 X 30 to new 210 X 210 image
+							
+							var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+							
+							
+							var pixelArray:Array = new Array();
+							
+							for(var h:int =0; h< bitmap30X30.width; h= h+1)
+							{
+								for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+								{
+									//store pixel values in array 
+									pixelArray.push(bitmap30X30.getPixel(h,k));
+									
+								}
+							}
+							
+							// write the pixel values to 210 X 210 image
+							// reverse array to get elements first
+							pixelArray.reverse();
+							
+							for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+							{
+								for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+								{
+									if(waveFlag == true)
+									{
+										var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+										bitmap210X210.setPixel(temp,jj,pixelArray.pop());
+									}
+									else
+										
+										bitmap210X210.setPixel(ii,jj,pixelArray.pop());
+									
+								}
+							}
+							
+							bmp210ROI.bitmapData = bitmap210X210;	
+							
+							// Gaussian blur
+							var blur1:BlurFilter = new BlurFilter();
+							blur1.blurX = 2;
+							blur1.blurY = 2;
+							blur1.quality = BitmapFilterQuality.MEDIUM;
+							bmp210.filters = [blur1];
+							
+							
+							
+							panel.x = 400;
+							panel.y = 90;
+							
+							panel.addChild(bmp210ROI);	
+					
+				}//end of (ROI=true) condition 
+					
+					
+					
+				else if(roiFlag == false && flowID == 2)
+				{
+					var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+					image.content.filters = [grayscaleFilter];
+					var original:Bitmap = Bitmap(image.content);
+					
+					var red:Number = 0;
+					var green:Number = 0;
+					var blue:Number = 0;
+					
+					var count:Number = 0;
+					var pixel:Number;
+					
+					var printColors:Array = new Array();
+					
+					//new bitmap for 30 X 30
+					var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+					
+					for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+					{
+						for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+						{
+							bitmap30X30.setPixel((x/16)  ,(y/16) , original.bitmapData.getPixel(x,y));
+							
+						}
+					}
+					//copy image 30 X 30 to new 210 X 210 image
+					
+					var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+					var pixelArray:Array = new Array();
+					
+					for(var h:int =0; h< bitmap30X30.width; h= h+1)
+					{
+						for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+						{
+							//store pixel values in array 
+							pixelArray.push(bitmap30X30.getPixel(h,k));
+						}
+					}
+					
+					// write the pixel values to 210 X 210 image
+					// reverse array to get elements first
+					pixelArray.reverse();
+					
+					for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+					{
+						for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+						{
+							//to get 30 X 30 pixels
+							//var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+							
+							if(waveFlag == true)
+							{
+								var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+								bitmap210X210.setPixel(temp,jj,pixelArray.pop());
+							}
+							else
+								
+								bitmap210X210.setPixel(ii,jj,pixelArray.pop());
+						}
+						
+					} 
+					
+					/*scale the image: 
+					If T4 and flow id = 2 - scale up 
+					If T5 and flow id = 2 - sclae down 
+					
+					*/
+					
+					if(flowID == 2 && distortionType == "T4")
+					{
+							var bitmapScale:BitmapData = new BitmapData((bitmap210X210.width*2),(bitmap210X210.height*2), false, 0X000000);
+							for (var x:int = 0; x < bitmapScale.width; x = x+ 1)
+							{
+								for (var y:int = 0; y < bitmapScale.height; y = y+1)
+								{
+								
+									if(waveFlag == false){
+										bitmapScale.setPixel(x * 2 ,y *2 , bitmap210X210.getPixel(x,y));
+										bitmapScale.setPixel((x * 2) + 1 ,(y *2) , bitmap210X210.getPixel(x,y));
+										bitmapScale.setPixel((x * 2) ,(y *2)+ 1 , bitmap210X210.getPixel(x,y));
+										bitmapScale.setPixel((x * 2) + 1 ,(y *2)+ 1 , bitmap210X210.getPixel(x,y));	
+									}	
+									if(waveFlag == true){
+										var temp:int = x + 20 * Math.sin(((2* Math.PI)/30) * y);
+										
+										bitmapScale.setPixel(temp * 2 ,temp *2 , bitmap210X210.getPixel(x,y));
+										bitmapScale.setPixel((temp * 2) + 1 ,(y *2) , bitmap210X210.getPixel(x,y));
+										bitmapScale.setPixel((temp * 2) ,(y *2)+ 1 , bitmap210X210.getPixel(x,y));
+										bitmapScale.setPixel((temp * 2) + 1 ,(y *2)+ 1 , bitmap210X210.getPixel(x,y));	
+									}	
+									
+									
+								}
+							}
+							bmp210.bitmapData = bitmapScale;
+					}		
+				
+					if(flowID == 2 && distortionType == "T5")
+					{
+						var bitmapScale:BitmapData = new BitmapData((bitmap210X210.width),(bitmap210X210.height), false, 0X000000);
+						for (var x:int = 0; x < bitmap210X210.width; x = x+ 1)
+						{
+							for (var y:int = 0; y < bitmap210X210.height; y = y+1)
+							{
+								
+								if(waveFlag == false){
+									bitmapScale.setPixel(x/2 ,y/2  , bitmap210X210.getPixel(x,y));
+									bitmapScale.setPixel(x/2 + 1 ,y/2 , bitmap210X210.getPixel(x,y));
+									bitmapScale.setPixel(x/2  ,y/2+ 1 , bitmap210X210.getPixel(x,y));
+									bitmapScale.setPixel(x/2 + 1 ,y/2 + 1 , bitmap210X210.getPixel(x,y));	
+								}
+								if(waveFlag == true){
+									var temp:int = x + 20 * Math.sin(((2* Math.PI)/30) * y);
+									bitmapScale.setPixel(temp/2 ,y/2  , bitmap210X210.getPixel(x,y));
+									bitmapScale.setPixel(temp/2 + 1 ,y/2 , bitmap210X210.getPixel(x,y));
+									bitmapScale.setPixel(temp/2  ,y/2+ 1 , bitmap210X210.getPixel(x,y));
+									bitmapScale.setPixel(temp/2 + 1 ,y/2 + 1 , bitmap210X210.getPixel(x,y));	
+								}
+								
+							}
+						}
+						bmp210.bitmapData = bitmapScale;
+					}		
+						
+					// Gaussian blur
+					var blur1:BlurFilter = new BlurFilter();
+					blur1.blurX = 2;
+					blur1.blurY = 2;
+					blur1.quality = BitmapFilterQuality.MEDIUM;
+					bmp210.filters = [blur1];
+					
+					
+					 
+					panel.x = 400;
+					panel.y = 90;
+					
+					panel.scaleX = 1.5;
+					panel.scaleY = 1.5;
+					
+					panel.addChild(bmp210);
+				
+				}//end of if(roiFlag) condition
+				
+				
+			
+				/* 
+					condition for Flow ID = 1 and  T4 or T5 				
+				*/
+				
+				if ((flowID == 1 && distortionType == "T4") || (flowID == 1 && distortionType == "T5")) 
+				{
+								var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+								image.content.filters = [grayscaleFilter];
+								var original:Bitmap = Bitmap(image.content);
+								
+								var red:Number = 0;
+								var green:Number = 0;
+								var blue:Number = 0;
+								
+								var count:Number = 0;
+								var pixel:Number;
+								
+								var printColors:Array = new Array();
+								
+								//new bitmap for 30 X 30
+								var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+								
+								for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+								{
+									for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+									{
+										bitmap30X30.setPixel((x/16)  ,(y/16) , original.bitmapData.getPixel(x,y));
+										
+									}
+								}
+								//copy image 30 X 30 to new 210 X 210 image
+								
+								var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+								var pixelArray:Array = new Array();
+								
+								for(var h:int =0; h< bitmap30X30.width; h= h+1)
+								{
+									for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+									{
+										//store pixel values in array 
+										pixelArray.push(bitmap30X30.getPixel(h,k));
+									}
+								}
+								
+								// write the pixel values to 210 X 210 image
+								// reverse array to get elements first
+								pixelArray.reverse();
+								
+								for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+								{
+									for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+									{
+										//to get 30 X 30 pixels
+										//var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+										
+										if(waveFlag == true)
+										{
+											var temp:int = ii + 20 * Math.sin(((2* Math.PI)/30) * jj);
+											bitmap210X210.setPixel(temp,jj,pixelArray.pop());
+										}
+										else
+											
+											bitmap210X210.setPixel(ii,jj,pixelArray.pop());
+									}
+									
+								}
+								bmp210.bitmapData = bitmap210X210;
+								// Gaussian blur
+								var blur1:BlurFilter = new BlurFilter();
+								blur1.blurX = 2;
+								blur1.blurY = 2;
+								blur1.quality = BitmapFilterQuality.MEDIUM;
+								bmp210.filters = [blur1];
+								
+								
+								var imageE:Image = new Image();
+								imageE.addChild(bmp210);
+								imageE.id = "bitmap210";
+								
+								panel.x = 400;
+								panel.y = 90;
+								
+								panel.scaleX = 1.5;
+								panel.scaleY = 1.5;
+								
+								panel.addChild(bmp210);
+					
+				} //End of flowID==1 T4/T5 check condition
+				
+			}
+			
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="welcomeState"/>
+		<s:State name="experimentState"/>
+	</s:states>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Label includeIn="welcomeState" top="100" left="400" 
+			 text="Simulating Prosthetic Vision with Distortions for &#13;&#009;&#009; Retinal Prosthesis Design"  
+			 fontSize="24"/>
+	<s:Label includeIn="welcomeState" text="Enter Name" top="195" left="550" />
+	
+	<s:TextInput includeIn="welcomeState" id="namePerson" top="190" left="630"/>
+	<s:Button includeIn="welcomeState" label="Start" top="250" left="630" click="button1_clickHandler(event)"/>
+	
+	<mx:Image width="100%" height="100%"
+			  id="panel" 
+			  rotationX="{ xRotation.value }"
+			  rotationY="{ yRotation.value }"
+			  rotationZ="{ zRotation.value }"
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"
+			  scaleZ="{ zScale.value }"
+			  z="{ zTranslation.value }" activate="invertImage()"  includeIn="experimentState"/>
+	
+	
+	<!--
+	Write all controls for correction - Do write in a group, easy to include/exclude
+	-->
+	<s:Group id="controlsCorrection" includeIn="experimentState" 
+			 bottom="50" left="10">
+		<s:Label includeIn="experimentState" left="150" text="Controls for correction"
+				 fontSize="18"/> 
+		
+		<mx:HBox top="15">
+			<!-- ROTATION --> 
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-rotation -->
+				<mx:Label
+					text="x-rotation: { xRotation.value }"
+					toolTip="click to reset xRotation to 0"
+					click="{ xRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="xRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+				<!-- y-rotation -->
+				<mx:Label
+					text="y-rotation: { yRotation.value }"
+					toolTip="click to reset yRotation to 0"
+					click="{ yRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="yRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+				<!-- z-rotation -->
+				<mx:Label
+					text="z-rotation: { zRotation.value }"
+					toolTip="click to reset zRotation to 0"
+					click="{ zRotation.value = 0 }" />
+				
+				<mx:HSlider
+					id="zRotation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+					change="invertImage()"/>
+				
+			</mx:VBox>
+			
+			<!-- TRANSLATION -->
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-translation -->
+				<mx:Label
+					text="x-translation: { xTranslation.value }"
+					toolTip="click to reset xTranslation to center"
+					click="{ xTranslation.value = ( this.width - panel.width ) / 2 }" />
+				
+				<mx:HSlider
+					id="xTranslation"
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					value="0"
+					minimum="-30" maximum="30" 
+					change="{panel.x =panel.x+ xTranslation.value}"/>
+				
+				<!-- y-translation -->
+				<mx:Label
+					text="y-translation: { yTranslation.value }"
+					toolTip="click to reset yTranslation to center"
+					click="{ yTranslation.value = ( this.height - panel.height ) / 2 }" />
+				
+				<mx:HSlider
+					id="yTranslation"					 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					value="10"
+					minimum="-30" maximum="30" 
+					change="{panel.y =panel.y+ yTranslation.value}"/>
+				
+				<!-- z-translation -->
+				<mx:Label
+					text="z-translation: { zTranslation.value }"
+					toolTip="click to reset zTranslation to 0"
+					click="{ zTranslation.value = 0 }" />
+				
+				<mx:HSlider
+					id="zTranslation"
+					value="0" 
+					liveDragging="true"
+					snapInterval="1"
+					tickInterval="45"
+					minimum="{-30}" maximum="{ 30 }"
+					change="{panel.z = panel.z + zTranslation.value}"/>
+				
+			</mx:VBox>
+			
+			<!-- SCALE -->
+			<mx:VBox
+				horizontalAlign="center">
+				
+				<!-- x-scale -->
+				<mx:Label
+					text="x-scale: { xScale.value }"
+					toolTip="click to reset xScale to 1"
+					click="{ xScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="xScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval=".5"
+					minimum="0.1" maximum="3" 
+					change="invertImage()"/>
+				
+				<!-- y-scale -->
+				<mx:Label
+					text="y-scale: { yScale.value }"
+					toolTip="click to reset yScale to 1"
+					click="{ yScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="yScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval="0.5"
+					minimum="0.1" maximum="3" 
+					change="invertImage()"/>
+				
+				<!-- z-scale -->
+				<mx:Label
+					text="z-scale: { zScale.value }"
+					toolTip="click to reset zScale to 1"
+					click="{ zScale.value = 1 }" />
+				
+				<mx:HSlider
+					id="zScale"
+					value="1" 
+					liveDragging="true"
+					snapInterval="0.1"
+					tickInterval="0.5"
+					minimum="0.1" maximum="3" 
+					change="invertImage()"/>
+			</mx:VBox>
+		</mx:HBox>
+	</s:Group>
+	<!-- 
+	button to save all the recorded slider values
+	button for moving onto next image
+	-->	
+	<s:Button includeIn="experimentState" label="Save File" right="10" bottom="10" id="saveButton" 
+			  click="onSaveClick()" enabled="true"/>
+	<s:Button  includeIn="experimentState" label="Next Image" top="100" left="0" 
+			   click="button2_clickHandler(event)"/>
+	
+</s:Application>

@@ -1,0 +1,260 @@
+
+Pixel Value - 203113 Image Name - 0.jpg
+	
+
+Pixel Value - 203113 Image Name - 0.jpg
+Pixel Value - 196381 Image Name - 2.jpg	
+Pixel Value - 191421 Image Name - 4.jpg	
+Pixel Value - 186454 Image Name - 6.jpg	
+Pixel Value - 181431 Image Name - 8.jpg	
+Pixel Value - 176282 Image Name - 10.jpg	
+Pixel Value - 162010 Image Name - 15.jpg	
+Pixel Value - 148389 Image Name - 20.jpg	
+Pixel Value - 119854 Image Name - 30.jpg	
+Pixel Value - 0 Image Name - 40.jpg	
+Pixel Value - 199161 Image Name -XYX 2.jpg	
+Pixel Value - 198328 Image Name -XYX 4.jpg	
+Pixel Value - 197314 Image Name -XYX 6.jpg	
+Pixel Value - 196237 Image Name -XYX 8.jpg	
+Pixel Value - 195745 Image Name -XYX 10.jpg	
+Pixel Value - 195375 Image Name -XYX 15.jpg	
+Pixel Value - 194792 Image Name -XYX 20.jpg	
+Pixel Value - 196123 Image Name -XYX 30.jpg	
+Pixel Value - 191820 Image Name -XYX 40.jpg	
+
+Estimated image - 40.jpg
+	
+
+Pixel Value - 208648 Image Name - 0.jpg
+	
+
+Pixel Value - 208648 Image Name - 0.jpg
+Pixel Value - 202740 Image Name - 2.jpg	
+Pixel Value - 198012 Image Name - 4.jpg	
+Pixel Value - 193154 Image Name - 6.jpg	
+Pixel Value - 187667 Image Name - 8.jpg	
+Pixel Value - 182434 Image Name - 10.jpg	
+Pixel Value - 168591 Image Name - 15.jpg	
+Pixel Value - 154808 Image Name - 20.jpg	
+Pixel Value - 126372 Image Name - 30.jpg	
+Pixel Value - 99246 Image Name - 40.jpg	
+Pixel Value - 205225 Image Name -XYX 2.jpg	
+Pixel Value - 203174 Image Name -XYX 4.jpg	
+Pixel Value - 201603 Image Name -XYX 6.jpg	
+Pixel Value - 200126 Image Name -XYX 8.jpg	
+Pixel Value - 199216 Image Name -XYX 10.jpg	
+Pixel Value - 197373 Image Name -XYX 15.jpg	
+Pixel Value - 197172 Image Name -XYX 20.jpg	
+Pixel Value - 197635 Image Name -XYX 30.jpg	
+Pixel Value - 181271 Image Name -XYX 40.jpg	
+
+Estimated image - 40.jpg
+	
+
+Pixel Value - 217519 Image Name - 0.jpg
+	
+
+Pixel Value - 217519 Image Name - 0.jpg
+Pixel Value - 212741 Image Name - 2.jpg	
+Pixel Value - 207936 Image Name - 4.jpg	
+Pixel Value - 202909 Image Name - 6.jpg	
+Pixel Value - 197611 Image Name - 8.jpg	
+Pixel Value - 192321 Image Name - 10.jpg	
+Pixel Value - 178475 Image Name - 15.jpg	
+Pixel Value - 164609 Image Name - 20.jpg	
+Pixel Value - 136591 Image Name - 30.jpg	
+Pixel Value - 109026 Image Name - 40.jpg	
+Pixel Value - 214478 Image Name -XYX 2.jpg	
+Pixel Value - 212390 Image Name -XYX 4.jpg	
+Pixel Value - 210340 Image Name -XYX 6.jpg	
+Pixel Value - 208932 Image Name -XYX 8.jpg	
+Pixel Value - 207654 Image Name -XYX 10.jpg	
+Pixel Value - 206128 Image Name -XYX 15.jpg	
+Pixel Value - 205342 Image Name -XYX 20.jpg	
+Pixel Value - 200774 Image Name -XYX 30.jpg	
+Pixel Value - 157757 Image Name -XYX 40.jpg	
+
+Estimated image - 40.jpg
+	
+
+Pixel Value - 224647 Image Name - 0.jpg
+	
+
+Pixel Value - 224647 Image Name - 0.jpg
+Pixel Value - 220791 Image Name - 2.jpg	
+Pixel Value - 215912 Image Name - 4.jpg	
+Pixel Value - 210906 Image Name - 6.jpg	
+Pixel Value - 205636 Image Name - 8.jpg	
+Pixel Value - 200316 Image Name - 10.jpg	
+Pixel Value - 186619 Image Name - 15.jpg	
+Pixel Value - 172801 Image Name - 20.jpg	
+Pixel Value - 144560 Image Name - 30.jpg	
+Pixel Value - 116836 Image Name - 40.jpg	
+Pixel Value - 222417 Image Name -XYX 2.jpg	
+Pixel Value - 219720 Image Name -XYX 4.jpg	
+Pixel Value - 217762 Image Name -XYX 6.jpg	
+Pixel Value - 216145 Image Name -XYX 8.jpg	
+Pixel Value - 214722 Image Name -XYX 10.jpg	
+Pixel Value - 212538 Image Name -XYX 15.jpg	
+Pixel Value - 209773 Image Name -XYX 20.jpg	
+Pixel Value - 186453 Image Name -XYX 30.jpg	
+Pixel Value - 129816 Image Name -XYX 40.jpg	
+
+Estimated image - 40.jpg
+	
+
+Pixel Value - 228179 Image Name - 0.jpg
+	
+
+Pixel Value - 228179 Image Name - 0.jpg
+Pixel Value - 224742 Image Name - 2.jpg	
+Pixel Value - 219845 Image Name - 4.jpg	
+Pixel Value - 214786 Image Name - 6.jpg	
+Pixel Value - 209633 Image Name - 8.jpg	
+Pixel Value - 204301 Image Name - 10.jpg	
+Pixel Value - 190585 Image Name - 15.jpg	
+Pixel Value - 176744 Image Name - 20.jpg	
+Pixel Value - 148520 Image Name - 30.jpg	
+Pixel Value - 120988 Image Name - 40.jpg	
+Pixel Value - 226034 Image Name -XYX 2.jpg	
+Pixel Value - 223465 Image Name -XYX 4.jpg	
+Pixel Value - 221255 Image Name -XYX 6.jpg	
+Pixel Value - 219373 Image Name -XYX 8.jpg	
+Pixel Value - 217700 Image Name -XYX 10.jpg	
+Pixel Value - 210248 Image Name -XYX 15.jpg	
+Pixel Value - 200084 Image Name -XYX 20.jpg	
+Pixel Value - 169214 Image Name -XYX 30.jpg	
+Pixel Value - 111260 Image Name -XYX 40.jpg	
+
+Estimated image - XYX 40.jpg
+	
+
+Pixel Value - 229420 Image Name - 0.jpg
+	
+
+Pixel Value - 229420 Image Name - 0.jpg
+Pixel Value - 226174 Image Name - 2.jpg	
+Pixel Value - 221316 Image Name - 4.jpg	
+Pixel Value - 216224 Image Name - 6.jpg	
+Pixel Value - 211000 Image Name - 8.jpg	
+Pixel Value - 205689 Image Name - 10.jpg	
+Pixel Value - 191954 Image Name - 15.jpg	
+Pixel Value - 178035 Image Name - 20.jpg	
+Pixel Value - 149912 Image Name - 30.jpg	
+Pixel Value - 122519 Image Name - 40.jpg	
+Pixel Value - 227411 Image Name -XYX 2.jpg	
+Pixel Value - 224630 Image Name -XYX 4.jpg	
+Pixel Value - 221816 Image Name -XYX 6.jpg	
+Pixel Value - 217839 Image Name -XYX 8.jpg	
+Pixel Value - 213601 Image Name -XYX 10.jpg	
+Pixel Value - 202535 Image Name -XYX 15.jpg	
+Pixel Value - 190710 Image Name -XYX 20.jpg	
+Pixel Value - 159174 Image Name -XYX 30.jpg	
+Pixel Value - 101191 Image Name -XYX 40.jpg	
+
+Estimated image - XYX 40.jpg
+	
+
+Pixel Value - 229749 Image Name - 0.jpg
+	
+
+Pixel Value - 229749 Image Name - 0.jpg
+Pixel Value - 226567 Image Name - 2.jpg	
+Pixel Value - 221715 Image Name - 4.jpg	
+Pixel Value - 216615 Image Name - 6.jpg	
+Pixel Value - 211415 Image Name - 8.jpg	
+Pixel Value - 206067 Image Name - 10.jpg	
+Pixel Value - 192369 Image Name - 15.jpg	
+Pixel Value - 178365 Image Name - 20.jpg	
+Pixel Value - 150306 Image Name - 30.jpg	
+Pixel Value - 122944 Image Name - 40.jpg	
+Pixel Value - 227722 Image Name -XYX 2.jpg	
+Pixel Value - 223769 Image Name -XYX 4.jpg	
+Pixel Value - 218953 Image Name -XYX 6.jpg	
+Pixel Value - 214084 Image Name -XYX 8.jpg	
+Pixel Value - 209308 Image Name -XYX 10.jpg	
+Pixel Value - 197709 Image Name -XYX 15.jpg	
+Pixel Value - 185836 Image Name -XYX 20.jpg	
+Pixel Value - 154277 Image Name -XYX 30.jpg	
+Pixel Value - 96292 Image Name -XYX 40.jpg	
+
+Estimated image - XYX 40.jpg
+	
+
+Pixel Value - 229840 Image Name - 0.jpg
+	
+
+Pixel Value - 229840 Image Name - 0.jpg
+Pixel Value - 226678 Image Name - 2.jpg	
+Pixel Value - 221807 Image Name - 4.jpg	
+Pixel Value - 216707 Image Name - 6.jpg	
+Pixel Value - 211516 Image Name - 8.jpg	
+Pixel Value - 206163 Image Name - 10.jpg	
+Pixel Value - 192463 Image Name - 15.jpg	
+Pixel Value - 178472 Image Name - 20.jpg	
+Pixel Value - 150400 Image Name - 30.jpg	
+Pixel Value - 123035 Image Name - 40.jpg	
+Pixel Value - 227280 Image Name -XYX 2.jpg	
+Pixel Value - 222094 Image Name -XYX 4.jpg	
+Pixel Value - 216920 Image Name -XYX 6.jpg	
+Pixel Value - 211917 Image Name -XYX 8.jpg	
+Pixel Value - 207116 Image Name -XYX 10.jpg	
+Pixel Value - 195489 Image Name -XYX 15.jpg	
+Pixel Value - 183605 Image Name -XYX 20.jpg	
+Pixel Value - 152045 Image Name -XYX 30.jpg	
+Pixel Value - 94058 Image Name -XYX 40.jpg	
+
+Estimated image - XYX 40.jpg
+	
+
+Pixel Value - 229875 Image Name - 0.jpg
+	
+
+Pixel Value - 229875 Image Name - 0.jpg
+Pixel Value - 226698 Image Name - 2.jpg	
+Pixel Value - 221833 Image Name - 4.jpg	
+Pixel Value - 216731 Image Name - 6.jpg	
+Pixel Value - 211547 Image Name - 8.jpg	
+Pixel Value - 206191 Image Name - 10.jpg	
+Pixel Value - 192483 Image Name - 15.jpg	
+Pixel Value - 178493 Image Name - 20.jpg	
+Pixel Value - 150417 Image Name - 30.jpg	
+Pixel Value - 123067 Image Name - 40.jpg	
+Pixel Value - 226651 Image Name -XYX 2.jpg	
+Pixel Value - 221230 Image Name -XYX 4.jpg	
+Pixel Value - 216010 Image Name -XYX 6.jpg	
+Pixel Value - 210993 Image Name -XYX 8.jpg	
+Pixel Value - 206188 Image Name -XYX 10.jpg	
+Pixel Value - 194554 Image Name -XYX 15.jpg	
+Pixel Value - 182668 Image Name -XYX 20.jpg	
+Pixel Value - 151108 Image Name -XYX 30.jpg	
+Pixel Value - 93121 Image Name -XYX 40.jpg	
+
+Estimated image - XYX 40.jpg
+	
+
+Pixel Value - 229878 Image Name - 0.jpg
+	
+
+Pixel Value - 229878 Image Name - 0.jpg
+Pixel Value - 226699 Image Name - 2.jpg	
+Pixel Value - 221835 Image Name - 4.jpg	
+Pixel Value - 216734 Image Name - 6.jpg	
+Pixel Value - 211547 Image Name - 8.jpg	
+Pixel Value - 206188 Image Name - 10.jpg	
+Pixel Value - 192484 Image Name - 15.jpg	
+Pixel Value - 178494 Image Name - 20.jpg	
+Pixel Value - 150421 Image Name - 30.jpg	
+Pixel Value - 123071 Image Name - 40.jpg	
+Pixel Value - 226273 Image Name -XYX 2.jpg	
+Pixel Value - 220812 Image Name -XYX 4.jpg	
+Pixel Value - 215589 Image Name -XYX 6.jpg	
+Pixel Value - 210571 Image Name -XYX 8.jpg	
+Pixel Value - 205765 Image Name -XYX 10.jpg	
+Pixel Value - 194130 Image Name -XYX 15.jpg	
+Pixel Value - 182244 Image Name -XYX 20.jpg	
+Pixel Value - 150684 Image Name -XYX 30.jpg	
+Pixel Value - 92697 Image Name -XYX 40.jpg	
+
+Estimated image - XYX 40.jpg
+	

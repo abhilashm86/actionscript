@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="initProcessing()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import CustomClasses.ImageProcessing;
+			import CustomClasses.SaveableImage;
+			
+			import flash.display.*;
+			import flash.display.Bitmap;
+			import flash.display.BitmapData;
+			import flash.external.ExternalInterface;
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.geom.Point;
+			import flash.geom.Rectangle;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.containers.VBox;
+			import mx.controls.Alert;
+			import mx.controls.ColorPicker;
+			import mx.controls.Image;
+			import mx.controls.Label;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			
+			protected function initProcessing():void
+			{	
+				//to convert image to greyscale
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				//var image:SaveableImage = new SaveableImage();
+				var image:Image = new Image();
+				[Embed("assets/angryface.jpg")]
+				
+				var img:Class;
+				image.load(img);
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				
+				//image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				
+				/*
+				for image warping
+				*/
+				var bitmap30X30:BitmapData = new BitmapData(imageA.width, imageA.height, false, 0X000000);
+				for (var x:int =0; x < original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						var k:int = x;
+						var l:int = y;
+						var calc:int
+ 						//var temp:int = x + (20 * (Math.sin((2 * Math.PI) / (128 * y))));
+ 						var temp:int = x + 20 * Math.sin(((2* Math.PI)/30) * y);
+						bitmap30X30.setPixel(temp,l, original.bitmapData.getPixel(x,y));
+					}
+				}
+				
+				
+				var bitmap30X30Final:BitmapData = new BitmapData(960, 960, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+ 				rect1.width = 480;
+				rect1.height = 480;
+			 
+				var destpoint:Point = new Point(0, 0);
+				
+				
+				bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+ 				//copying of bitmap bmp210 to a bitmapdata
+				//var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+				
+				panelb.x = 600;
+				panelb.y = 10;
+				//panelb.scaleX = panelb.scaleY = 0.5;
+				
+				//try to merge the images 
+				//to display bitmap
+				panelb.addChild(bmp210b);
+			}	
+		]]>
+	</fx:Script>
+	<mx:Image id="panelb"/>
+	
+	<mx:Image id="imageA" source="assets/happyface.jpg" x="20" y="100"/>
+	
+</s:Application>

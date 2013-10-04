@@ -1,0 +1,270 @@
+
+Pixel Value - 188722 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 188722 Image Name - Snellen XY 0.jpg
+Pixel Value - 179855 Image Name - Snellen XY 2.jpg	
+Pixel Value - 174410 Image Name - Snellen XY 4.jpg	
+Pixel Value - 169079 Image Name - Snellen XY 6.jpg	
+Pixel Value - 164562 Image Name - Snellen XY 8.jpg	
+Pixel Value - 159411 Image Name - Snellen XY 10.jpg	
+Pixel Value - 143687 Image Name - Snellen XY 15.jpg	
+Pixel Value - 141929 Image Name - Snellen XY 20.jpg	
+Pixel Value - 150137 Image Name - Snellen XY 30.jpg	
+Pixel Value - 156533 Image Name - Snellen XY 40.jpg	
+Pixel Value - 188722 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 184958 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 185626 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 185620 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 185903 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 185703 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 186177 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 187533 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 192258 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 196646 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 20.jpg
+	
+
+Pixel Value - 180807 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 180807 Image Name - Snellen XY 0.jpg
+Pixel Value - 171354 Image Name - Snellen XY 2.jpg	
+Pixel Value - 167650 Image Name - Snellen XY 4.jpg	
+Pixel Value - 166736 Image Name - Snellen XY 6.jpg	
+Pixel Value - 166154 Image Name - Snellen XY 8.jpg	
+Pixel Value - 166489 Image Name - Snellen XY 10.jpg	
+Pixel Value - 169650 Image Name - Snellen XY 15.jpg	
+Pixel Value - 172010 Image Name - Snellen XY 20.jpg	
+Pixel Value - 178305 Image Name - Snellen XY 30.jpg	
+Pixel Value - 186715 Image Name - Snellen XY 40.jpg	
+Pixel Value - 180807 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 176111 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 176251 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 176905 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 177057 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 176910 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 179054 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 182570 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 189421 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 202197 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 8.jpg
+	
+
+Pixel Value - 178718 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 178718 Image Name - Snellen XY 0.jpg
+Pixel Value - 173101 Image Name - Snellen XY 2.jpg	
+Pixel Value - 173301 Image Name - Snellen XY 4.jpg	
+Pixel Value - 175102 Image Name - Snellen XY 6.jpg	
+Pixel Value - 176576 Image Name - Snellen XY 8.jpg	
+Pixel Value - 178016 Image Name - Snellen XY 10.jpg	
+Pixel Value - 180466 Image Name - Snellen XY 15.jpg	
+Pixel Value - 183532 Image Name - Snellen XY 20.jpg	
+Pixel Value - 189907 Image Name - Snellen XY 30.jpg	
+Pixel Value - 196609 Image Name - Snellen XY 40.jpg	
+Pixel Value - 178718 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 173634 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 174410 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 175467 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 176720 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 177863 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 181818 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 185004 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 193607 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 208714 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 2.jpg
+	
+
+Pixel Value - 177467 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 177467 Image Name - Snellen XY 0.jpg
+Pixel Value - 172434 Image Name - Snellen XY 2.jpg	
+Pixel Value - 173995 Image Name - Snellen XY 4.jpg	
+Pixel Value - 175109 Image Name - Snellen XY 6.jpg	
+Pixel Value - 176286 Image Name - Snellen XY 8.jpg	
+Pixel Value - 177462 Image Name - Snellen XY 10.jpg	
+Pixel Value - 180799 Image Name - Snellen XY 15.jpg	
+Pixel Value - 184035 Image Name - Snellen XY 20.jpg	
+Pixel Value - 190756 Image Name - Snellen XY 30.jpg	
+Pixel Value - 197323 Image Name - Snellen XY 40.jpg	
+Pixel Value - 177467 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 172633 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 174085 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 175208 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 176750 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 178142 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 182034 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 184726 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 193223 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 208395 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 2.jpg
+	
+
+Pixel Value - 178395 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 178395 Image Name - Snellen XY 0.jpg
+Pixel Value - 172847 Image Name - Snellen XY 2.jpg	
+Pixel Value - 173931 Image Name - Snellen XY 4.jpg	
+Pixel Value - 175407 Image Name - Snellen XY 6.jpg	
+Pixel Value - 176696 Image Name - Snellen XY 8.jpg	
+Pixel Value - 177755 Image Name - Snellen XY 10.jpg	
+Pixel Value - 180732 Image Name - Snellen XY 15.jpg	
+Pixel Value - 184042 Image Name - Snellen XY 20.jpg	
+Pixel Value - 191405 Image Name - Snellen XY 30.jpg	
+Pixel Value - 197910 Image Name - Snellen XY 40.jpg	
+Pixel Value - 178395 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 173300 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 174503 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 175646 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 177576 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 178933 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 182189 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 184815 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 192973 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 207804 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 2.jpg
+	
+
+Pixel Value - 178145 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 178145 Image Name - Snellen XY 0.jpg
+Pixel Value - 173173 Image Name - Snellen XY 2.jpg	
+Pixel Value - 174025 Image Name - Snellen XY 4.jpg	
+Pixel Value - 175158 Image Name - Snellen XY 6.jpg	
+Pixel Value - 176424 Image Name - Snellen XY 8.jpg	
+Pixel Value - 177851 Image Name - Snellen XY 10.jpg	
+Pixel Value - 180554 Image Name - Snellen XY 15.jpg	
+Pixel Value - 185286 Image Name - Snellen XY 20.jpg	
+Pixel Value - 191289 Image Name - Snellen XY 30.jpg	
+Pixel Value - 198476 Image Name - Snellen XY 40.jpg	
+Pixel Value - 178145 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 172670 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 174056 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 175262 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 176469 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 177799 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 180816 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 183715 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 192617 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 206788 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XYZ 2.jpg
+	
+
+Pixel Value - 177486 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 177486 Image Name - Snellen XY 0.jpg
+Pixel Value - 172270 Image Name - Snellen XY 2.jpg	
+Pixel Value - 173639 Image Name - Snellen XY 4.jpg	
+Pixel Value - 175186 Image Name - Snellen XY 6.jpg	
+Pixel Value - 176406 Image Name - Snellen XY 8.jpg	
+Pixel Value - 177885 Image Name - Snellen XY 10.jpg	
+Pixel Value - 181294 Image Name - Snellen XY 15.jpg	
+Pixel Value - 184733 Image Name - Snellen XY 20.jpg	
+Pixel Value - 191944 Image Name - Snellen XY 30.jpg	
+Pixel Value - 199133 Image Name - Snellen XY 40.jpg	
+Pixel Value - 177486 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 171467 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 173157 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 174051 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 174851 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 176607 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 179422 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 182658 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 191553 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 205904 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XYZ 2.jpg
+	
+
+Pixel Value - 176357 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 176357 Image Name - Snellen XY 0.jpg
+Pixel Value - 170983 Image Name - Snellen XY 2.jpg	
+Pixel Value - 172254 Image Name - Snellen XY 4.jpg	
+Pixel Value - 173977 Image Name - Snellen XY 6.jpg	
+Pixel Value - 175417 Image Name - Snellen XY 8.jpg	
+Pixel Value - 177044 Image Name - Snellen XY 10.jpg	
+Pixel Value - 180525 Image Name - Snellen XY 15.jpg	
+Pixel Value - 183492 Image Name - Snellen XY 20.jpg	
+Pixel Value - 191043 Image Name - Snellen XY 30.jpg	
+Pixel Value - 198780 Image Name - Snellen XY 40.jpg	
+Pixel Value - 176357 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 170355 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 171704 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 172898 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 173817 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 174883 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 177823 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 181206 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 190299 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 205364 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XYZ 2.jpg
+	
+
+Pixel Value - 176455 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 176455 Image Name - Snellen XY 0.jpg
+Pixel Value - 170444 Image Name - Snellen XY 2.jpg	
+Pixel Value - 171072 Image Name - Snellen XY 4.jpg	
+Pixel Value - 172144 Image Name - Snellen XY 6.jpg	
+Pixel Value - 172722 Image Name - Snellen XY 8.jpg	
+Pixel Value - 173835 Image Name - Snellen XY 10.jpg	
+Pixel Value - 177004 Image Name - Snellen XY 15.jpg	
+Pixel Value - 181831 Image Name - Snellen XY 20.jpg	
+Pixel Value - 189603 Image Name - Snellen XY 30.jpg	
+Pixel Value - 197943 Image Name - Snellen XY 40.jpg	
+Pixel Value - 176455 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 171078 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 172613 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 172858 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 173225 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 174069 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 176978 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 180330 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 188932 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 205347 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 2.jpg
+	
+
+Pixel Value - 172655 Image Name - Snellen XY 0.jpg
+	
+
+Pixel Value - 172655 Image Name - Snellen XY 0.jpg
+Pixel Value - 165913 Image Name - Snellen XY 2.jpg	
+Pixel Value - 167287 Image Name - Snellen XY 4.jpg	
+Pixel Value - 169168 Image Name - Snellen XY 6.jpg	
+Pixel Value - 170626 Image Name - Snellen XY 8.jpg	
+Pixel Value - 172492 Image Name - Snellen XY 10.jpg	
+Pixel Value - 176395 Image Name - Snellen XY 15.jpg	
+Pixel Value - 180083 Image Name - Snellen XY 20.jpg	
+Pixel Value - 188099 Image Name - Snellen XY 30.jpg	
+Pixel Value - 196065 Image Name - Snellen XY 40.jpg	
+Pixel Value - 172655 Image Name - Snellen XYZ 0.jpg	
+Pixel Value - 165917 Image Name - Snellen XYZ 2.jpg	
+Pixel Value - 167333 Image Name - Snellen XYZ 4.jpg	
+Pixel Value - 168040 Image Name - Snellen XYZ 6.jpg	
+Pixel Value - 168294 Image Name - Snellen XYZ 8.jpg	
+Pixel Value - 169516 Image Name - Snellen XYZ 10.jpg	
+Pixel Value - 172627 Image Name - Snellen XYZ 15.jpg	
+Pixel Value - 176436 Image Name - Snellen XYZ 20.jpg	
+Pixel Value - 185712 Image Name - Snellen XYZ 30.jpg	
+Pixel Value - 202902 Image Name - Snellen XYZ 40.jpg	
+
+Estimated image -  Snellen XY 2.jpg
+	

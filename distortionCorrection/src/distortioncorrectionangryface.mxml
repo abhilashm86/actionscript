@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:cc="CustomClasses.*"
+			   creationComplete="application1_creationCompleteHandler(event), initProcessing()" fontSize="20"
+			   height="100%" width="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = "DistortionCorrected";
+				var imageInvert:Matrix3D =  panel.transform.matrix3D;
+				
+				DistortedImage.transform.matrix3D = imageInvert;
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="moreTransformations"/>
+		<s:State name="DistortionCorrected"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		
+	
+		<![CDATA[
+			import CustomClasses.ImageProcessing;
+			import CustomClasses.SaveableImage;
+			
+			import flash.display.*;
+			import flash.display.Bitmap;
+			import flash.display.BitmapData;
+			import flash.external.ExternalInterface;
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.geom.Point;
+			import flash.geom.Rectangle;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.containers.VBox;
+			import mx.controls.ColorPicker;
+			import mx.controls.Image;
+			import mx.controls.Label;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.states.State;
+			
+			
+			
+			private var _degreeRange:int = 180;
+			private var matrix:Matrix3D = new Matrix3D();
+			
+			private function invertImage():void {
+				
+				var imageInvert:Matrix3D =  panel.transform.matrix3D;
+				imageInvert.invert();	
+			}
+			
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				// TODO Auto-generated method stub
+				panel.rotationX = 0;
+				panel.rotationY = 0;
+				panel.rotationZ = 0;
+				
+				
+			//	invertImage();
+				
+			}
+			
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = "moreTransformations";
+				
+				
+				invertImage();
+			}
+			
+			//to generate phosponized image
+			
+			protected function initProcessing():void
+			{	
+				//to convert image to greyscale
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				var image:Image = new Image();
+				
+				[Embed("assets/angryface.jpg")]
+				var img:Class;
+				image.load(img);
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				
+				image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+				
+				
+				
+				var red:Number = 0;
+				var green:Number = 0;
+				var blue:Number = 0;
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+ 				
+				//new bitmap for 30 X 30
+				
+				var bitmap30X30:BitmapData = new BitmapData(90, 90, false, 0X000000);
+				
+				for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						/*for(var i1:int = x; i1<=15; i1++)
+						{
+						for(var j:int = y; j<=15; j++)
+						{
+						pixel = original.bitmapData.getPixel(i1, j);
+						red += pixel >> 16 & 0xFF;
+						green += pixel >> 8 & 0xFF;
+						blue += pixel & 0xFF;
+						count++;
+						}
+						}
+						red = green = blue = 0;
+						count = 1;*/
+						
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						bitmap30X30.setPixel((x/8)  ,(y/8)   , original.bitmapData.getPixel(x,y));
+						
+					}
+				}
+				
+				
+				
+				//copy image 30 X 30 to new 210 X 210 image
+				
+				var bitmap210X210:BitmapData = new BitmapData(630, 630, false, 0X000000);
+				
+				
+				var pixelArray:Array = new Array();
+				
+				for(var h:int =0; h< bitmap30X30.width; h= h+1)
+				{
+					for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+					{
+						//store pixel values in array 
+						pixelArray.push(bitmap30X30.getPixel(h,k));
+						
+					}
+				}
+				
+				// write the pixel values to 210 X 210 image
+				// reverse array to get elements first
+				pixelArray.reverse();
+				
+				for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+				{
+					for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+					{
+						//to get 30 X 30 pixels
+						bitmap210X210.setPixel(ii,jj,pixelArray.pop());
+						
+					}
+				} 
+				
+				
+				
+				
+				/*
+				var rand:int = new int();
+				var maxNum:int = 4;
+				var minNum:int = 1;
+				
+				// defnition for distortion movement 
+				var randParameter:int = 2;
+				
+				for(var i:int =0; i< bitmap210X210.width; i= i+1)
+				{
+				for(var j:int = 0; j<bitmap210X210.height; j= j+1)
+				{
+				rand = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+				
+				// check multiples of 7
+				if((i%7) !=0)
+				{
+				if(rand == 1)  
+				{
+				bitmap210X210.setPixel(i + randParameter , j , bitmap210X210.getPixel(i, j));
+				bitmap210X210.setPixel(i,j, 0X000000);
+				}
+				if(rand == 2)
+				{
+				bitmap210X210.setPixel(i , j + randParameter , bitmap210X210.getPixel(i, j));
+				bitmap210X210.setPixel(i,j, 0X000000);
+				}
+				if(rand == 3)
+				{
+				bitmap210X210.setPixel(i - randParameter , j , bitmap210X210.getPixel(i, j));
+				bitmap210X210.setPixel(i,j, 0X000000);
+				}
+				if(rand == 4)
+				{
+				bitmap210X210.setPixel(i, j - randParameter, bitmap210X210.getPixel(i, j));
+				bitmap210X210.setPixel(i,j, 0X000000);
+				
+				}
+				}
+				}
+				}*/
+				
+				var bmp210:Bitmap = new Bitmap(bitmap210X210);
+				
+				/* 
+				bmp210.width = 300;
+				bmp210.height = 300; */
+				
+				
+				// Gaussian blur
+				 var blur1:BlurFilter = new BlurFilter();
+				blur1.blurX = 2;
+				blur1.blurY = 2;
+				blur1.quality = BitmapFilterQuality.MEDIUM;
+				bmp210.filters = [blur1];
+				
+				
+				
+				var imageE:Image = new Image();
+				imageE.addChild(bmp210);
+				imageE.id = "bitmap210";
+				
+				panel.x = 300;
+				panel.y = 10;
+				
+				panel.scaleX = 1.5;
+				panel.scaleY = 1.5;
+				
+				panel.addChild(bmp210);
+				
+				originalImage.currentState= "DistortionCorrected";
+				
+				originalImage.addChild(bmp210);	
+				
+				//	this.addChild(imageE);
+				
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:Label text="Phosphenized Image" left="300" top="10"  includeIn="State1"/>
+	<mx:Image width="100%" height="100%"
+			  id="panel" 
+			  rotationX="{ xRotation.value }"
+			  rotationY="{ yRotation.value }"
+			  rotationZ="{ zRotation.value }"
+			  scaleX="{ xScale.value }"
+			  scaleY="{ yScale.value }"
+			  scaleZ="{ zScale.value }"
+			  z="{ zTranslation.value }" activate="invertImage()"  includeIn="State1,DistortionCorrected"/>
+	
+	
+	
+	<mx:HBox
+		id="controlsBox"
+		bottom="15"
+		width="510" includeIn="State1">
+		
+		<!-- ROTATION --> 
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-rotation -->
+			<mx:Label
+				text="x-rotation: { xRotation.value }"
+				toolTip="click to reset xRotation to 0"
+				click="{ xRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="xRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+			<!-- y-rotation -->
+			<mx:Label
+				text="y-rotation: { yRotation.value }"
+				toolTip="click to reset yRotation to 0"
+				click="{ yRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="yRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+			<!-- z-rotation -->
+			<mx:Label
+				text="z-rotation: { zRotation.value }"
+				toolTip="click to reset zRotation to 0"
+				click="{ zRotation.value = 0 }" />
+			
+			<mx:HSlider
+				id="zRotation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -_degreeRange }" maximum="{ _degreeRange }" 
+				change="invertImage()"/>
+			
+		</mx:VBox>
+		
+		<!-- TRANSLATION -->
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-translation -->
+			<mx:Label
+				text="x-translation: { xTranslation.value }"
+				toolTip="click to reset xTranslation to center"
+				click="{ xTranslation.value = ( this.width - panel.width ) / 2 }" />
+			
+			<mx:HSlider
+				id="xTranslation"
+				value="{ ( this.width - panel.width ) / 2 }" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="0" maximum="{ this.width - panel.width }" 
+				change="invertImage()"/>
+			
+			<!-- y-translation -->
+			<mx:Label
+				text="y-translation: { yTranslation.value }"
+				toolTip="click to reset yTranslation to center"
+				click="{ yTranslation.value = ( this.height - panel.height ) / 2 }" />
+			
+			<mx:HSlider
+				id="yTranslation"
+				value="{ ( this.height - panel.height ) / 2 }" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="0" maximum="{ this.height - panel.height }" 
+				change="invertImage()"/>
+			
+			<!-- z-translation -->
+			<mx:Label
+				text="z-translation: { zTranslation.value }"
+				toolTip="click to reset zTranslation to 0"
+				click="{ zTranslation.value = 0 }" />
+			
+			<mx:HSlider
+				id="zTranslation"
+				value="0" 
+				liveDragging="true"
+				snapInterval="1"
+				tickInterval="45"
+				minimum="{ -250 }" maximum="{ 500 }"
+				change="invertImage()"/>
+			
+		</mx:VBox>
+		
+		<!-- SCALE -->
+		<mx:VBox
+			horizontalAlign="center">
+			
+			<!-- x-scale -->
+			<mx:Label
+				text="x-scale: { xScale.value }"
+				toolTip="click to reset xScale to 1"
+				click="{ xScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="xScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval=".5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+			
+			<!-- y-scale -->
+			<mx:Label
+				text="y-scale: { yScale.value }"
+				toolTip="click to reset yScale to 1"
+				click="{ yScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="yScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval="0.5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+			
+			<!-- z-scale -->
+			<mx:Label
+				text="z-scale: { zScale.value }"
+				toolTip="click to reset zScale to 1"
+				click="{ zScale.value = 1 }" />
+			
+			<mx:HSlider
+				id="zScale"
+				value="1" 
+				liveDragging="true"
+				snapInterval="0.1"
+				tickInterval="0.5"
+				minimum="0.1" maximum="3" 
+				change="invertImage()"/>
+		</mx:VBox>
+	</mx:HBox>
+	<s:Button label="OK" click="button2_clickHandler(event)" includeIn="State1" bottom="100" left="550" />
+	
+	<!-- State Distortion corrected Screen 
+	
+	-->
+	
+	<s:Label text="Original Image" includeIn="DistortionCorrected" left="300" top="10"/>
+	<mx:Image
+		id="originalImage" 
+		
+		
+		includeIn="DistortionCorrected, State1"/>
+	
+	<s:Label text="Corrected Image" includeIn="DistortionCorrected" right="300" top="10"/>
+	
+	<mx:Image
+		id="DistortedImage" 
+		right="0" top="30"
+		width="60%" height="60%"
+		includeIn="DistortionCorrected"
+		
+		source="{panel}"
+		
+		rotationX="{ xRotation.value }"
+		rotationY="{ yRotation.value }"
+		rotationZ="{ zRotation.value }"
+		
+		scaleX="{ xScale.value }"
+		scaleY="{ yScale.value }"
+		scaleZ="{ zScale.value }"
+		
+		z="{ zTranslation.value }" activate="invertImage()" />
+	
+</s:Application>

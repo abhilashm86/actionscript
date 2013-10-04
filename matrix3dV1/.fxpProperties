@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="b9cd823f-77c2-4bd2-8862-6e378ba58ba0" projectUUID="b9cd823f-77c2-4bd2-8862-6e378ba58ba0" sdkVersion="4.0.0" uuid="7d5c9bda-3899-4293-975a-b568b228bd0f" version="4">
+  <projects/>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="7d5c9bda-3899-4293-975a-b568b228bd0f"/>
+    <linked location="C:/Users/abhilash/Dropbox/Adobe Flex/matrix3dV1/libs" path="/libs" position="1" uuid="7d5c9bda-3899-4293-975a-b568b228bd0f"/>
+  </swc>
+  <misc/>
+  <theme/>
+</fxpProperties>

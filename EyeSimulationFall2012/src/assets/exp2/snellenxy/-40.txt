@@ -1,0 +1,19 @@
+DTX2 - 0
+DTY2 - 0
+DTZ2 - 0
+DSX2 - 1
+DSY2 - 1
+DSZ2 - 1
+DRX2 - -40
+DRY2 - -40
+DRZ2 - 0
+
+CTX2 - 0
+CTY2 - 0
+CTZ2 - 0
+CSX2 - 1
+CSY2 - 1
+CSZ2 - 1
+CRX2 - -40
+CRY2 - -40
+CRZ2 - 0

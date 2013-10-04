@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   creationComplete="readTextFile()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Image;
+			import mx.events.FlexEvent;
+			public var d1Image:Image = new Image();
+			
+			public var XPT1:int = 0;
+			public var YPT1:int = 0;
+			public var XPT2:int = 240;
+			public var YPT2:int = 240;
+			
+			//Function to read a file 
+			public function readTextFile():void
+			{
+				var fileLoader:URLLoader = new URLLoader();
+				fileLoader.addEventListener(Event.COMPLETE,fileLoadCompletes);
+				fileLoader.dataFormat = URLLoaderDataFormat.TEXT;
+				fileLoader.load(new URLRequest("C:/Users/abhilash/Dropbox/Adobe Flex/amslerGridSummer2013AIR/coordinates-values.txt"));
+			}
+			
+			public function fileLoadCompletes(event:Event):void
+			{
+				//txtMsg.text = event.target.data.split(/\n,/);
+				var pointArray:Array = event.target.data.split("\r");
+			/* 	XPT1 = parseInt(pointArray[0]);
+				XPT2 = parseInt(pointArray[1]);
+				YPT1 = parseInt(pointArray[2]);
+				XPT2 = parseInt(pointArray[3]); */
+				
+				application1_creationCompleteHandler();
+			}
+			
+			
+			
+			protected function application1_creationCompleteHandler():void
+			{
+				
+				//Read the text values 
+				readTextFile();
+				
+				// TODO Auto-generated method stub
+				[Embed("assets/amslerGrid.jpg")]
+				var img1:Class;
+				d1Image.load(img1);
+				var bitmapData1:Bitmap = Bitmap(d1Image.content);
+				
+				
+				var bitmapScale:BitmapData = new BitmapData(bitmapData1.width,bitmapData1.height, false, 0X000000);
+				for (var x1:int = 0; x1 < 480; x1 = x1+ 1)
+				{
+					for (var y1:int = 0; y1 < 480; y1 = y1+1)
+					{
+						bitmapScale.setPixel( x1,   y1, bitmapData1.bitmapData.getPixel(x1,y1));
+					
+						
+					} 
+					
+				}
+				for (var x:int = XPT1; x < XPT2; x = x+ 1)
+				{
+					for (var y:int = YPT1; y < YPT2; y = y+1)
+					{
+						
+						var temp:int = x + 4 * Math.sin(((2* Math.PI)/30) * (y/4));
+						var temp1:int = y + 4 * Math.sin(((2* Math.PI)/30)* (x/4));
+					
+						bitmapScale.setPixel(temp ,y   , bitmapData1.bitmapData.getPixel(x,y));
+						
+					}
+				}
+				
+				for (var x1:int = 240; x1 < 480; x1 = x1+ 1)
+				{
+					for (var y1:int = 240; y1 < 480; y1 = y1+1)
+					{
+						
+						var temp:int = x1 + 4 * Math.sin(((2* Math.PI)/30) * (y1/4));
+						var temp1:int = y1 + 4 * Math.sin(((2* Math.PI)/30)* (x1/4));
+					
+						bitmapScale.setPixel(temp ,y1   , bitmapData1.bitmapData.getPixel(x1,y1));
+					
+					}
+				}
+				var bm1:Bitmap = new Bitmap(bitmapScale);
+				distortedImage.addChild(bm1);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label text="Amsler Image Undistorted"  x="250" y="20" fontWeight="bold"/>
+	<mx:Image id="sourceImage" x="100" y="50" source="assets/amslerGrid.jpg"/>
+	
+	<s:Label text="Amsler Grid Distorted Image"  x="900" y="20" fontWeight="bold"/>	
+	<mx:Image id="distortedImage" x="700" y="50" />	
+	
+	
+</s:WindowedApplication>

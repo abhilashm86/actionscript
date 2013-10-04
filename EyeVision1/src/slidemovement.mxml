@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   minWidth="955" minHeight="600" creationComplete="initApp()">
+	<fx:Script>
+		<![CDATA[
+			import com.example.programmingas3.geometry.MatrixTransformerTranslate;
+			
+			import flash.geom.Matrix;
+			
+			import mx.events.SliderEvent;
+			import flash.geom.Rectangle;
+			
+			
+			public function initApp():void
+			{
+				resetFields();
+				//setImageMask();		
+			}
+			
+			private function resetFields():void 
+			{
+				
+				dxSlider.value = 0;
+				dySlider.value = 0;
+			}
+			
+ 			
+			private function transformDisplayObject():void 
+			{
+					//assign values to labels to display on the screen
+				
+					movex.text = dxSlider.value.toString();
+					movey.text = dySlider.value.toString();
+				
+					var tempMatrix:Matrix = rectangle1.transform.matrix;
+					tempMatrix = MatrixTransformerTranslate.transform(tempMatrix, dxSlider.value, dySlider.value);				
+					rectangle1.transform.matrix = tempMatrix;
+					
+			}		 
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+
+	<s:Group x="20" y="20">
+		<s:Line xFrom="0" xTo="0" yFrom="0" yTo="100">
+			<!-- Define the border color of the line. -->
+			<s:stroke>
+				<s:SolidColorStroke color="0x000000" weight="1" caps="square"/>
+			</s:stroke>
+		</s:Line>
+		</s:Group>
+	
+	 
+	<s:Group left="350" bottom="100">
+	<s:Rect id="rectangle1" height="100" width="300">
+	    <s:fill>
+			<s:LinearGradient rotation="0">
+				<s:GradientEntry color="0x0" ratio="0" />
+				<s:GradientEntry color="0x0" ratio=".2" />
+				<s:GradientEntry color="0x11111" ratio=".2" alpha="0.5" />
+				<s:GradientEntry color="0x11111" ratio=".8" alpha="0.5" />
+				<s:GradientEntry color="0x0" ratio=".8" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	</s:Group>
+	
+	<s:Label text="Field of view" left="450" bottom="40"/>
+	<s:Group left="315" bottom="100" rotation="90">
+		<s:Rect height="100" width="200">                              
+			<s:fill>
+				<s:RadialGradient>
+					<s:GradientEntry color="0xf0" ratio="0"/>
+				</s:RadialGradient>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<!-- for the field of view -->
+	<s:Group left="590" bottom="100" rotation="90">
+		<s:Rect height="100" width="200">                              
+			<s:fill>
+				<s:RadialGradient>
+					<s:GradientEntry color="0xf0" ratio="0"/>
+				</s:RadialGradient>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Label text="Move X (Pixels):"/>
+		<mx:HSlider id="dxSlider" width="170" minimum="-100" maximum="100" 
+					tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+					change="{transformDisplayObject()}"/>
+	
+	
+	<s:Label text="Move Y (Pixels)" x="0" y="56"/>
+		<mx:HSlider id="dySlider" width="170" minimum="-100" maximum="100" 
+					tickInterval="20" snapInterval="1" labels="[-100, 0, 100]"
+					change="{transformDisplayObject()}" x="6" y="67"/>
+	 
+	<mx:FormItem x="277"  y="97" label="Move X value">
+			<s:Label  id="movex"/>
+	</mx:FormItem>
+	<mx:FormItem x="277"  y="131" label="Move Y value">
+		<s:Label  id="movey"/>
+	</mx:FormItem>
+	 
+	
+</s:Application>

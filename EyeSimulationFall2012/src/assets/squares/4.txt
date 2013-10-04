@@ -1,0 +1,19 @@
+DTX4 - 0
+DTY4 - 0
+DTZ4 - 0
+DSX4 - 1
+DSY4 - 1
+DSZ4 - 1
+DRX4 - 30
+DRY4 - 0
+DRZ4 - 0
+
+CTX4 - 0
+CTY4 - 0
+CTZ4 - 0
+CSX4 - 1
+CSY4 - 1
+CSZ4 - 1
+CRX4 - 30
+CRY4 - 0
+CRZ4 - 0

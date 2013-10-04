@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- draw 2X2 square and apply sclaing actions on it
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			  creationComplete="application1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			private static const DEFAULT_FILE_NAME:String = "example.txt";
+			public var outputString1:String = "Values of bitmap" + "\r\n";
+
+			public function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				[Embed("assets/2x2.jpg")]
+				var img:Class;
+				image1.load(img);
+				//create a bitmap out of jpg image
+				var original:Bitmap =  Bitmap(image1.content);
+				var tempUnit:uint;	
+				
+				original.bitmapData.setPixel(0,0, 16777215);
+				original.bitmapData.setPixel(1,0, 12222222);
+				original.bitmapData.setPixel(0,1, 19999999);
+				original.bitmapData.setPixel(1,1, 18823455);
+		
+				
+			var matrix1:Matrix = original.transform.matrix;
+			matrix1.scale(2,2);
+			
+			matrix1.concat(original.transform.matrix);
+			original.transform.matrix = matrix1;
+			
+			for (var x:int =0; x < original.width; x = x+1)
+			{
+				for (var y:int = 0; y < original.height; y = y+1)
+				{
+					//bitmap30X30.setPixel(x,y, original.bitmapData.getPixel(x,y));
+					tempUnit = original.bitmapData.getPixel(x,y);
+					outputString1 = outputString1 + tempUnit.toString()+ " ";
+				}
+				outputString1 = outputString1  + '\r\n';
+			}
+			}
+			/*
+			Scale the bitmap and then record pixel values
+			*/
+			protected function imageScaleValue()
+			{
+				
+			}
+			
+			
+			
+			private var fr:FileReference;
+			
+			//called when the users types in the textarea
+			//note valueCommit should be used, but is broken in the flex build 
+			//I am using
+			 
+			//called when the user clicks the load file button
+			private function onSaveClick():void
+			{
+				//create the FileReference instance
+				fr = new FileReference();
+				
+				//listen for the file has been saved
+				//	fr.addEventListener(Event.COMPLETE, onFileSave);
+				
+				//listen for when then cancel out of the save dialog
+				//fr.addEventListener(Event.CANCEL,onCancel);
+				
+				//listen for any errors that occur while writing the file
+				//fr.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+				
+				//open a native save file dialog, using the default file name
+			
+				var tempString:String;
+				tempString = "abhi \t ram \r\n \nsita";
+				
+				fr.save(outputString1, "abc.txt");
+			}
+			
+			/***** File Save Event Handlers ******/
+			
+			//called once the file has been saved
+			private function onFileSave(e:Event):void
+			{
+				trace("File Saved");
+				fr = null;
+			}
+			
+			//called if the user cancels out of the file save dialog
+			private function onCancel(e:Event):void
+			{
+				trace("File save select canceled.");
+				fr = null;
+			}
+			
+			//called if an error occurs while saving the file
+			private function onSaveError(e:IOErrorEvent):void
+			{
+				trace("Error Saving File : " + e.text);
+				fr = null;
+			}
+
+		]]>
+	</fx:Script>
+	
+	<mx:Image id="image1" x="0" y="0">
+	</mx:Image>
+	
+		<mx:Button label="Save File" right="10" bottom="10" id="saveButton"
+				     click="onSaveClick()" enabled="true"/>
+  </s:Application>

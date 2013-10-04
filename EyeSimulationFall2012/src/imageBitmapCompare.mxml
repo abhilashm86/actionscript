@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Program to generate distortions, save distortion and correction values. Saves images in jpg format.
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			private var byteArr2:ByteArray;
+			private var fileRef:FileReference = new FileReference(); 
+			public var matrix:Matrix3D = new Matrix3D();
+	
+			/*
+			generate random numbers based on interval, lower bound and upper bounds. 
+			*/
+			
+			//scale factor initialization
+			var scaleFactorX:Number = 1;
+			var scaleFactorY:Number = 1;
+			var scaleFactorZ:Number = 1;
+
+			//rotation 
+			var rotationAngleX:Number = 17;
+			var rotationAngleY:Number = 17;
+			var rotationAngleZ:Number = 17;
+ 			
+			//scale factor initialization
+			var translateFactorX:Number = 0;
+			var translateFactorY:Number = 0;
+			var translateFactorZ:Number = 0;
+
+			//counter to keep image names 
+			var counter:Number = 2;
+			
+			// String to keep name of tranformations  
+			public var distortionValues:String = new String();
+			public var correctionValues:String = new String();
+
+			public function randomRange(minNum:Number, maxNum:Number):Number   
+			{  
+				return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);  
+			}  
+			
+			public function process():void
+			{	
+				matrix = currImg.transform.matrix3D;
+			 	matrix.appendScale(scaleFactorX, scaleFactorY, scaleFactorZ);
+				
+				matrix.appendRotation(rotationAngleX, Vector3D.X_AXIS, null); 
+				matrix.appendRotation(rotationAngleY, Vector3D.Y_AXIS, null);
+				matrix.appendRotation(rotationAngleZ, Vector3D.Z_AXIS, null);
+				
+				matrix.appendTranslation(translateFactorX, translateFactorY, translateFactorZ);
+				currImg.transform.matrix3D = matrix;
+ 				callLater(toByteArray);
+				Alert.show(rotationAngleX.toString());
+			 }
+			
+			public function toByteArray():void
+			{
+				var data:BitmapData = new BitmapData(everything.width, everything.height, false, 0xFFFFFF);
+				data.draw(everything);
+				
+				var encod:JPEGEncoder = new JPEGEncoder(100);               
+				byteArr2 = encod.encode(data);
+			}
+			
+			public function saveFile():void 
+			{  
+				distortionValues = "DTX" + counter +" - " + translateFactorX  + "\r\nDTY"+ counter + " - "+
+				                	translateFactorY + "\r\nDTZ"+ counter + " - "+ translateFactorZ +  
+									"\r\nDSX" + counter +" - " + scaleFactorX  + "\r\nDSY"+ counter + " - "+
+									scaleFactorY + "\r\nDSZ"+ counter + " - "+ scaleFactorZ + 
+									"\r\nDRX" + counter +" - " + rotationAngleX  + "\r\nDRY"+ counter + " - "+
+									rotationAngleY  + "\r\nDRZ"+ counter + " - "+ rotationAngleZ;
+				
+				// calculate correction values and record them
+				
+				var ctx:Number = 0;
+				var cty:Number = 0;
+				var ctz:Number = 0; 	
+													
+				var csx:Number = 1;
+				var csy:Number = 1;
+				var csz:Number = 1;
+				                   
+				var crx:Number = 0;
+				var cry:Number = 0;
+				var crz:Number = 0;
+			
+				//check translation
+				if(translateFactorX != 0) {ctx = translateFactorX - ctx}
+				if(translateFactorY != 0) {cty = translateFactorY - cty}
+				if(translateFactorZ != 0) {ctz = translateFactorZ - ctz}
+				
+				//check rotation
+				if(rotationAngleX != 0) {crx = rotationAngleX - crx}
+				if(rotationAngleY != 0) {cry = rotationAngleY - cry}
+				if(rotationAngleZ != 0) {crz = rotationAngleZ - crz}
+				
+				//check scaling
+				if(scaleFactorX != 1) {csx = 1/scaleFactorX}
+				if(scaleFactorY != 1) {csy = 1/scaleFactorY}
+				if(scaleFactorZ != 1) {csz = 1/scaleFactorZ}
+				
+				correctionValues = "\r\n\r\nCTX" + counter +" - " + ctx  + "\r\nCTY"+ counter + " - "+
+					cty + "\r\nCTZ"+ counter + " - "+ ctz +  
+					"\r\nCSX" + counter +" - " + csx  + "\r\nCSY"+ counter + " - "+
+					csy + "\r\nCSZ"+ counter + " - "+ csz + 
+					"\r\nCRX" + counter +" - " + crx  + "\r\nCRY"+ counter + " - "+
+					cry  + "\r\nCRZ"+ counter + " - "+ crz;
+				fileRef.save(distortionValues + correctionValues, counter + ".txt");
+			} 
+			
+			public function saveImage():void
+			{
+				fileRef.save(byteArr2,  "0.jpg");
+ 			}
+		]]>
+	</fx:Script>
+	<mx:HBox>       
+		<mx:VBox>           
+			<s:Button label="Process" click="process()"/>   
+			<s:Button label="Save" click="saveFile()"/> 
+			<s:Button label="Save Image" click="saveImage()"/>
+		</mx:VBox>
+	</mx:HBox>
+		<mx:Box id="everything" x="100" y="50" z="0">
+			<mx:Image id="currImg" width="480" height="480" source="assets/exp2/angryface/0.jpg"/>
+		</mx:Box>
+</s:Application>

@@ -1,0 +1,19 @@
+DTX5 - 0
+DTY5 - 0
+DTZ5 - 0
+DSX5 - 1
+DSY5 - 1
+DSZ5 - 1
+DRX5 - 0
+DRY5 - 30
+DRZ5 - 0
+
+CTX5 - 0
+CTY5 - 0
+CTZ5 - 0
+CSX5 - 1
+CSY5 - 1
+CSZ5 - 1
+CRX5 - 0
+CRY5 - 30
+CRZ5 - 0

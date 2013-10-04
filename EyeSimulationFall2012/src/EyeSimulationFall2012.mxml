@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;					
+			
+			/* attributes for saving */
+			private var fr:FileReference;
+			private static const DEFAULT_FILE_NAME:String = "example.txt";
+			public var outputString1:String = "Values of bitmap" + "\r\n";
+
+			public var data:BitmapData = new BitmapData(480, 480, false, 0X000000);
+
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				var image:Image = new Image();
+				[Embed("assets/snellen_chart.jpg")]
+				var img:Class;
+				image.load(img);
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				
+				image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+
+				var red:Number = 0;
+				var green:Number = 0;
+				var blue:Number = 0;
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				
+				//new bitmap for 30 X 30
+				
+				var bitmap30X30:BitmapData = new BitmapData(90, 90, false, 0X000000);
+				for (var x:int = 0; x < original.bitmapData.width; x = x+ 1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel((x/8) ,(y/8) , original.bitmapData.getPixel(x,y));
+					}
+				}
+				//copy image 30 X 30 to new 210 X 210 image
+				var bitmap210X210:BitmapData = new BitmapData(480, 480, false, 0X000000);
+				var pixelArray:Array = new Array();
+				
+				for(var h:int =0; h< bitmap30X30.width; h= h+1)
+				{
+					for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+					{
+						//store pixel values in array 
+						pixelArray.push(bitmap30X30.getPixel(h,k));
+						Alert.show(bitmap30X30.getPixel(h,k).toString());
+					}
+				}
+				
+				// write the pixel values to 210 X 210 image
+				// reverse array to get elements first
+				pixelArray.reverse();
+				
+				for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+				{
+					for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+					{
+						//to get 30 X 30 pixels
+						var temp:uint = pixelArray.pop();
+						bitmap210X210.setPixel(ii,jj,temp);
+						bitmap210X210.setPixel(ii+1,jj,temp);
+						bitmap210X210.setPixel(ii,jj+1,temp);
+						bitmap210X210.setPixel(ii+1,jj+1,temp);
+					}
+				} 
+				
+				var bmp210:Bitmap = new Bitmap(bitmap210X210);
+				
+				
+				image0.addChild(bmp210);
+				//data.draw(ev);
+				
+				/*
+				Do scaling * 2  to the operation 
+				
+				*/
+				
+				var bitmapScale:BitmapData = new BitmapData((bitmap210X210.width*2),(bitmap210X210.height*2), false, 0X000000);
+				
+				
+				for (var x:int = 0; x < bitmapScale.width; x = x+ 1)
+				{
+					for (var y:int = 0; y < bitmapScale.height; y = y+1)
+					{
+						bitmapScale.setPixel(x * 2 ,y *2 , bitmap210X210.getPixel(x,y));
+						bitmapScale.setPixel((x * 2) + 1 ,(y *2) , bitmap210X210.getPixel(x,y));
+						bitmapScale.setPixel((x * 2) ,(y *2)+ 1 , bitmap210X210.getPixel(x,y));
+						bitmapScale.setPixel((x * 2) + 1 ,(y *2)+ 1 , bitmap210X210.getPixel(x,y));
+					}
+				}
+				
+				var bmp210:Bitmap = new Bitmap(bitmapScale);
+				
+				image1.x = 500;
+				image1.y = 50;
+				
+			//	image1.addChild(bmp210);
+				
+				
+			}
+			
+			private function onSaveClick():void
+			{
+				//create the FileReference instance
+				
+				var encod:JPEGEncoder = new JPEGEncoder(100);
+				var byteArr2:ByteArray;
+				byteArr2 = encod.encode(data);
+				
+				fr.save(byteArr2, "abc.jpg");
+			}
+		]]>
+	</fx:Script>
+
+	<s:Label text="Original Image 200 X 200 pixels"  x="150" y="20"/>
+	<mx:Box id="everything">
+
+	<mx:Image id="image0" x="10" y="50"/>
+</mx:Box>
+	<s:Label text="Scaled image *2 by pixels"  x="750" y="20"/>
+
+	<mx:Image id="image1"/>
+	<mx:Button label="Save File" right="10" bottom="10" id="saveButton" 
+			   click="onSaveClick()" enabled="true"/>
+
+</s:Application>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+handling image co ordinates with lines A and B. 
+Idea is to determine points of image through position of A and B  
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import CustomClasses.ImageProcessing;
+			import CustomClasses.SaveableImage;
+			
+			import flash.display.*;
+			import flash.display.Bitmap;
+			import flash.display.BitmapData;
+			import flash.external.ExternalInterface;
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.BlurFilter;
+			import flash.filters.ColorMatrixFilter;
+			import flash.geom.Point;
+			import flash.geom.Rectangle;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.containers.VBox;
+			import mx.controls.ColorPicker;
+			import mx.controls.Image;
+			import mx.controls.Label;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.states.State;
+			
+			private function moveLineA(angle:Number):void {
+				 
+				lineA.x =  angle;
+				 
+			}
+			private function moveLineB(angle:Number):void {
+				
+				lineB.x =  angle;
+			}
+			
+			protected function initProcessing():void
+			{	
+				//to calculate stepsize of slider, its not working
+				show.text = lineB.x.toString();
+				
+				//to convert image to greyscale
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				var image:SaveableImage = new SaveableImage();
+				
+				[Embed("assets/angryface.jpg")]
+				var img:Class;
+				image.load(img);
+				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				
+				image.content.filters = [grayscaleFilter];
+				var original:Bitmap = Bitmap(image.content);
+				
+				//process pixels
+				
+				var red:Number = 0;
+				var green:Number = 0;
+				var blue:Number = 0;
+				
+				var count:Number = 0;
+				var pixel:Number;
+				
+				//new bitmap - divide image into two instances 
+				// imageCopy1 - 0-240, imageCopy2 - 240-480 
+				
+				var bitmap30X30:BitmapData = new BitmapData(imageA.width, imageA.width, false, 0X000000);
+ 				for (var x:int =0; x < lineA.x; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						bitmap30X30.setPixel((x/2),(y/2), original.bitmapData.getPixel(x,y));
+					}
+				}
+
+				var bitmap30X30b:BitmapData = new BitmapData(imageA.width, imageA.width, false, 0X000000);
+				
+			for (var x:int = lineA.x; x <original.bitmapData.width + lineB.x; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						bitmap30X30b.setPixel(x , y, original.bitmapData.getPixel(x,y));
+					}
+				} 
+				
+				var bitmap30X30Final:BitmapData = new BitmapData(480, 480, false, 0X000000);
+				var rect1:Rectangle = new Rectangle();
+				var rect2:Rectangle = new Rectangle();
+				rect1.width = 480;
+				rect1.height = 480;
+				rect2.width = 480;
+				rect2.height = 480;
+			
+				var destpoint:Point = new Point(0, 0);
+				var destpoint1:Point = new Point(150, 0);
+				
+			/* 	for (var x:int = lineA.x; x <original.bitmapData.width + lineB.x; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						bitmap30X30b.setPixel(x*0.5, y*0.5, original.bitmapData.getPixel(x,y));
+					}
+				} */
+				
+				
+				
+			 	//bitmap30X30Final.copyPixels(bitmap30X30,rect1,destpoint,null,null,true);	
+				bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint,null,null,true);	
+				
+				//applying sample affine transformation
+				var bmp210:Bitmap = new Bitmap(bitmap30X30);
+				bmp210.rotationX = -30;
+				
+				//copying of bitmap bmp210 to a bitmapdata
+ 				//var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+			/* 	var temp:BitmapData = new BitmapData(480,480,false,0X000000);
+				
+				for (var x:int =0; x < bmp210.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < bmp210.bitmapData.height; y = y+1)
+					{
+						var replaceColor:uint = red << 16 | green << 8 | blue;
+						temp.setPixel((x),(y), bmp210.bitmapData.getPixel(x,y));
+					}
+				}
+	
+				
+				bitmap30X30Final.copyPixels(temp,rect1,destpoint,null,null,true);	
+				bitmap30X30Final.copyPixels(bitmap30X30b,rect2,destpoint1,null,null,true);	
+					
+ */				var bmp210b:Bitmap = new Bitmap(bitmap30X30Final);
+		 		panelb.x = 600;
+				panelb.y = 10;
+ 				//try to merge the images 
+				//to display bitmap
+				panelb.addChild(bmp210b);
+			}	
+		]]>
+	</fx:Script>
+	
+	 
+	<mx:Image id="panelb"/>
+	
+	<mx:Image id="imageA" source="assets/angryface.jpg" x="20" y="100"/>
+			  
+	 
+	<s:Line id="lineA" xFrom="{imageA.x}" yFrom="{imageA.x+40}" xTo="{imageA.x}" yTo="{imageA.x+imageA.height+100}">
+		<s:stroke>
+			<s:SolidColorStroke color="black"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line id="lineB" xFrom="{imageA.x+imageA.width}" yFrom="{imageA.x+40}" xTo="{imageA.x+imageA.width}" yTo="{imageA.x+imageA.height+100}">
+		<s:stroke>
+			<s:SolidColorStroke color="black"/>
+		</s:stroke>
+	</s:Line>
+	
+	<s:Label text="Move Line A" bottom="25" left="400" />
+	<s:Label text="Move Line B" bottom="5" left="400" />
+	<s:Button label="Done setting lines" bottom="15" left="500" click="initProcessing()"/> 
+	<s:Label  text="sadhjasdghjd" id="show" x="0" y="10" />
+	<s:HSlider name="Move Line A" x="500" y="500" id="sliderA" minimum="0" value="0"
+ 				stepSize="{imageA.width/10}"    maximum="{imageA.width}" change="moveLineA(sliderA.value)"/>
+	<s:HSlider name="Move Line B" x="500" y="550" id="sliderB" minimum="0" 
+			   stepSize="{imageA.width/10}"	 maximum="{imageA.width}"   change="moveLineB(-sliderB.value)"/>
+		
+</s:Application>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.ColorMatrixFilter;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.controls.Alert;
+			import mx.controls.Text;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+
+			
+			public var bmp210:Bitmap = new Bitmap();
+			public var pixelString:Array;
+			public var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+				0.3, 0.59, 0.11, 0, 0,
+				0.3, 0.59, 0.11, 0, 0,
+				0, 0, 0, 1, 0];
+			
+			public var image:Image = new Image();
+			public var correctedPixelValues:String = new String();
+			
+			//To show next image 
+			private var countImage:int = 1;
+			public var fr:FileReference = new FileReference();
+			public var fr1:FileReference = new FileReference();
+			public var fr2:FileReference = new FileReference();
+			
+				
+			//Scale factor for distorted and corrected
+			public var distoredScaleX:Number;
+			public var distoredScaleY:Number;
+
+			public var correctedScaleX:Number;
+			public var correctedScaleY:Number;
+			
+			public var pictureID:String = new String();
+			public var bitmap210X210:BitmapData = new BitmapData(210, 210, false, 0X000000);
+ 			
+			// to save bitmaps as jpg 
+			
+			public var jpgenc1:JPEGEncoder = new JPEGEncoder(80);
+			public var imgByteArray1:ByteArray = new ByteArray();
+			public var jpgenc2:JPEGEncoder = new JPEGEncoder(80);
+			public var imgByteArray2:ByteArray = new ByteArray();
+			public var jpgenc3:JPEGEncoder = new JPEGEncoder(80);
+			public var imgByteArray3:ByteArray = new ByteArray();
+			
+			
+			//bitmap images 
+			public var correctedImageBitmap:Bitmap = new Bitmap();
+			public var originalImageBitmap:Bitmap = new Bitmap();
+			public var distortedImageBitmap:Bitmap = new Bitmap();
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				initProcessing();
+				
+			}
+
+
+			protected function saveJpg_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				imgByteArray1 = jpgenc1.encode(bitmap210X210);
+				fr.save(imgByteArray1, + countImage +'-O-' +pictureID  + ".jpg" );
+			}
+
+
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				countImage = countImage + 1;
+				initProcessing();
+				if(countImage == 10)
+				{
+					Alert.show("End of testing phase");
+				}
+				
+			}
+
+			public function initProcessing():void {
+				/*
+				To identify and correct the images using scaling 
+				Set different scale values 
+				*/
+				
+				var matrix:Array = [0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0.3, 0.59, 0.11, 0, 0,
+					0, 0, 0, 1, 0];
+				
+				if(countImage ==1)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img1:Class;
+					image.load(img1);
+					
+					distoredScaleX = 0.45;
+					distoredScaleY = 1;
+					
+					correctedScaleX = 1/0.35;
+					correctedScaleY = 1;
+					
+					pictureID = 'square.jpg';
+				}
+				
+				if(countImage ==2)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img2:Class;
+					image.load(img2);
+					
+					distoredScaleX = 1;
+					distoredScaleY = 0.45;
+					
+					correctedScaleX = 1;
+					correctedScaleY = 1/0.35;
+					
+					pictureID = 'square.jpg';
+				}
+				
+				if(countImage ==3)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img3:Class;
+					image.load(img3);
+					
+					distoredScaleX = 0.45;
+					distoredScaleY = 2.3;
+					
+					correctedScaleX = 1/0.35;
+					correctedScaleY = 1/2.45;
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==4)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img4:Class;
+					image.load(img4);
+					
+					distoredScaleX = 1.5;
+					distoredScaleY = 1;
+					
+					correctedScaleX = 1/1.5;
+					correctedScaleY = 1;
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==5)
+				{
+					[Embed("assets/square.jpg")]
+					
+					var img5:Class;
+					image.load(img5);
+					
+					distoredScaleX = 1;
+					distoredScaleY = 1.5;
+					
+					correctedScaleX = 1;
+					correctedScaleY = 1/1.5;
+					
+					pictureID = 'square.jpg';
+				}
+				if(countImage ==6)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img6:Class;
+					image.load(img6);
+					
+					distoredScaleX = 0.45;
+					distoredScaleY = 1;
+					
+					correctedScaleX = 1/0.35;
+					correctedScaleY = 1;
+					
+					pictureID = 'circle.jpg';
+				}
+				
+				if(countImage ==7)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img7:Class;
+					image.load(img7);
+					
+					distoredScaleX = 1;
+					distoredScaleY = 0.45;
+					
+					correctedScaleX = 1;
+					correctedScaleY = 1/0.35;
+					
+					pictureID = 'circle.jpg';
+				}
+				
+				if(countImage ==8)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img8:Class;
+					image.load(img8);
+					
+					distoredScaleX = 0.45;
+					distoredScaleY = 2.3;
+					
+					correctedScaleX = 1/0.35;
+					correctedScaleY = 1/2.45;
+					
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==9)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img9:Class;
+					image.load(img9);
+					
+					distoredScaleX = 1.5;
+					distoredScaleY = 1;
+					
+					correctedScaleX = 1/1.5;
+					correctedScaleY = 1;
+					
+					pictureID = 'circle.jpg';
+				}
+				if(countImage ==10)
+				{
+					[Embed("assets/circle.jpg")]
+					
+					var img10:Class;
+					image.load(img10);
+					
+					distoredScaleX = 1;
+					distoredScaleY = 1.5;
+					
+					correctedScaleX = 1;
+					correctedScaleY = 1/1.5;
+					
+					pictureID = 'circle.jpg';
+				}
+ 				/*
+				Display original image, process and display distorted and corrected image
+				*/
+ 				
+				var grayscaleFilter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+				image.content.filters = [grayscaleFilter];
+				
+				var original:Bitmap = Bitmap(image.content);
+				var bitmap30X30:BitmapData = new BitmapData(30, 30, false, 0X000000);
+				for (var x:int = 0; x < original.bitmapData.width; x = x+1)
+				{
+					for (var y:int = 0; y < original.bitmapData.height; y = y+1)
+					{
+						bitmap30X30.setPixel((x/16)  ,(y/16)   , original.bitmapData.getPixel(x,y));
+						
+					}
+				}
+				//copy image 30 X 30 to new 210 X 210 image
+				
+				
+				var pixelArray:Array = new Array();
+				for(var h:int =0; h< bitmap30X30.width; h= h+1)
+				{
+					for(var k:int = 0; k<bitmap30X30.height; k= k+1)
+					{
+						//store pixel values in array 
+						pixelArray.push(bitmap30X30.getPixel(h,k));
+					}
+				}
+				
+				// write the pixel values to 210 X 210 image
+				// reverse array to get elements first
+				pixelArray.reverse();
+				for(var ii:int =0; ii<bitmap210X210.width; ii= ii+7)
+				{
+					for(var jj:int = 0; jj<bitmap210X210.height; jj= jj+7)
+					{
+						var temp:uint = pixelArray.pop();
+						bitmap210X210.setPixel(ii,jj,temp);
+						bitmap210X210.setPixel(ii,jj+1,temp);
+						bitmap210X210.setPixel(ii+1,jj,temp);
+						bitmap210X210.setPixel(ii+1,jj+1,temp);
+						
+					}
+				} 
+				
+			
+				originalImageBitmap.bitmapData = bitmap210X210;
+				//display the original image
+				
+				originalImage.x = 50;
+				originalImage.y = 200;
+				originalImage.addChild(originalImageBitmap);
+				
+				
+				
+				//dump 30 X 30 pixel values
+				
+				
+				/* 
+				Produce distorted scaled image based upon scale values
+				2 conditions - scale value <1 and >1
+				*/
+				
+				var bitmapScale:BitmapData = new BitmapData((210),(210), false, 0X000000);
+					for (var x2:int = 0; x2 < bitmapScale.width; x2 = x2+ 1)
+					{
+						for (var y2:int = 0; y2 < bitmapScale.height; y2 = y2+1)
+						{		
+							bitmapScale.setPixel(x2 * distoredScaleX ,y2 *distoredScaleY , bitmap210X210.getPixel(x2,y2));
+							bitmapScale.setPixel((x2 * distoredScaleX) + 1 ,(y2 *distoredScaleY) , bitmap210X210.getPixel(x2,y2));
+							bitmapScale.setPixel((x2 * distoredScaleX) ,(y2 *distoredScaleY)+ 1 , bitmap210X210.getPixel(x2,y2));
+							bitmapScale.setPixel((x2 * distoredScaleX) + 1 ,(y2 *distoredScaleY)+ 1 , bitmap210X210.getPixel(x2,y2));	
+						}
+				
+					
+				//display scaled image
+				
+				
+				distortedImageBitmap.bitmapData = bitmapScale;
+				
+				//display the original image
+				
+				distortedImage.x = 400;
+				distortedImage.y = 200;
+				distortedImage.addChild(distortedImageBitmap);
+				//dump 30 X 30 pixel values
+				
+				
+				var bitmapScaleCorrected:BitmapData = new BitmapData((210),(210), false, 0X000000);
+				for (var x3:int = 0; x3 < bitmapScale.width; x3 = x3+ 1)
+				{
+					for (var y3:int = 0; y3 < bitmapScale.height; y3 = y3+1)
+					{		
+						bitmapScaleCorrected.setPixel(x3 * correctedScaleX ,y3 *correctedScaleY , bitmapScale.getPixel(x3,y3));
+						bitmapScaleCorrected.setPixel((x3 * correctedScaleX) + 1 ,(y3 *correctedScaleY) , bitmapScale.getPixel(x3,y3));
+						bitmapScaleCorrected.setPixel((x3 * correctedScaleX) ,(y3 *correctedScaleY)+ 1 , bitmapScale.getPixel(x3,y3));
+						bitmapScaleCorrected.setPixel((x3 * correctedScaleX) + 1 ,(y3 *correctedScaleY)+ 1 , bitmapScale.getPixel(x3,y3));	
+					}
+				}		
+					
+					//display scaled image
+					
+					
+					correctedImageBitmap.bitmapData = bitmapScaleCorrected;
+					
+					//display the original image
+					
+					correctedImage.x = 700;
+					correctedImage.y = 200;
+					correctedImage.addChild(correctedImageBitmap);
+					
+			}
+					/*
+					Save all the images in a folder by name 
+					*/
+					
+			}
+
+			protected function saveDistorted_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				imgByteArray2 = jpgenc2.encode(distortedImageBitmap.bitmapData);
+				fr1.save(imgByteArray2, + countImage +'-D-' +pictureID  + ".jpg" );
+
+ 			}
+
+
+			protected function saveCorrected_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				imgByteArray3 = jpgenc3.encode(correctedImageBitmap.bitmapData);
+				fr2.save(imgByteArray3, + countImage +'-C-' +pictureID  + ".jpg" );
+ 			}
+
+		]]>
+	</fx:Script>
+	<!-- 
+	Display 3 images - 
+	1)original  
+	2)distorted
+	3)corrected
+	-->
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label text="Testing Phase" fontSize="18" left="600" top="50" />
+	<mx:Image width="100%" height="100%"
+			  id="originalImage"/>
+	<s:Label text="Original Image" left="100" bottom="200" />
+	<mx:Image width="100%" height="100%"
+			  id="distortedImage"/>
+	
+	<s:Label text="Distorted Image" left="400" bottom="200" />
+	<mx:Image width="100%" height="100%"
+			  id="correctedImage"/>
+	
+	<s:Label text="Corrected Image" left="700" bottom="200" />
+	<s:Button label="Next Image" bottom="100" left="150" 
+			   click="button3_clickHandler(event)"/>
+	
+	<s:Button label="Export original"  id="saveJpg" right="10" bottom="100" 
+			   click="saveJpg_clickHandler(event)"  enabled="true"/>
+	
+	<s:Button label="Export distorted"  id="saveDistorted" right="10" bottom="70" 
+			  click="saveDistorted_clickHandler(event)"  enabled="true"/>
+	
+	<s:Button label="Export corrected"  id="saveCorrected" right="10" bottom="40" 
+			  click="saveCorrected_clickHandler(event)"  enabled="true"/>
+	
+	
+</s:Application>
